@@ -11,12 +11,12 @@ namespace WebApiBackend.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class WeatherForecastController : ControllerBase
+    public class TestController : ControllerBase
     {
-        private readonly ILogger<WeatherForecastController> _logger;
+        private readonly ILogger<TestController> _logger;
         private readonly FlatManagementContext _database;
 
-        public WeatherForecastController(ILogger<WeatherForecastController> logger, FlatManagementContext databaseContext)
+        public TestController(ILogger<TestController> logger, FlatManagementContext databaseContext)
         {
             _logger = logger;
             _database = databaseContext;
