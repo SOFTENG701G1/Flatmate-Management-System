@@ -4,6 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using WebApiBackend.Dto;
+using WebApiBackend.Model;
 
 namespace WebApiBackend.Controllers
 {
@@ -17,10 +19,12 @@ namespace WebApiBackend.Controllers
         };
 
         private readonly ILogger<WeatherForecastController> _logger;
+        private readonly FlatManagementContext _database;
 
-        public WeatherForecastController(ILogger<WeatherForecastController> logger)
+        public WeatherForecastController(ILogger<WeatherForecastController> logger, FlatManagementContext databaseContext)
         {
             _logger = logger;
+            _database = databaseContext;
         }
 
         [HttpGet]
@@ -34,6 +38,14 @@ namespace WebApiBackend.Controllers
                 Summary = Summaries[rng.Next(Summaries.Length)]
             })
             .ToArray();
+        }
+
+        [HttpGet("test")]
+        public IEnumerable<TestItemDto> TestDatabaseGet() {
+            return _database.TestItems.ToList().Select(item => new TestItemDto { 
+                Id = item.Id, 
+                Name = item.Name 
+            });
         }
     }
 }
