@@ -4,6 +4,9 @@
 ## Sourced from:
 ## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 
+# SQLite files
+*.db
+
 # User-specific files
 *.rsuser
 *.suo
