@@ -11,6 +11,6 @@ namespace WebApiBackend.Model
         public DbSet<TestModelItem> TestItems { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder options)
-            => options.UseSqlite("Data Source=blogging.db");
+            => options.UseSqlite("Data Source=testdb.db");
     }
 }
