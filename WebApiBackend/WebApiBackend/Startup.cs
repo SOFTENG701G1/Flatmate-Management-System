@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
@@ -18,17 +19,30 @@ namespace WebApiBackend
 {
     public class Startup
     {
+        public IConfiguration Configuration { get; }
+        private readonly string DevCorsPolicy = "_devCors";
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
         }
 
-        public IConfiguration Configuration { get; }
-
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<FlatManagementContext>();
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy(DevCorsPolicy,
+                    builder =>
+                    {
+                        builder
+                            .AllowAnyOrigin()
+                            .AllowAnyMethod()
+                            .AllowAnyHeader();
+                    });
+            });
 
             services.AddControllers();
         }
@@ -57,6 +71,11 @@ namespace WebApiBackend
             app.UseRouting();
 
             app.UseAuthorization();
+
+            if (env.IsDevelopment())
+            {
+                app.UseCors(DevCorsPolicy);
+            }
 
             app.UseEndpoints(endpoints =>
             {
