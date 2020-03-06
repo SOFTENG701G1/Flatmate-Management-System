@@ -38,11 +38,11 @@ Keeping the history clean means making one commit per feature. It also means squ
 
 Write a convincing description of your PR and why we should land it.
 
-### Hang on during code review
+### Code review
 
-It is important for us to keep the core code clean and consistent. This means we're pretty hard on code review!
+It is important for us to keep the core code clean and consistent. Please ensure any pull request have been reviewed by at least one of the team members.
 
-Code reviews are the best way to improve ourselves as engineers. Don't take the reviews personally: they're there to help us improve.
+### Steps for pull request
 
 Above steps should be used when following the steps belowwhen you'd like your work considered for inclusion in the
 project:
@@ -92,7 +92,7 @@ project:
    ```
 
 7. [Open a Pull Request](https://help.github.com/articles/using-pull-requests/)
-    with a clear title and description.
+    with a clear title and description. Make sure at least one of our team members have reviewed the change. A review can be requested by following these steps: [Request Pull Request Review](https://help.github.com/en/github/collaborating-with-issues-and-pull-requests/requesting-a-pull-request-review)
 
 <a name="bugs"></a>
 ## Bug reports
@@ -138,9 +138,24 @@ Example:
 <a name="guidelines"></a>
 ## Coding Guidelines 
 
+Depending on if you're working on the frontend or backend, please see below for language specific coding guidelines. 
+
 - [React JS Coding Conventions](reactjs-guidelines.md)
 
 - [C# Coding Conventions](C#-guidelines.md)
  
-Additional Notes
-  Please ensure you have also ready [Code of Conduct](CODE_OF_CONDUCT.md)
+<a name="notes"></a>
+## Additional Note 
+
+- Please ensure you have also ready [Code of Conduct](CODE_OF_CONDUCT.md)
+
+<a name="sources"></a>
+## Source
+
+- This contribution guidline is based adopted from the following sources
+
+- [Pull Request Guidelines](https://github.com/exercism/docs/blob/master/contributing/pull-request-guidelines.md)
+
+- [Strict Flow and GitHub Project Guidelines](https://gist.github.com/rsp/057481db4dbd999bb7077f211f53f212)
+
+- [Git Merge Branching Good Practices](https://github.com/geonetwork/core-geonetwork/wiki/Git-merge-branching-good-practices)
