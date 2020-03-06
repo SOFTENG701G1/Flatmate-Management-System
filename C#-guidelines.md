@@ -151,7 +151,7 @@ Call [static](../../language-reference/keywords/static.md) members by using the 
 - Use multiple `from` clauses instead of a [join](../../language-reference/keywords/join-clause.md) clause to access inner collections. For example, a collection of `Student` objects might each contain a collection of test scores. When the following query is executed, it returns each score that is over 90, along with the last name of the student who received the score.  
   
   
-## See also
+## Sources and Additional Notes
 
 - [C# Conventions](https://github.com/dotnet/docs/blob/master/docs/csharp/programming-guide/inside-a-program/coding-conventions.md)
 - [Visual Basic Coding Conventions](../../../visual-basic/programming-guide/program-structure/coding-conventions.md)
