@@ -419,19 +419,15 @@ class Foo extends React.Component {
 }
 ```
 
-## Working with DOM listeners
+## Additional Notes
 
-- http://facebook.github.io/react/tips/dom-event-listeners.html
+- [Working with DOM listeners](http://facebook.github.io/react/tips/dom-event-listeners.html)
 
-## Using StaticContainer for more granular control over shouldUpdate
+- [Using StaticContainer for more granular control over shouldUpdate](https://github.com/reactjs/react-static-container)
 
-- https://github.com/reactjs/react-static-container
-
-## Use higherOrder functions to add scroll/resize listeners
-
-- https://medium.com/@dan_abramov/mixins-are-dead-long-live-higher-order-components-94a0d2f9e750
+- [Use higherOrder functions to add scroll/resize listeners](https://medium.com/@dan_abramov/mixins-are-dead-long-live-higher-order-components-94a0d2f9e750)
 
 ## Sources
 
-- https://github.com/kriasoft/react-starter-kit/blob/master/docs/react-style-guide.md
-- https://github.com/pillarstudio/standards/blob/master/reactjs-guidelines.md
+- [React JS Guide](https://github.com/kriasoft/react-starter-kit/blob/master/docs/react-style-guide.md)
+- [Reacy JS Guidelines](https://github.com/pillarstudio/standards/blob/master/reactjs-guidelines.md)
