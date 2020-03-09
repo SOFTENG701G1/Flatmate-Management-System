@@ -6,6 +6,10 @@ Good programming practices and established conventions and standards should alwa
 
 These standards, conventions, and guidelines will provide for uniformity in the development, construction and installation of reliable program.
 
+For any document changes, please submit a change request using: [Document Change](ISSUE_TEMPLATE/documentation-update.md)
+
+For any feature requests, please submit a feature request using: [Feature Request](ISSUE_TEMPLATE/feature_request.md)
+
 ## Pull requests
 
 Please ensure the following steps are carefully followed when making a PR.
@@ -100,6 +104,8 @@ project:
 A bug is a _demonstrable problem_ that is caused by the code in the repository.
 Good bug reports are extremely helpful - thank you!
 
+Please use bug report template provided: [Bug Report Template](ISSUE_TEMPLATE/bug_report.md )
+
 Guidelines for bug reports:
 
 1. **Use the GitHub issue search** &mdash; check if the issue has already been
@@ -147,12 +153,12 @@ Depending on if you're working on the frontend or backend, please see below for 
 <a name="notes"></a>
 ## Additional Note 
 
-- Please ensure you have also ready [Code of Conduct](CODE_OF_CONDUCT.md)
+- Please ensure you have also read [Code of Conduct](CODE_OF_CONDUCT.md)
 
 <a name="sources"></a>
 ## Source
 
-- This contribution guidline is based adopted from the following sources
+- This contribution guidline is based on the following sources
 
 - [Pull Request Guidelines](https://github.com/exercism/docs/blob/master/contributing/pull-request-guidelines.md)
 
