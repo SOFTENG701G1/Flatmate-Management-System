@@ -12,8 +12,7 @@ For any feature requests, please submit a feature request using: [Feature Reques
 
 ## Pull requests
 
-All PR must follow the template in [Pull Request Template](pull_request_template.md)
-Please ensure the steps below are followed when filling in the template.
+Please ensure the following steps are carefully followed when making a PR.
 
 ### Only touch relevant files
 
@@ -71,13 +70,12 @@ project:
    git pull upstream <dev-branch>
    ```
 
-3. Create a new topic branch (off the main project development branch) to
-   contain your feature, change, or fix:
+3. Create a new topic branch (off the main project development branch) with one of the following commands:
 
    ```bash
-   git checkout -b <feature/[id]-some-feature>
-   OR
-   git checkout -b <fix/[id]-some-bug>
+   git checkout -b bug/#id-some-bug
+   git checkout -b feature/#id-some-feature
+   git checkout -b documentation/#id-some-documents
    ```
 
 4. Commit your changes in logical chunks. Please adhere to these [git commit
@@ -92,12 +90,12 @@ project:
    git pull [--rebase] upstream <dev-branch>
    ```
 
-6. Push your topic branch up to your fork:
+6. Push your topic branch up to your fork with one of the following commands:
 
    ```bash
-   git push origin <feature/[id]-some-feature>
-   OR
-   git push origin <fix/[id]-some-bug>
+   git push origin bug/#id-some-bug
+   git push origin feature/#id-some-feature
+   git push origin documentation/#id-some-documents
    ```
 
 7. [Open a Pull Request](https://help.github.com/articles/using-pull-requests/)
