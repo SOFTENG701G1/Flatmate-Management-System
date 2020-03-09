@@ -104,6 +104,11 @@ project:
 <a name="bugs"></a>
 ## Bug reports
 
+A bug is a _demonstrable problem_ that is caused by the code in the repository.
+Good bug reports are extremely helpful - thank you!
+
+Please use bug report template provided: [Bug Report Template](ISSUE_TEMPLATE/bug_report.md )
+
 Guidelines for bug reports:
 
 1. **Use the GitHub issue search** &mdash; check if the issue has already been
