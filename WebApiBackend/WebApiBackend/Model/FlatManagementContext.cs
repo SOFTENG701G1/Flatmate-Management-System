@@ -14,7 +14,7 @@ namespace WebApiBackend.Model
 
         public DbSet<Payment> Payment { get; set; }
 
-        public DbSet<Schedule> Schdule { get; set; }
+        public DbSet<Schedule> Schedule { get; set; }
 
         public DbSet<User> User { get; set; }
 
