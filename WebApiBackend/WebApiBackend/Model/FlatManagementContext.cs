@@ -24,12 +24,12 @@ namespace WebApiBackend.Model
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Schedule>(entity => {
-            entity.HasKey(e => new { e.UserName, e.StartDate, e.EndDate, e.ScheduleType });
+                entity.HasKey(e => new { e.UserName, e.StartDate, e.EndDate, e.ScheduleType });
 
-            entity.Property(e => e.ScheduleType)
-                .HasConversion(
-                    e => e.ToString(),
-                    e => (ScheduleType)Enum.Parse(typeof(ScheduleType), e));
+                entity.Property(e => e.ScheduleType)
+                    .HasConversion(
+                        e => e.ToString(),
+                        e => (ScheduleType)Enum.Parse(typeof(ScheduleType), e));
             });
 
             modelBuilder.Entity<User>(entity => {
