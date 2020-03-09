@@ -74,7 +74,9 @@ project:
    contain your feature, change, or fix:
 
    ```bash
-   git checkout -b <topic-branch-name>
+   git checkout -b <feature/[id]-some-feature>
+   OR
+   git checkout -b <fix/[id]-some-bug>
    ```
 
 4. Commit your changes in logical chunks. Please adhere to these [git commit
@@ -92,7 +94,9 @@ project:
 6. Push your topic branch up to your fork:
 
    ```bash
-   git push origin <topic-branch-name>
+   git push origin <feature/[id]-some-feature>
+   OR
+   git push origin <fix/[id]-some-bug>
    ```
 
 7. [Open a Pull Request](https://help.github.com/articles/using-pull-requests/)
