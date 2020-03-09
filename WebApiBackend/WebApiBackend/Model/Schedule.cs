@@ -15,7 +15,6 @@ namespace WebApiBackend.Model
         public string UserName { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
-        public int MyProperty { get; set; }
         public ScheduleType ScheduleType { get; set; }
     }
 }
