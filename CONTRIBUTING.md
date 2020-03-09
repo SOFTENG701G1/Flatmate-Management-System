@@ -12,7 +12,8 @@ For any feature requests, please submit a feature request using: [Feature Reques
 
 ## Pull requests
 
-Please ensure the following steps are carefully followed when making a PR.
+All PR must follow the template in [Pull Request Template](pull_request_template.md)
+Please ensure the steps below are followed when filling in the template.
 
 ### Only touch relevant files
 
