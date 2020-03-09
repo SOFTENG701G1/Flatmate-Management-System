@@ -1,10 +1,14 @@
 # Flat Management Program
 
-Todo: Description
+The Flat Management Program is a webapp designed to make it easier to manage flat (shared house) expenses. The program stores one off and periodic expenses for a given flat, and helps keep track of who has paid those bills. You can also roster chores and share your timetable using the convenient webapp. 
 
 ## Technical Layout
 
 The project consists of two main code bases: a backend (in WebApiBackend) and a frontend (in Frontend). The backend is a C# project providing a JSON API. The frontend is a ReactJS project that interacts with the API.
+
+## Before Contributing
+
+Make sure you're aware of our license, contributor guidelines and branching policy. 
 
 ## Get Started!
 
