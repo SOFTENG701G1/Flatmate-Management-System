@@ -23,8 +23,7 @@ namespace WebApiBackend.Model
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Schedule>(entity =>
-            {
+            modelBuilder.Entity<Schedule>(entity => {
             entity.HasKey(e => new { e.UserName, e.StartDate, e.EndDate, e.ScheduleType });
 
             entity.Property(e => e.ScheduleType)
@@ -46,6 +45,7 @@ namespace WebApiBackend.Model
                     .HasConversion(
                         e => e.ToString(),
                         e => (PaymentType)Enum.Parse(typeof(PaymentType), e));
+
                 e.Property(e => e.Frequency)
                     .HasConversion(
                         e => e.ToString(),
