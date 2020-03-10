@@ -94,8 +94,8 @@ namespace WebApiBackend.Helpers
             userPaymentYin1 = new UserPayment
             {
                 Payment = payment1,
-                User = user1,
-                UserName = user1.UserName,
+                User = user3,
+                UserName = user3.UserName,
                 PaymentId = payment1.Id
             };
 
