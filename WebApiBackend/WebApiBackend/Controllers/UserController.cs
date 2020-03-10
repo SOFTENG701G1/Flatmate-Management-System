@@ -17,27 +17,27 @@ namespace WebApiBackend.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class LoginController
+    public class UserController
     {
         private readonly FlatManagementContext _context;
         private readonly PasswordHasher<User> _hasher;
         private readonly AppSettings _appSettings;
 
-        public LoginController(FlatManagementContext context, IOptions<AppSettings> appSettings)
+        public UserController(FlatManagementContext context, IOptions<AppSettings> appSettings)
         {
             _context = context;
             _appSettings = appSettings.Value;
             _hasher = new PasswordHasher<User>();
         }
 
-        [HttpPost]
+        [HttpPost("login")]
         public ActionResult<LoggedInDto> Login(LoginDto login)
         {
             User user = _context.User.FirstOrDefault(u => u.UserName.ToLower() == login.Username.ToLower());
 
             if (user == null)
             {
-                return new ForbidResult();
+                return new NotFoundResult();
             }
 
             if (_hasher.VerifyHashedPassword(user, user.Password, login.Password) != PasswordVerificationResult.Success)
