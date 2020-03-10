@@ -89,6 +89,7 @@ namespace WebApiBackend
                 var db = serviceScope.ServiceProvider.GetService<FlatManagementContext>();
                 db.Database.EnsureDeleted();
                 db.Database.EnsureCreated();
+                db.Database.Migrate();
 
                 // Add a test dataset for development
                 var testDataGenerator = new DevelopmentDatabaseSetup(db);
