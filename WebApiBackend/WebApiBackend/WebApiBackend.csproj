@@ -9,6 +9,14 @@
     <Compile Remove="Migrations\20200310032350_InitialMigration.Designer.cs" />
     <Compile Remove="Migrations\20200310035804_PropertyFixMigration.cs" />
     <Compile Remove="Migrations\20200310035804_PropertyFixMigration.Designer.cs" />
+    <Compile Remove="Migrations\20200310042937_InitialMigration.cs" />
+    <Compile Remove="Migrations\20200310042937_InitialMigration.Designer.cs" />
+    <Compile Remove="Migrations\20200310042957_InitialMigration.cs" />
+    <Compile Remove="Migrations\20200310042957_InitialMigration.Designer.cs" />
+    <Compile Remove="Migrations\20200310044947_add-migration ManyToManyMigration.cs" />
+    <Compile Remove="Migrations\20200310044947_add-migration ManyToManyMigration.Designer.cs" />
+    <Compile Remove="Migrations\20200310045018_ManyToManyMigration.cs" />
+    <Compile Remove="Migrations\20200310045018_ManyToManyMigration.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -19,10 +27,6 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Migrations\" />
   </ItemGroup>
 
 </Project>

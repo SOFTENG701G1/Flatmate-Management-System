@@ -24,8 +24,8 @@ namespace WebApiBackend.Model
         public bool Fixed { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
-        public User Users { get; set; }
         public PaymentType PaymentType { get; set; }
         public Frequency Frequency { get; set; }
+        public ICollection<UserPayment> UserPayments { get; set; }
     }
 }

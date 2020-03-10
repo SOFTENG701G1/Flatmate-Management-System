@@ -18,6 +18,8 @@ namespace WebApiBackend.Model
 
         public DbSet<User> User { get; set; }
 
+        public DbSet<UserPayment> UserPayments { get; set; }
+
         protected override void OnConfiguring(DbContextOptionsBuilder options)
             => options.UseSqlite("Data Source=testdb.db");
 
@@ -50,6 +52,18 @@ namespace WebApiBackend.Model
                     .HasConversion(
                         e => e.ToString(),
                         e => (Frequency)Enum.Parse(typeof(Frequency), e));
+            });
+
+            modelBuilder.Entity<UserPayment>(e => {
+                e.HasKey(e => new { e.PaymentId, e.UserName });
+
+                e.HasOne(e => e.Payment)
+                    .WithMany(e => e.UserPayments)
+                    .HasForeignKey(e => e.PaymentId);
+
+                e.HasOne(e => e.User)
+                    .WithMany(e => e.UserPayments)
+                    .HasForeignKey(e => e.UserName);
             });
         }
     }
