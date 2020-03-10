@@ -18,6 +18,7 @@ jobs:
       with:
         dotnet-version: 3.1.101
     - name: Build with dotnet
-      run: dotnet build --configuration Release
+      run: dotnet build WebApiBackend.sln
+      working-directory: ../WebApiBackend
     - name: And then we test
       run: dotnet test --verbosity normal
