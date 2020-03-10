@@ -33,11 +33,11 @@ namespace WebApiBackend.Controllers
         [HttpPost]
         public ActionResult<LoggedInDto> Login(LoginDto login)
         {
-            User user = _context.User.First(u => u.UserName.ToLower() == login.Username.ToLower());
+            User user = _context.User.FirstOrDefault(u => u.UserName.ToLower() == login.Username.ToLower());
 
             if (user == null)
             {
-                return new NotFoundResult();
+                return new ForbidResult();
             }
 
             if (_hasher.VerifyHashedPassword(user, user.Password, login.Password) != PasswordVerificationResult.Success)
@@ -64,12 +64,12 @@ namespace WebApiBackend.Controllers
 
         protected bool AddUser(string username, string email, string password)
         {
-            if (_context.User.First(u => u.UserName.ToLower() == username.ToLower()) != null)
+            if (_context.User.FirstOrDefault(u => u.UserName.ToLower() == username.ToLower()) != null)
             {
                 return false;
             }
 
-            if (_context.User.First(u => u.Email.ToLower() == email.ToLower()) != null)
+            if (_context.User.FirstOrDefault(u => u.Email.ToLower() == email.ToLower()) != null)
             {
                 return false;
             }

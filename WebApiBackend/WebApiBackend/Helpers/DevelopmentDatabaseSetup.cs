@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Identity;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -17,12 +18,31 @@ namespace WebApiBackend.Helpers
 
         public void SetupDevelopmentDataSet()
         {
-            _database.Add(new TestModelItem
+            _database.TestItems.Add(new TestModelItem
             {
                 Name = "A Test Item"
             });
 
+            AddTestUsers();
+
             _database.SaveChanges();
+        }
+
+        private void AddTestUsers()
+        {
+            var hasher = new PasswordHasher<User>();
+
+            var user = new User
+            {
+                UserName = "user",
+                Email = "email@email.com"
+            };
+
+            var hashedPassword = hasher.HashPassword(user, "password");
+
+            user.Password = hashedPassword;
+
+            _database.User.Add(user);
         }
     }
 }
