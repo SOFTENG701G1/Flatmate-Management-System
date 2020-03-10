@@ -8,7 +8,7 @@ namespace WebApiBackend.Helpers
 {
     public class DevelopmentDatabaseSetup
     {
-        User user1, user2, user3;
+        User yin, teresa, bryan;
         Payment payment1, payment2;
         // Payment[NAME]1 is for electricity Payment[NAME]2 is for Rent due to many to many relationship
         UserPayment userPaymentYin1, userPaymentYin2, userPaymentBryan1,
@@ -20,7 +20,7 @@ namespace WebApiBackend.Helpers
 
         public void InitialiseTestDataObjects()
         {
-            user1 = new User
+            yin = new User
             {
                 UserName = "YinWang",
                 FirstName = "Yin",
@@ -32,7 +32,7 @@ namespace WebApiBackend.Helpers
                 Password = "MustacheMan22"
             };
 
-            user2 = new User
+            teresa = new User
             {
                 UserName = "TreesAreGreen",
                 FirstName = "Teresa",
@@ -44,7 +44,7 @@ namespace WebApiBackend.Helpers
                 Password = "TreestheBest"
             };
 
-            user3 = new User
+            bryan = new User
             {
                 UserName = "BeboBryan",
                 FirstName = "Bryan",
@@ -79,47 +79,47 @@ namespace WebApiBackend.Helpers
             userPaymentBryan1 = new UserPayment
             {
                 Payment = payment1,
-                User = user1,
-                UserName = user1.UserName,
+                User = bryan,
+                UserName = bryan.UserName,
                 PaymentId = payment1.Id
             };
             userPaymentBryan2 = new UserPayment
             {
                 Payment = payment2,
-                User = user3,
-                UserName = user3.UserName,
+                User = bryan,
+                UserName = bryan.UserName,
                 PaymentId = payment2.Id
             };
 
             userPaymentYin1 = new UserPayment
             {
                 Payment = payment1,
-                User = user3,
-                UserName = user3.UserName,
+                User = yin,
+                UserName = yin.UserName,
                 PaymentId = payment1.Id
             };
 
             userPaymentYin2 = new UserPayment
             {
                 Payment = payment2,
-                User = user1,
-                UserName = user1.UserName,
+                User = yin,
+                UserName = yin.UserName,
                 PaymentId = payment2.Id
             };
 
             userPaymentTeresa1 = new UserPayment
             {
                 Payment = payment1,
-                User = user2,
-                UserName = user2.UserName,
+                User = teresa,
+                UserName = teresa.UserName,
                 PaymentId = payment1.Id
             };
 
             userPaymentTeresa2 = new UserPayment
             {
                 Payment = payment2,
-                User = user2,
-                UserName = user2.UserName,
+                User = teresa,
+                UserName = teresa.UserName,
                 PaymentId = payment2.Id
             };
             payment1.UserPayments = new List<UserPayment> { userPaymentBryan1, userPaymentTeresa1, userPaymentYin1 };
@@ -136,7 +136,7 @@ namespace WebApiBackend.Helpers
             flat1 = new Flat
             {
                 Address = "50 Symonds Street",
-                Users = new List<User> { user1, user2, user3 },
+                Users = new List<User> { yin, teresa, bryan },
                 Schedules = new List<Schedule> { schedule1 },
                 Payments = new List<Payment> { payment1, payment2 }
             };
@@ -150,9 +150,12 @@ namespace WebApiBackend.Helpers
 
         public void SetupDevelopmentDataSet()
         {
-            _database.Add(user1);
-            _database.Add(user2);
-            _database.Add(user3);
+            // This function could also be called in the unit tests if not called here
+            InitialiseTestDataObjects();
+
+            _database.Add(yin);
+            _database.Add(teresa);
+            _database.Add(bryan);
             _database.Add(payment1);
             _database.Add(payment2);
             _database.Add(userPaymentBryan1);
