@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using WebApiBackend.Dto;
@@ -28,6 +29,13 @@ namespace WebApiBackend.Controllers
                 Id = item.Id, 
                 Name = item.Name 
             });
+        }
+
+        [HttpGet("secure/")]
+        [Authorize]
+        public string TestAuthorization()
+        {
+            return "Ok";
         }
     }
 }
