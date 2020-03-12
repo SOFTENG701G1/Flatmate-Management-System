@@ -15,6 +15,7 @@ using System.Linq;
 
 namespace WebApiBackend.Controllers
 {
+
     [Route("api/[controller]")]
     [ApiController]
     public class UserController
@@ -45,22 +46,62 @@ namespace WebApiBackend.Controllers
                 return new ForbidResult();
             }
 
-            // Issue JWT
+            return new LoggedInDto(user, CreateToken(user.UserName));
+        }
+
+        [HttpPost("register")]
+        public ActionResult<RegisterResponseDTO> Register(RegisterRequestDTO registerRequest)
+        {  
+            if (string.IsNullOrEmpty(registerRequest.UserName) || string.IsNullOrEmpty(registerRequest.Email) || string.IsNullOrEmpty(registerRequest.Password))
+            {
+                return new BadRequestResult();
+            }
+
+            var hasher = new PasswordHasher<User>();
+            var user = new User
+            {
+                UserName = registerRequest.UserName,
+                FirstName = registerRequest.FirstName,
+                LastName = registerRequest.LastName,
+                DateOfBirth = registerRequest.DateOfBirth,
+                PhoneNumber = registerRequest.PhoneNumber,
+                Email = registerRequest.Email,
+                MedicalInformation = registerRequest.MedicalInformation,
+                BankAccount = registerRequest.BankAccount
+            };
+
+            var hashedPassword = hasher.HashPassword(user, "password");
+
+            user.Password = hashedPassword;
+
+            _context.Add(user);
+            _context.SaveChanges();
+
+            return new RegisterResponseDTO
+            {
+                UserName = user.UserName,
+                Token = CreateToken(user.UserName)
+            };
+        }
+
+        private string CreateToken(string username)
+        {
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(_appSettings.JWTSecret);
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(new Claim[]
                 {
-                    new Claim(ClaimTypes.Name, user.UserName)
+                    new Claim(ClaimTypes.Name, username)
                 }),
                 Expires = DateTime.UtcNow.AddDays(7),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
             var token = tokenHandler.CreateToken(tokenDescriptor);
 
-            return new LoggedInDto(user, tokenHandler.WriteToken(token));
+            return tokenHandler.WriteToken(token);
         }
+
 
         protected bool AddUser(string username, string email, string password)
         {
