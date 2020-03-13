@@ -51,37 +51,26 @@ namespace WebApiBackend.Controllers
 
         [HttpPost("register")]
         public ActionResult<RegisterResponseDTO> Register(RegisterRequestDTO registerRequest)
-        {  
+        {
             if (string.IsNullOrEmpty(registerRequest.UserName) || string.IsNullOrEmpty(registerRequest.Email) || string.IsNullOrEmpty(registerRequest.Password))
             {
                 return new BadRequestResult();
             }
 
-            var hasher = new PasswordHasher<User>();
-            var user = new User
+            User user;
+            if (TryCreateUser(registerRequest.UserName, registerRequest.FirstName, registerRequest.LastName, registerRequest.DateOfBirth, registerRequest.PhoneNumber, 
+                registerRequest.Email, registerRequest.MedicalInformation, registerRequest.BankAccount, registerRequest.Password, out user))
             {
-                UserName = registerRequest.UserName,
-                FirstName = registerRequest.FirstName,
-                LastName = registerRequest.LastName,
-                DateOfBirth = registerRequest.DateOfBirth,
-                PhoneNumber = registerRequest.PhoneNumber,
-                Email = registerRequest.Email,
-                MedicalInformation = registerRequest.MedicalInformation,
-                BankAccount = registerRequest.BankAccount
-            };
-
-            var hashedPassword = hasher.HashPassword(user, "password");
-
-            user.Password = hashedPassword;
-
-            _context.Add(user);
-            _context.SaveChanges();
-
-            return new RegisterResponseDTO
+                return new RegisterResponseDTO
+                {
+                    UserName = user.UserName,
+                    Token = CreateToken(user.UserName)
+                };
+            }
+            else
             {
-                UserName = user.UserName,
-                Token = CreateToken(user.UserName)
-            };
+                return new ConflictResult();
+            }
         }
 
         private string CreateToken(string username)
@@ -103,11 +92,14 @@ namespace WebApiBackend.Controllers
         }
 
 
-        protected bool AddUser(string username, string email, string password)
+        private bool TryCreateUser(string userName, string firstName, string lastName, DateTime dateOfBirth, string phoneNumber, 
+            string email, string medicalInformation, string bankAccount, string password, out User user)
         {
-            if (_context.User.FirstOrDefault(u => u.UserName.ToLower() == username.ToLower()) != null)
+            user = null;
+
+            if (_context.User.FirstOrDefault(u => u.UserName.ToLower() == userName.ToLower()) != null)
             {
-                return false;
+                return false; 
             }
 
             if (_context.User.FirstOrDefault(u => u.Email.ToLower() == email.ToLower()) != null)
@@ -115,17 +107,28 @@ namespace WebApiBackend.Controllers
                 return false;
             }
 
-            var user = new User
+            if (_context.User.FirstOrDefault(u => u.PhoneNumber.ToLower() == phoneNumber.ToLower()) != null)
             {
-                UserName = username,
-                Email = email
+                return false;
+            }
+
+            var hasher = new PasswordHasher<User>();
+            user = new User
+            {
+                UserName = userName,
+                FirstName = firstName,
+                LastName = lastName,
+                DateOfBirth = dateOfBirth,
+                PhoneNumber = phoneNumber,
+                Email = email,
+                MedicalInformation = medicalInformation,
+                BankAccount = bankAccount
             };
 
-            var hashed = _hasher.HashPassword(user, password);
+            var hashedPassword = hasher.HashPassword(user, "password");
+            user.Password = hashedPassword;
 
-            user.Password = hashed;
-
-            _context.User.Add(user);
+            _context.Add(user);
             _context.SaveChanges();
 
             return true;
