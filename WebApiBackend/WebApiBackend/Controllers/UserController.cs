@@ -20,31 +20,33 @@ namespace WebApiBackend.Controllers
     [ApiController]
     public class UserController
     {
-        private readonly FlatManagementContext _context;
-        private readonly PasswordHasher<User> _hasher;
         private readonly AppSettings _appSettings;
 
-        public UserController(FlatManagementContext context, IOptions<AppSettings> appSettings)
+        public UserController( IOptions<AppSettings> appSettings)
         {
-            _context = context;
             _appSettings = appSettings.Value;
-            _hasher = new PasswordHasher<User>();
         }
 
         [HttpPost("login")]
         public ActionResult<LoggedInDto> Login(LoginDto login)
         {
-            User user = _context.User.FirstOrDefault(u => u.UserName.ToLower() == login.Username.ToLower());
+            FlatManagementContext context = new FlatManagementContext();
+
+            User user = context.User.FirstOrDefault(u => u.UserName.ToLower() == login.Username.ToLower());
 
             if (user == null)
             {
                 return new NotFoundResult();
             }
 
-            if (_hasher.VerifyHashedPassword(user, user.Password, login.Password) != PasswordVerificationResult.Success)
+            PasswordHasher<User> hasher = new PasswordHasher<User>();
+
+            if (hasher.VerifyHashedPassword(user, user.Password, login.Password) != PasswordVerificationResult.Success)
             {
                 return new ForbidResult();
             }
+
+            context.Dispose();
 
             return new LoggedInDto(user, CreateToken(user.UserName));
         }
@@ -96,23 +98,24 @@ namespace WebApiBackend.Controllers
             string email, string medicalInformation, string bankAccount, string password, out User user)
         {
             user = null;
+            FlatManagementContext context = new FlatManagementContext();
 
-            if (_context.User.FirstOrDefault(u => u.UserName.ToLower() == userName.ToLower()) != null)
+
+            if (context.User.FirstOrDefault(u => u.UserName.ToLower() == userName.ToLower()) != null)
             {
                 return false; 
             }
 
-            if (_context.User.FirstOrDefault(u => u.Email.ToLower() == email.ToLower()) != null)
+            if (context.User.FirstOrDefault(u => u.Email.ToLower() == email.ToLower()) != null)
             {
                 return false;
             }
 
-            if (_context.User.FirstOrDefault(u => u.PhoneNumber.ToLower() == phoneNumber.ToLower()) != null)
+            if (context.User.FirstOrDefault(u => u.PhoneNumber.ToLower() == phoneNumber.ToLower()) != null)
             {
                 return false;
             }
 
-            var hasher = new PasswordHasher<User>();
             user = new User
             {
                 UserName = userName,
@@ -125,11 +128,13 @@ namespace WebApiBackend.Controllers
                 BankAccount = bankAccount
             };
 
-            var hashedPassword = hasher.HashPassword(user, "password");
+            PasswordHasher<User> hasher = new PasswordHasher<User>();
+            var hashedPassword = hasher.HashPassword(user, password);
             user.Password = hashedPassword;
 
-            _context.Add(user);
-            _context.SaveChanges();
+            context.Add(user);
+            context.SaveChanges();
+            context.Dispose();
 
             return true;
         }
