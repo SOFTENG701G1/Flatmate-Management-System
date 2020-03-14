@@ -28,16 +28,23 @@
   color: #61dafb;
 }
 
-.MuiCheckbox-root {
+.ChoreListComponent.container {
+  text-align: left;
+  width: 40%;
+  background-color: #1E1F26;
+  color: #EEEEEE;
+  padding: 30px;
+  border-radius: 8px;
+  border: 2px solid #1F5673;
+}
+
+
+span.MuiCheckbox-root {
   color: #EEEEEE;
 }
 
-.ChoreListComponent.container {
-  text-align: left;
-  width: 30%;
-  background-color: #1E1F26;
-  color: #EEEEEE;
-  padding: 20px;
+span.MuiCheckbox-colorSecondary.Mui-checked {
+  color: #8EDCE6;
 }
 
 @keyframes App-logo-spin {
