@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 
 import './Login.css';
 import APIRequest from '../Util/APIRequest';
+import User from '../Util/User';
 
 export default class Login extends React.Component {
   constructor (props) {
@@ -28,7 +29,7 @@ export default class Login extends React.Component {
     let loginResult = await APIRequest.login(this.state.username, this.state.password);
 
     if (loginResult.ok) {
-      console.log(await loginResult.json())
+      User.setUserState(await loginResult.json());
     } else {
       switch (loginResult.status) {
         case 404:

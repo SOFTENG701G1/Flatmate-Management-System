@@ -1,3 +1,5 @@
+import User from "./User";
+
 const apiBaseUrl = "https://localhost:44394/"
 
 export default class APIRequest {
@@ -13,5 +15,13 @@ export default class APIRequest {
         });
 
         return res;
+    }
+
+    static async getAuthString() {
+        if (!User.getUserState()) {
+            return undefined;
+        }
+        
+        return 'Bearer ' + User.getUserState().token;
     }
 }
