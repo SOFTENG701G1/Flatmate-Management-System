@@ -9,6 +9,7 @@ import Navigation from './Components/Navigation';
 import Login from './Views/Login';
 import Logout from './Views/Logout';
 import SplashScreen from './Views/SplashScreen';
+import RequireLogin from './Components/RequireLogin';
 
 export default class App extends React.Component {
   render() {
@@ -29,6 +30,7 @@ export default class App extends React.Component {
               <Logout/>
             </Route>
             <Route path="/app/*">
+              <RequireLogin/>
               <Navigation/>
               <Switch>
                 <Route path="/app/dashboard">
