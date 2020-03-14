@@ -1,7 +1,5 @@
 import React from 'react';
-import logo from './logo.png';
 import './App.css';
-import TestComponent from './Components/TestComponent';
 import {
   BrowserRouter as Router,
   Switch,
