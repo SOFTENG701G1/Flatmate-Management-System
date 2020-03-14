@@ -20,11 +20,13 @@ namespace WebApiBackendTests
         [SetUp]
         public void Setup()
         {
+            // Builds webhost and gets service providers from web host
             var webHost = WebHost.CreateDefaultBuilder()
                 .UseStartup<Startup>()
                 .Build();
             _serviceProvider = new ServiceDependencyResolver(webHost);
 
+            // Resets database to inital state so all tests are isolated and repeatable
             FlatManagementContext context = new FlatManagementContext();
             context.Database.EnsureDeleted();
             context.Database.EnsureCreated();
@@ -33,6 +35,9 @@ namespace WebApiBackendTests
             testDataGenerator.SetupDevelopmentDataSet();
         }
 
+        /// <summary>
+        /// Ensures a user with the correct credentials is able to login and a jwt token is returned
+        /// </summary>
         [Test]
         public void TestSuccessfulLogin()
         {
@@ -48,6 +53,9 @@ namespace WebApiBackendTests
             Assert.IsFalse(string.IsNullOrEmpty(response.Value.Token));
         }
 
+        /// <summary>
+        /// Ensures a user who does not exist is not able to login. No JWT token is returned as they are not authenticated.
+        /// </summary>
         [Test]
         public void TestIncorrectUsernameLogin()
         {
@@ -61,6 +69,9 @@ namespace WebApiBackendTests
             Assert.IsNull(response.Value);
         }
 
+        /// <summary>
+        /// Ensures a user with incorrect password is not able to login. No JWT token is returned as they are not authenticated.
+        /// </summary>
         [Test]
         public void TestIncorrectPasswordLogin()
         {
@@ -74,6 +85,11 @@ namespace WebApiBackendTests
             Assert.IsNull(response.Value);
         }
 
+        /// <summary>
+        /// Tests that a user is able to register for an account when the correct details are provided (username, password, email and 
+        /// phonenumber are not empty/null and username, email and phonenumber are unique in the current database context). Ensures newly 
+        /// created user is able to login.
+        /// </summary>
         [Test]
         public void TestRegistration()
         {
@@ -118,6 +134,9 @@ namespace WebApiBackendTests
             Assert.AreEqual(finalLoginResponse.Value.Username, registrationResponse.Value.UserName);
         }
 
+        /// <summary>
+        /// Checks that UserController does not allow multiple users with the same username to be created. The second user registration will fail
+        /// </summary>
         [Test]
         public void TestRegistrationWithDuplicateUserName()
         {
@@ -156,8 +175,11 @@ namespace WebApiBackendTests
             Assert.That(registrationTwoResponse.Result, Is.InstanceOf<ConflictResult>());
         }
 
+        /// <summary>
+        /// Checks that UserController does not allow multiple users with the same email to be created. The second user registration will fail
+        /// </summary>
         [Test]
-        public void TestRegistrationWithDuplicateEmail ()
+        public void TestRegistrationWithDuplicateEmail()
         {
             UserController registrationOneUserController = new UserController(_serviceProvider.GetService<IOptions<AppSettings>>());
             ActionResult<RegisterResponseDTO> registrationOneResponse = registrationOneUserController.Register(new RegisterRequestDTO
@@ -194,6 +216,9 @@ namespace WebApiBackendTests
             Assert.That(registrationTwoResponse.Result, Is.InstanceOf<ConflictResult>());
         }
 
+        /// <summary>
+        /// Checks that UserController does not allow multiple users with the same phonenumber to be created. The second user registration will fail
+        /// </summary>
         [Test]
         public void TestRegistrationWithDuplicatePhoneNumber()
         {

@@ -14,6 +14,11 @@ namespace WebApiBackendTests
             _webHost = WebHost;
         }
 
+        /// <summary>
+        /// Returns a service from the web host's service provider
+        /// </summary>
+        /// <typeparam name="T">The type of the service to be returned from the service providers</typeparam>
+        /// <returns>A service</returns>
         public T GetService<T>()
         {
             using (var serviceScope = _webHost.Services.CreateScope())

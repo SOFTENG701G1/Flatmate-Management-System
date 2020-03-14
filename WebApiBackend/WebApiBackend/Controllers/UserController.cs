@@ -54,7 +54,9 @@ namespace WebApiBackend.Controllers
         [HttpPost("register")]
         public ActionResult<RegisterResponseDTO> Register(RegisterRequestDTO registerRequest)
         {
-            if (string.IsNullOrEmpty(registerRequest.UserName) || string.IsNullOrEmpty(registerRequest.Email) || string.IsNullOrEmpty(registerRequest.Password))
+            // Checking if the non nullable fields (as per business rules) are not empty/null 
+            if (string.IsNullOrEmpty(registerRequest.UserName) || string.IsNullOrEmpty(registerRequest.Email) || 
+                string.IsNullOrEmpty(registerRequest.PhoneNumber) || string.IsNullOrEmpty(registerRequest.Password))
             {
                 return new BadRequestResult();
             }
@@ -77,6 +79,7 @@ namespace WebApiBackend.Controllers
 
         private string CreateToken(string username)
         {
+            // Creates jwt token for user based on user's username as username is the primary key of the user.
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(_appSettings.JWTSecret);
             var tokenDescriptor = new SecurityTokenDescriptor
@@ -93,24 +96,25 @@ namespace WebApiBackend.Controllers
             return tokenHandler.WriteToken(token);
         }
 
-
         private bool TryCreateUser(string userName, string firstName, string lastName, DateTime dateOfBirth, string phoneNumber, 
             string email, string medicalInformation, string bankAccount, string password, out User user)
         {
             user = null;
             FlatManagementContext context = new FlatManagementContext();
 
-
+            // Returns false if username is not unique (must be unique as per entity schema). Does not create user.
             if (context.User.FirstOrDefault(u => u.UserName.ToLower() == userName.ToLower()) != null)
             {
                 return false; 
             }
 
+            // Returns false if email is not unique (must be unique as per entity schema). Does not create user.
             if (context.User.FirstOrDefault(u => u.Email.ToLower() == email.ToLower()) != null)
             {
                 return false;
             }
 
+            // Returns false if phone number is not unique (must be unique as per entity schema). Does not create user.
             if (context.User.FirstOrDefault(u => u.PhoneNumber.ToLower() == phoneNumber.ToLower()) != null)
             {
                 return false;
