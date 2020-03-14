@@ -21,6 +21,7 @@ export default class ChoreListComponent extends Component {
 }
 
 function ChoreList() {
+    // Following values are placeholders until chore functionality is completed
     const chores = ["Wash bathroom", "Buy groceries", "Do laundry", "Cook dinner"];
 
     // Map each chore item to a FormControlLabel as it allows checkboxes to have text
