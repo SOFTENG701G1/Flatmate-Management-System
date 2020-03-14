@@ -17,7 +17,7 @@ export default class ChoreListComponent extends Component {
 }
 
 function ChoreList() {
-    const chores = ["eggs", "milk", "bread", "coffee", "sugar"];
+    const chores = ["Wash bathroom", "Buy groceries", "Do laundry", "Cook dinner"];
 
     const checkBoxes = chores.map((chore) =>
         <FormControlLabel
