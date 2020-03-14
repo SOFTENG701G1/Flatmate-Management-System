@@ -21,6 +21,8 @@ namespace WebApiBackend.Helpers
 
         public void InitialiseTestDataObjects()
         {
+            var hasher = new PasswordHasher<User>();
+
             yin = new User
             {
                 UserName = "YinWang",
@@ -30,8 +32,8 @@ namespace WebApiBackend.Helpers
                 PhoneNumber = "0279284492",
                 Email = "YinWang@qq.com",
                 MedicalInformation = "N/A",
-                Password = "MustacheMan22"
             };
+            yin.HashedPassword = hasher.HashPassword(yin, "password");
 
             teresa = new User
             {
@@ -42,8 +44,9 @@ namespace WebApiBackend.Helpers
                 PhoneNumber = "0228937228",
                 Email = "GreenTrees@Yahoo.com",
                 MedicalInformation = "Vegan, Gluten-Free, Lactose Intolerant",
-                Password = "TreestheBest"
+                HashedPassword = "TreestheBest"
             };
+            teresa.HashedPassword = hasher.HashPassword(teresa, "password");
 
             bryan = new User
             {
@@ -54,8 +57,9 @@ namespace WebApiBackend.Helpers
                 PhoneNumber = "02243926392",
                 Email = "ZianYangAng@Gmail.com",
                 MedicalInformation = "COVID-19, Extra Chromosome",
-                Password = "StolenGirlfriend123"
+                HashedPassword = "StolenGirlfriend123"
             };
+            bryan.HashedPassword = hasher.HashPassword(bryan, "password");
 
             payment1 = new Payment
             {
@@ -168,26 +172,7 @@ namespace WebApiBackend.Helpers
             _database.Add(schedule1);
             _database.Add(flat1);
 
-            AddTestUsers();
-
             _database.SaveChanges();
-        }
-
-        private void AddTestUsers()
-        {
-            var hasher = new PasswordHasher<User>();
-
-            var user = new User
-            {
-                UserName = "user",
-                Email = "email@email.com"
-            };
-
-            var hashedPassword = hasher.HashPassword(user, "password");
-
-            user.Password = hashedPassword;
-
-            _database.User.Add(user);
         }
     }
 }

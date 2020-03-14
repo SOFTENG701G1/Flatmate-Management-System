@@ -40,7 +40,7 @@ namespace WebApiBackend.Controllers
                 return new NotFoundResult();
             }
 
-            if (_hasher.VerifyHashedPassword(user, user.Password, login.Password) != PasswordVerificationResult.Success)
+            if (_hasher.VerifyHashedPassword(user, user.HashedPassword, login.Password) != PasswordVerificationResult.Success)
             {
                 return new ForbidResult();
             }
@@ -82,7 +82,7 @@ namespace WebApiBackend.Controllers
 
             var hashed = _hasher.HashPassword(user, password);
 
-            user.Password = hashed;
+            user.HashedPassword = hashed;
 
             _context.User.Add(user);
             _context.SaveChanges();
