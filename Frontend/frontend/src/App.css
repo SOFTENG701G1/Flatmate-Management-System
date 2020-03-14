@@ -42,18 +42,24 @@
   color: #EEEEEE;
   text-align: left;
   padding-bottom: 20px;
+  font-size: 12px;
 }
 
 .ChoreListContainer.container {
   width: 40%;
 }
 
+/* Styling for coloured checkboxes */
 span.MuiCheckbox-root {
   color: #EEEEEE;
 }
 
 span.MuiCheckbox-colorSecondary.Mui-checked {
   color: #8EDCE6;
+}
+
+.MuiTypography-body1 {
+  font-size: 12px;
 }
 
 @keyframes App-logo-spin {
