@@ -5,9 +5,9 @@ import TestComponent from './Components/TestComponent';
 import {
   BrowserRouter as Router,
   Switch,
-  Route,
-  Link
+  Route
 } from "react-router-dom";
+import Navigation from './Components/Navigation';
 
 export default class App extends React.Component {
   render() {
@@ -22,17 +22,7 @@ export default class App extends React.Component {
               Register
             </Route>
             <Route path="/app/*">
-              <nav className="menu">
-                <div className="menu__down">
-                  <ul className="menu__list">
-                    <li className="menu__logo"></li>
-                    <li className="menu__list-item"><Link to="/app/"><a className="menu__link" href="#">Home</a></Link></li>
-                    <li className="menu__list-item"><Link to="/app/dashboard"><a className="menu__link" href="#">Dashboard</a></Link></li>
-                    <li className="menu__list-item"><Link to="/app/payments"><a className="menu__link" href="#">Payments</a></Link></li>
-                    <li className="menu__list-item"><Link to="/app/members"><a className="menu__link" href="#">Members</a></Link></li>
-                  </ul>
-                </div>
-              </nav>
+              <Navigation/>
               <Switch>
                 <Route path="/app/dashboard">
                   <Dashboard />
