@@ -49,6 +49,17 @@ input[type=button] {
     cursor: pointer;
 }
 
+input[type=submit] {
+    background-color: #1F5673;
+
+    cursor: pointer;
+}
+
 input[type=button]:hover {
     background-color: #3F86A3;
 }
+
+input[type=submit]:hover {
+    background-color: #3F86A3;
+}
+
