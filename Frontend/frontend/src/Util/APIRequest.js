@@ -1,6 +1,6 @@
 import User from "./User";
 
-const apiBaseUrl = "https://localhost:44394/"
+const apiBaseUrl = process.env.REACT_APP_BACKEND_API
 
 export default class APIRequest {
     static async login(username, password) {
@@ -21,7 +21,7 @@ export default class APIRequest {
         if (!User.getUserState()) {
             return undefined;
         }
-        
+
         return 'Bearer ' + User.getUserState().token;
     }
 }
