@@ -18,8 +18,8 @@ export default class App extends React.Component {
       <div className="App">
         <div className="container center">
           <Router>
-            <Route path="/">
-              <SplashScreen />
+            <Route exact path="/">
+              <SplashScreen/>
             </Route>
             <Route path="/login">
               <Login/>
