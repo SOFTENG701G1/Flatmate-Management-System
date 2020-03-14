@@ -28,6 +28,12 @@
   color: #61dafb;
 }
 
+hr.LineDivider {
+  height: 2px;
+  background-color: #1F5673;
+  border: none;
+}
+
 .CheckBoxList {
   text-align: left;
   background-color: #1E1F26;
@@ -46,7 +52,7 @@
 }
 
 .CheckBoxListContainer.container {
-  width: 40%;
+  width: 100%;
 }
 
 /* Styling for coloured checkboxes */
