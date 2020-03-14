@@ -9,10 +9,10 @@ export default class CheckBoxListComponent extends Component {
     render () {
         return (
             <Container className="CheckBoxListContainer">
-                <Row className="CheckBoxListHeader">Chores</Row>
+                <Row className="CheckBoxListHeader">{this.props.title}</Row>
                 <Row>
                     <div className = "CheckBoxList">
-                        <CheckBoxList/>
+                        <CheckBoxList listItems={this.props.listItems}/>
                     </div>
                 </Row>
             </Container>
@@ -20,18 +20,15 @@ export default class CheckBoxListComponent extends Component {
     }
 }
 
-function CheckBoxList() {
-    // Following values are placeholders until chore functionality is completed
-    const chores = ["Wash bathroom", "Buy groceries", "Do laundry", "Cook dinner"];
-
+function CheckBoxList(props) {
     // Map each chore item to a FormControlLabel as it allows checkboxes to have text
-    const checkBoxes = chores.map((chore) =>
+    const checkBoxes = props.listItems.map((item) =>
         <Row>
             <FormControlLabel
                 control={
                     <Checkbox/>
                 }
-                label={chore}   
+                label={item}   
             />
         </Row>
     );

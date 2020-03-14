@@ -5,7 +5,10 @@ import CheckBoxListComponent from './CheckBoxListComponent';
 export default class Dashboard extends Component {
     render () {
         return (
-            <CheckBoxListComponent/>
+            <CheckBoxListComponent 
+                title="Chores"
+                listItems={["Wash bathroom", "Buy groceries", "Do laundry", "Cook dinner"]}
+            />
         );
     }
 }
