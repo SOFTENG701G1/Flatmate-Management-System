@@ -41,7 +41,7 @@ namespace WebApiBackend.Controllers
 
             PasswordHasher<User> hasher = new PasswordHasher<User>();
 
-            if (hasher.VerifyHashedPassword(user, user.Password, login.Password) != PasswordVerificationResult.Success)
+            if (hasher.VerifyHashedPassword(user, user.HashedPassword, login.Password) != PasswordVerificationResult.Success)
             {
                 return new ForbidResult();
             }
@@ -134,11 +134,10 @@ namespace WebApiBackend.Controllers
 
             PasswordHasher<User> hasher = new PasswordHasher<User>();
             var hashedPassword = hasher.HashPassword(user, password);
-            user.Password = hashedPassword;
+            user.HashedPassword = hashedPassword;
 
             context.Add(user);
             context.SaveChanges();
-            context.Dispose();
 
             return true;
         }

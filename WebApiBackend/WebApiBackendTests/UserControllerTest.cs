@@ -44,7 +44,7 @@ namespace WebApiBackendTests
             UserController userController = new UserController(_serviceProvider.GetService<IOptions<AppSettings>>());  
             ActionResult<LoggedInDto> response = userController.Login(new LoginDto
             {
-                Username = "user",
+                Username = "BeboBryan",
                 Password = "password"
             });
 
