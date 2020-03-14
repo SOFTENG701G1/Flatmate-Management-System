@@ -1,4 +1,5 @@
 import React from 'react';
+import './NewFlat.css';
 import { withRouter } from 'react-router-dom'
 import { Route } from 'react-router-dom'
 

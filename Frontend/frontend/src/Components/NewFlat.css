@@ -1,0 +1,31 @@
+body {
+    background-color: #0C0F13;
+}
+
+.title {
+    font-size: 45px;
+    margin-top: 20%;
+}
+
+.subheading {
+    font-size: 18px;
+}
+
+.title, .subheading, button {
+    color: #EEEEEE;
+    font-family: "Roboto", sans-serif;
+    font-weight: bold;
+}
+
+button {
+    background-color: #1F5673;
+    border-radius: 8px;
+    border-color: #1F5673;
+    border-width: 5px;
+    font-size: 18px;
+    margin-top: 10%;
+    width: 40%;
+    height: 40%;
+    border-style: solid;
+    cursor: pointer;
+}
