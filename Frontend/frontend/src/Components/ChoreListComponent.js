@@ -9,7 +9,9 @@ export default class ChoreListComponent extends Component {
     render () {
         return (
             <Container className = "ChoreListComponent">
-                <Row>Chores</Row>
+                <Row  style={{'font-weight':'bold'}}>
+                    <div className = "ChoreListHeader">Chores</div>
+                </Row>
                 <ChoreList/>
             </Container>
         );
