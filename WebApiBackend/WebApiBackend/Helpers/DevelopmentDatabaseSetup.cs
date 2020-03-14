@@ -43,8 +43,7 @@ namespace WebApiBackend.Helpers
                 DateOfBirth = new DateTime(1996, 02, 12),
                 PhoneNumber = "0228937228",
                 Email = "GreenTrees@Yahoo.com",
-                MedicalInformation = "Vegan, Gluten-Free, Lactose Intolerant",
-                HashedPassword = "TreestheBest"
+                MedicalInformation = "Vegan, Gluten-Free, Lactose Intolerant"
             };
             teresa.HashedPassword = hasher.HashPassword(teresa, "password");
 
@@ -56,8 +55,7 @@ namespace WebApiBackend.Helpers
                 DateOfBirth = new DateTime(1984, 02, 09),
                 PhoneNumber = "02243926392",
                 Email = "ZianYangAng@Gmail.com",
-                MedicalInformation = "COVID-19, Extra Chromosome",
-                HashedPassword = "StolenGirlfriend123"
+                MedicalInformation = "COVID-19, Extra Chromosome"
             };
             bryan.HashedPassword = hasher.HashPassword(bryan, "password");
 
