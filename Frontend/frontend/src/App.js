@@ -10,6 +10,7 @@ import {
 import Navigation from './Components/Navigation';
 import Login from './Views/Login';
 import Logout from './Views/Logout';
+import SplashScreen from './Views/SplashScreen';
 
 export default class App extends React.Component {
   render() {
@@ -17,6 +18,9 @@ export default class App extends React.Component {
       <div className="App">
         <div className="container center">
           <Router>
+            <Route path="/">
+              <SplashScreen />
+            </Route>
             <Route path="/login">
               <Login/>
             </Route>
