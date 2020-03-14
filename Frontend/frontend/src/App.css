@@ -28,6 +28,12 @@
   color: #61dafb;
 }
 
+
+.ChoreListComponent.container {
+  text-align: left;
+  width: 30%;
+}
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);

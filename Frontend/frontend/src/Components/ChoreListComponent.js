@@ -1,17 +1,15 @@
 import React, {Component, Text} from 'react';
+import '../App.css';
 import Checkbox from '@material-ui/core/Checkbox';
 import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
+import Row from 'react-bootstrap/row';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 
 export default class ChoreListComponent extends Component {
-    constructor () {
-        super();
-    }
-
     render () {
         return (
             <Container className = "ChoreListComponent">
+                <Row>Chores</Row>
                 <ChoreList/>
             </Container>
         );
