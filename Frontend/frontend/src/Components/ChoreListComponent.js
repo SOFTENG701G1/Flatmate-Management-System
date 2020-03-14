@@ -8,9 +8,13 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 export default class ChoreListComponent extends Component {
     render () {
         return (
-            <Container className = "ChoreListComponent">
-                <Row style={{'font-weight':'bold'}}>Chores</Row>
-                <ChoreList/>
+            <Container className="ChoreListContainer">
+                <Row className="ChoreListHeader">Chores</Row>
+                <Row>
+                    <div className = "ChoreList">
+                        <ChoreList/>
+                    </div>
+                </Row>
             </Container>
         );
     }
@@ -19,6 +23,7 @@ export default class ChoreListComponent extends Component {
 function ChoreList() {
     const chores = ["Wash bathroom", "Buy groceries", "Do laundry", "Cook dinner"];
 
+    // Map each chore item to a FormControlLabel as it allows checkboxes to have text
     const checkBoxes = chores.map((chore) =>
         <Row>
             <FormControlLabel
