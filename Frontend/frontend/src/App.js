@@ -9,6 +9,7 @@ import {
 } from "react-router-dom";
 import Navigation from './Components/Navigation';
 import Login from './Views/Login';
+import Logout from './Views/Logout';
 
 export default class App extends React.Component {
   render() {
@@ -21,6 +22,9 @@ export default class App extends React.Component {
             </Route>
             <Route path="/register">
               Register
+            </Route>
+            <Route path="/logout">
+              <Logout/>
             </Route>
             <Route path="/app/*">
               <Navigation/>

@@ -1,6 +1,4 @@
 export default class User {
-    static userState = localStorage.getItem("flatmates_app_user") ?
-        JSON.parse(localStorage.getItem("flatmates_app_user")) : undefined;
     
     static setUserState(newState) {
         this.userState = newState;
@@ -8,7 +6,18 @@ export default class User {
         localStorage.setItem("flatmates_app_user", JSON.stringify(newState));
     }
 
+    static clearUserState(newState) {
+        this.userState = undefined;
+
+        localStorage.removeItem("flatmates_app_user");
+    }
+
     static getUserState() {
         return this.userState;
     }
 }
+
+try {
+    User.userState = localStorage.getItem("flatmates_app_user") ?
+        JSON.parse(localStorage.getItem("flatmates_app_user")) : undefined;
+} catch (e) {}
