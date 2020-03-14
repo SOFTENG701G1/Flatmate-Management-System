@@ -1,5 +1,7 @@
 import React from 'react';
 import './App.css';
+import Dashboard from './Components/Dashboard';
+
 import {
   BrowserRouter as Router,
   Switch,
@@ -56,10 +58,6 @@ export default class App extends React.Component {
 /*Router is linked to functions for the time being*/
 function Home() {
   return <h2>Flat Management System</h2>;
-}
-
-function Dashboard() {
-  return <h2>Dashboard page</h2>;
 }
 
 function Payments() {
