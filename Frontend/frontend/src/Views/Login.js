@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 
 import './Login.css';
 import APIRequest from '../Util/APIRequest';
@@ -30,6 +30,7 @@ export default class Login extends React.Component {
 
     if (loginResult.ok) {
       User.setUserState(await loginResult.json());
+      this.forceUpdate(); // Triggers re-render, which will activate redirect now user is setup
     } else {
       switch (loginResult.status) {
         case 404:
@@ -55,6 +56,7 @@ export default class Login extends React.Component {
 
   render() {
     return <div className="login-container">
+        { User.getUserState() ? <Redirect to="/app/"/> : '' }
         <div className='login-backdrop'></div>
         <div className='login-icon'></div>
         <h2> Login to your Account </h2>
