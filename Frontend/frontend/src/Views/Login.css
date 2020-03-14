@@ -42,3 +42,12 @@
 
     margin-bottom: 1em;
 }
+
+.login-error {
+    width: 100%;
+    margin: 4px;
+
+    text-align: left;
+
+    color: #B62020;
+}
