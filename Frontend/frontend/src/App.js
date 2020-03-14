@@ -8,6 +8,7 @@ import {
   Route
 } from "react-router-dom";
 import Navigation from './Components/Navigation';
+import Login from './Views/Login';
 
 export default class App extends React.Component {
   render() {
@@ -16,7 +17,7 @@ export default class App extends React.Component {
         <div className="container center">
           <Router>
             <Route path="/login">
-              Login
+              <Login/>
             </Route>
             <Route path="/register">
               Register
