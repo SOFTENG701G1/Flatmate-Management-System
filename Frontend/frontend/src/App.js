@@ -1,28 +1,61 @@
 import React from 'react';
-import logo from './logo.svg';
+import logo from './logo.png';
 import './App.css';
 import TestComponent from './Components/TestComponent';
+import Dashboard from './Components/Dashboard';
 
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link
+} from "react-router-dom";
+ 
 export default class App extends React.Component {
   render () {
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-          <TestComponent></TestComponent>
-        </header>
-      </div>
+        <div className="App">
+          <div className="container center">
+          <Router>
+          <nav className="menu">
+              <div className="menu__down">
+                  <ul className="menu__list">
+                      <li className="menu__logo"></li>
+                      <li className="menu__list-item"><Link to="/"><a className="menu__link" href="#">Home</a></Link></li>
+                      <li className="menu__list-item"><Link to="/dashboard"><a className="menu__link" href="#">Dashboard</a></Link></li>
+                      <li className="menu__list-item"><Link to="/payments"><a className="menu__link" href="#">Payments</a></Link></li>
+                      <li className="menu__list-item"><Link to="/members"><a className="menu__link" href="#">Members</a></Link></li>
+                  </ul>
+              </div>
+            </nav>
+          <Switch>
+            <Route path="/dashboard">
+              <Dashboard />
+            </Route>
+            <Route path="/payments">
+              <Payments />
+            </Route>
+            <Route path="/members">
+              <Members />
+            </Route>
+            <Route path="/">
+              <Home />
+            </Route>
+          </Switch>
+           </Router>
+          </div>
+        </div>
     );
   }
+}
+/*Router is linked to functions for the time being*/
+function Home() {
+  return <h2>Flat Management System</h2>;
+}
+
+function Payments() {
+  return <h2>Payments page</h2>;
+}
+function Members() {
+  return <h2>Members page</h2>;
 }
