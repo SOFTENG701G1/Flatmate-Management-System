@@ -1,5 +1,7 @@
 import React, {Component, Text} from 'react';
 import Checkbox from '@material-ui/core/Checkbox';
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 
 export default class ChoreListComponent extends Component {
@@ -9,23 +11,25 @@ export default class ChoreListComponent extends Component {
 
     render () {
         return (
-            <div className = "ChoreListComponent">
+            <Container className = "ChoreListComponent">
                 <ChoreList/>
-            </div>
-      )
-  }
+            </Container>
+        );
+    }
 }
 
 function ChoreList() {
     const chores = ["Wash bathroom", "Buy groceries", "Do laundry", "Cook dinner"];
 
     const checkBoxes = chores.map((chore) =>
-        <FormControlLabel
-            control={
-                <Checkbox/>
-            }
-            label={chore}   
-        />
+        <Row>
+            <FormControlLabel
+                control={
+                    <Checkbox/>
+                }
+                label={chore}   
+            />
+        </Row>
     );
 
     return <>{checkBoxes}</>;
