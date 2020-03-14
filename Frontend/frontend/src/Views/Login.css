@@ -24,7 +24,7 @@
     margin-right: auto;
 
     padding: 50px;
-    padding-top: 50px;
+    padding-top: 80px;
 
     border-radius: 8px;
 
@@ -33,8 +33,12 @@
 }
 
 .login-icon {
-    width: 100%;
-    height: 100px;
+    width: 120px;
+    height: 120px;
+    margin-left: auto;
+    margin-right: auto;
+
+    background-color: white;
 
     margin-bottom: 1em;
 }

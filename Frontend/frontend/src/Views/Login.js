@@ -8,9 +8,10 @@ export default class Login extends React.Component {
     return <div className="login-container">
         <div className='login-backdrop'></div>
         <div className='login-icon'></div>
-        <h1> Login to your Account </h1>
+        <h2> Login to your Account </h2>
         <input type='text' placeholder='Username'/>
         <input type='text' placeholder='Password'/>
+        <input type='button' value='Login'/>
       </div>
   }
 }
