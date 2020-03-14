@@ -1,11 +1,13 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 
 import './Navigation.css';
+import User from '../Util/User';
 
 export default class Navigation extends React.Component {
   render() {
     return <nav className="menu">
+      { !User.getUserState() ? <Redirect to="/login/"/> : ""}
       <div className="menu__down">
         <ul className="menu__list">
           <li className="menu__logo"></li>
