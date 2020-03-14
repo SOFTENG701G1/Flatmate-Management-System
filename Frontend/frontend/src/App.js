@@ -8,41 +8,49 @@ import {
   Route,
   Link
 } from "react-router-dom";
- 
+
 export default class App extends React.Component {
-  render () {
+  render() {
     return (
-        <div className="App">
-          <div className="container center">
+      <div className="App">
+        <div className="container center">
           <Router>
-          <nav className="menu">
-              <div className="menu__down">
+            <Route path="/login">
+              Login
+            </Route>
+            <Route path="/register">
+              Register
+            </Route>
+            <Route path="/app/*">
+              <nav className="menu">
+                <div className="menu__down">
                   <ul className="menu__list">
-                      <li className="menu__logo"></li>
-                      <li className="menu__list-item"><Link to="/"><a className="menu__link" href="#">Home</a></Link></li>
-                      <li className="menu__list-item"><Link to="/dashboard"><a className="menu__link" href="#">Dashboard</a></Link></li>
-                      <li className="menu__list-item"><Link to="/payments"><a className="menu__link" href="#">Payments</a></Link></li>
-                      <li className="menu__list-item"><Link to="/members"><a className="menu__link" href="#">Members</a></Link></li>
+                    <li className="menu__logo"></li>
+                    <li className="menu__list-item"><Link to="/app/"><a className="menu__link" href="#">Home</a></Link></li>
+                    <li className="menu__list-item"><Link to="/app/dashboard"><a className="menu__link" href="#">Dashboard</a></Link></li>
+                    <li className="menu__list-item"><Link to="/app/payments"><a className="menu__link" href="#">Payments</a></Link></li>
+                    <li className="menu__list-item"><Link to="/app/members"><a className="menu__link" href="#">Members</a></Link></li>
                   </ul>
-              </div>
-            </nav>
-          <Switch>
-            <Route path="/dashboard">
-              <Dashboard />
+                </div>
+              </nav>
+              <Switch>
+                <Route path="/app/dashboard">
+                  <Dashboard />
+                </Route>
+                <Route path="/app/payments">
+                  <Payments />
+                </Route>
+                <Route path="/app/members">
+                  <Members />
+                </Route>
+                <Route path="/app/">
+                  <Home />
+                </Route>
+              </Switch>
             </Route>
-            <Route path="/payments">
-              <Payments />
-            </Route>
-            <Route path="/members">
-              <Members />
-            </Route>
-            <Route path="/">
-              <Home />
-            </Route>
-          </Switch>
-           </Router>
-          </div>
+          </Router>
         </div>
+      </div>
     );
   }
 }
