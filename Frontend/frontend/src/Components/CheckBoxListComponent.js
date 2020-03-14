@@ -5,14 +5,14 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/row';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 
-export default class ChoreListComponent extends Component {
+export default class CheckBoxListComponent extends Component {
     render () {
         return (
-            <Container className="ChoreListContainer">
-                <Row className="ChoreListHeader">Chores</Row>
+            <Container className="CheckBoxListContainer">
+                <Row className="CheckBoxListHeader">Chores</Row>
                 <Row>
-                    <div className = "ChoreList">
-                        <ChoreList/>
+                    <div className = "CheckBoxList">
+                        <CheckBoxList/>
                     </div>
                 </Row>
             </Container>
@@ -20,7 +20,7 @@ export default class ChoreListComponent extends Component {
     }
 }
 
-function ChoreList() {
+function CheckBoxList() {
     // Following values are placeholders until chore functionality is completed
     const chores = ["Wash bathroom", "Buy groceries", "Do laundry", "Cook dinner"];
 

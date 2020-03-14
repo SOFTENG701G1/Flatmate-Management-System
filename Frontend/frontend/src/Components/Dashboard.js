@@ -1,11 +1,11 @@
 import React, {Component} from 'react';
 import '../App.css';
-import ChoreListComponent from './ChoreListComponent';
+import CheckBoxListComponent from './CheckBoxListComponent';
 
 export default class Dashboard extends Component {
     render () {
         return (
-            <ChoreListComponent/>
+            <CheckBoxListComponent/>
         );
     }
 }
