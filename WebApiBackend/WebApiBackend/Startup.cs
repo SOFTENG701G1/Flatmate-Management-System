@@ -77,6 +77,10 @@ namespace WebApiBackend
 
             services.AddControllers();
             services.AddScoped<PaymentsRepository>();
+            services.AddScoped<UserPaymentsRepository>();
+            services.AddScoped<UserRepository>();
+            services.AddScoped<FlatRepository>();
+
             //swagger
             services.AddSwaggerGen(c =>
             {

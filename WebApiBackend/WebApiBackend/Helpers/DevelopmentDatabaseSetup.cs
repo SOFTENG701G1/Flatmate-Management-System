@@ -125,6 +125,7 @@ namespace WebApiBackend.Helpers
                 UserId = teresa.Id,
                 PaymentId = payment2.Id
             };
+
             payment1.UserPayments = new List<UserPayment> { userPaymentBryan1, userPaymentTeresa1, userPaymentYin1 };
             payment2.UserPayments = new List<UserPayment> { userPaymentBryan2, userPaymentTeresa2, userPaymentYin2 };
 
@@ -138,6 +139,7 @@ namespace WebApiBackend.Helpers
 
             flat1 = new Flat
             {
+                Id = 1,
                 Address = "50 Symonds Street",
                 Users = new List<User> { yin, teresa, bryan },
                 Schedules = new List<Schedule> { schedule1 },
