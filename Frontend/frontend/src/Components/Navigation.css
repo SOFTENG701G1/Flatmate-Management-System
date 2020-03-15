@@ -20,16 +20,6 @@
     justify-content: space-between;
 }
 
-.menu-logo {
-    float: left;
-    width: 100%;
-}
-
-.menu-user {
-    float: left;
-    height: 100%;
-}
-
 .menu__down {
     display: flex;
     align-items: center;
@@ -58,11 +48,12 @@
     /*text-indent: -9999999px; */
     display: block;
     width: 100%;
-    background-image: url(../logo.png);
+    background-image: url(../images/logo-blue.png);
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
     margin: 0;
+    margin-left: -10px;
     margin-top: 20px;
 }
 
