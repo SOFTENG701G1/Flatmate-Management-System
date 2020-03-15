@@ -1,18 +1,17 @@
 import React from 'react';
 import './App.css';
-import Dashboard from './Components/Dashboard';
-
 import {
   BrowserRouter as Router,
   Switch,
   Route
 } from "react-router-dom";
+import Dashboard from './Components/Dashboard';
 import Navigation from './Components/Navigation';
 import Login from './Views/Login';
 import Logout from './Views/Logout';
 import SplashScreen from './Views/SplashScreen';
 import RequireLogin from './Components/RequireLogin';
-
+import MembersPage from './Components/Members';
 export default class App extends React.Component {
   render() {
     return (
@@ -42,7 +41,7 @@ export default class App extends React.Component {
                   <Payments />
                 </Route>
                 <Route path="/app/members">
-                  <Members />
+                  <MembersPage/>
                 </Route>
                 <Route path="/app/">
                   <Home />
