@@ -9,11 +9,11 @@ export default class Navigation extends React.Component {
     return <nav className="menu">
       <div className="menu__down">
         <ul className="menu__list">
-          <li className="menu__logo"></li>
-          <li className="menu__user_detail">
+          <li className="menu__list-item menu__logo"></li>
+          <li className="menu__list-item menu__user_detail">
             { User.getUserState() ? User.getUserState().username : '' }
           </li>
-          <li className="menu__logout">
+          <li className="menu__list-item menu__logout">
             <Link to="/logout/"><a className="menu__link" href="#">Logout</a></Link>
           </li>
           <li className="menu__list-item">
