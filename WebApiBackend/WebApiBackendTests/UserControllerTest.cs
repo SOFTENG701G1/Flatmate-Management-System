@@ -257,5 +257,81 @@ namespace WebApiBackendTests
 
             Assert.That(registrationTwoResponse.Result, Is.InstanceOf<ConflictResult>());
         }
+
+        /// <summary>
+        /// Checks that UserController allows a valid username & email combination
+        /// </summary>
+        [Test]
+        public void TestCheckWithValidUserAndEmail()
+        {
+            UserController checkUserController = new UserController(_serviceProvider.GetService<IOptions<AppSettings>>(), _context);
+            ActionResult checkUserResponse = checkUserController.CheckUser(new RegisterRequestDTO
+            {
+                UserName = "user1",
+                Email = "email@test.co.nz"
+            });
+
+            Assert.That(checkUserResponse, Is.InstanceOf<OkResult>());
+        }
+
+        /// <summary>
+        /// Checks that UserController does not allow a duplicate username
+        /// </summary>
+        [Test]
+        public void TestCheckWithDuplicateUser()
+        {
+            UserController registrationUserController = new UserController(_serviceProvider.GetService<IOptions<AppSettings>>(), _context);
+            ActionResult<RegisterResponseDTO> registrationResponse = registrationUserController.Register(new RegisterRequestDTO
+            {
+                UserName = "newUser",
+                FirstName = "New",
+                LastName = "User",
+                DateOfBirth = new DateTime(),
+                PhoneNumber = "123459",
+                Email = "newuser@test.co.nz",
+                MedicalInformation = "N/A",
+                BankAccount = "84903",
+                Password = "newUserPassword"
+            });
+
+            UserController checkUserController = new UserController(_serviceProvider.GetService<IOptions<AppSettings>>(), _context);
+            ActionResult checkUserResponse = checkUserController.CheckUser(new RegisterRequestDTO
+            {
+                UserName = "newUser",
+                Email = "email@test.co.nz"
+            });
+
+            Assert.That(checkUserResponse, Is.InstanceOf<BadRequestResult>());
+        }
+
+        /// <summary>
+        /// Checks that UserController does not allow a duplicate email
+        /// </summary>
+        [Test]
+        public void TestCheckWithDuplicateEmail()
+        {
+            UserController registrationUserController = new UserController(_serviceProvider.GetService<IOptions<AppSettings>>(), _context);
+            ActionResult<RegisterResponseDTO> registrationResponse = registrationUserController.Register(new RegisterRequestDTO
+            {
+                UserName = "newUser",
+                FirstName = "New",
+                LastName = "User",
+                DateOfBirth = new DateTime(),
+                PhoneNumber = "123459",
+                Email = "newuser@test.co.nz",
+                MedicalInformation = "N/A",
+                BankAccount = "84903",
+                Password = "newUserPassword"
+            });
+
+            UserController checkUserController = new UserController(_serviceProvider.GetService<IOptions<AppSettings>>(), _context);
+            ActionResult checkUserResponse = checkUserController.CheckUser(new RegisterRequestDTO
+            {
+                UserName = "User1",
+                Email = "newUser@test.co.nz"
+            });
+
+            Assert.That(checkUserResponse, Is.InstanceOf<ConflictResult>());
+        }
     }
 }

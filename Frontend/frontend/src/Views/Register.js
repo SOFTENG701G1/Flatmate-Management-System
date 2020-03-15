@@ -42,28 +42,25 @@ export default class Register extends React.Component {
       this.setState({ error: "Passwords do not match." });
       return;
     }
-
-    this.setState({ firstSignUpPage: false }); // TODO: Remove once API Request implemented
     
-    // let checkNewUsernameResult = await APIRequest.checkNewUsername(this.state.username);
-
-    // if (checkNewUsernameResult.ok) {
-    //   this.setState({ firstSignUpPage: false });
-    // } else {
-    //   switch (checkNewUsernameResult.status) {
-    //     // TODO: Change switch statements to display username already exists error and unknown error (check your internet)
-    //     case 404:
-    //       this.setState({ error: "There's no such user. "});
-    //       break;
-    //     case 403:
-    //       this.setState({ error: "Invalid password. "});
-    //       break;
-    //     default:
-    //       this.setState({ error: "Unknown error (check your internet). "});
-    //       break;
-    //   }
-    // }
+    let checkNewUsernameResult = await APIRequest.checkNewAccount(this.state.username, this.state.email);
+    if (checkNewUsernameResult.ok) {
+      this.setState({ firstSignUpPage: false });
+    } else {
+      switch (checkNewUsernameResult.status) {
+        case 400:
+          this.setState({ error: "Username already in use. "});
+          break;
+        case 409:
+          this.setState({ error: "Email address already in use. "});
+          break;
+        default:
+          this.setState({ error: "Unknown error (check your internet). "});
+          break;
+      }
+    }
   }
+  
   async createNewAccount (event) {
     event.preventDefault();
     this.setState({ error: ""});
