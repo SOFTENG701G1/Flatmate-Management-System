@@ -1,6 +1,6 @@
 # Flat Management Program
 
-The Flat Management Program is a webapp designed to make it easier to manage flat (shared house) expenses. The program stores one off and periodic expenses for a given flat, and helps keep track of who has paid those bills. You can also roster chores and share your timetable using the convenient webapp. 
+The Flat Management Program is a web application designed to make it easier to manage flat (shared house) expenses. The program stores one-off and periodic expenses for a given flat, and helps keep track of who has paid those bills. You can also roster chores and share your timetable using the convenient webapp.
 
 ## Technical Layout
 
@@ -24,12 +24,8 @@ To get the project running, follow these steps:
 
 1. Open the backend folder (WebApiBackend) and find the Solution (.sln) file, and open in Visual Studio.
 2. Once Visual Studio loads up, you should have a green "IIS Express" button to start the app in the top toolbar. Click it.
-3. It'll take some time the first run (as Visual Studio should install all dependencies). Not much will appear to happen once the backend server is running.
+3. It'll take some time the first run (as Visual Studio should install all dependencies). Once the backend server is running, a new window will open displaying Swagger.
 4. Open the frontend folder in a command line tool.
 5. Run `npm install` to download and install all dependencies.
 6. Run `npm start` to start the React development server. 
 7. Your browser should open (or you may have to open a link from the React command line tool). You should see the home page, and it should successfully connect to the backend. 
-
-### Getting Started Notes
-
-- If the backend starts on a different port (e.g. because you're using Rider on Mac), you can add a `.env.local` file in the `Frontend/frontend` folder and override the default setting in the `.env` file that already exists (.env.local won't be committed to git).
