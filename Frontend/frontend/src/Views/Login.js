@@ -1,9 +1,10 @@
 import React from 'react';
-import { Link, Redirect } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 
 import './Login.css';
 import APIRequest from '../Util/APIRequest';
 import User from '../Util/User';
+import Logo from '../images/logo-house-blue.png';
 
 export default class Login extends React.Component {
   constructor (props) {
@@ -55,17 +56,20 @@ export default class Login extends React.Component {
   }
 
   render() {
-    return <div className="login-container">
+    return (
+      <div className="login-backdrop">
         { User.getUserState() ? <Redirect to="/app/"/> : '' }
-        <div className='login-backdrop'></div>
-        <div className='login-icon'></div>
-        <h2> Login to your Account </h2>
-        <form action="#" method="POST">
-          <input type='text' name='username' onChange={this.bindInput} placeholder='Username'/>
-          <input type='password' name='password' onChange={this.bindInput} placeholder='Password'/>
-          { this.state.error ? <div className='login-error'> { this.state.error } </div> : '' }
-          <input type='submit' value='Login' onClick={this.login}/>
-        </form>
+        <div className='login-container'>
+          <img src={Logo} alt="Logo" className="logo-image"/>
+          <h2> Login to your Account </h2>
+          <form action="#" method="POST">
+            <input type='text' name='username' onChange={this.bindInput} placeholder='Username'/>
+            <input type='text' name='password' onChange={this.bindInput} placeholder='Password'/>
+            { this.state.error ? <div className='login-error'> { this.state.error } </div> : '' }
+            <input type='submit' value='Login' onClick={this.login}/>
+          </form>
+        </div>
       </div>
+    );
   }
 }
