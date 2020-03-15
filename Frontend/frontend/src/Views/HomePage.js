@@ -26,7 +26,8 @@ export default class Login extends React.Component {
         { this.state.redirectTo && <Redirect to={this.state.redirectTo}/> }
         <div className='login-container'>
           <img src={Logo} alt="logo" className="logo-image"/>
-          <h2> Login or sign up </h2>
+          <h2 style={{ marginBottom: 10 }}>FLATMATE</h2>
+          <p style={{ margin: 0 }}>Making flat management easier</p>
           <form action="#" method="POST" style={{ marginTop: 20 }}>
             <input type='submit' value='Login' onClick={this.login}/>
             <input type='submit' value='Sign up' onClick={this.signUp}/>
