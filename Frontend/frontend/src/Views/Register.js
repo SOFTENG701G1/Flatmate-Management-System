@@ -5,6 +5,7 @@ import './Login.css';
 import APIRequest from '../Util/APIRequest';
 import User from '../Util/User';
 import Logo from '../images/logo-house-blue.png';
+import BackArrow from '../images/back-arrow.png';
 
 export default class Register extends React.Component {
   constructor (props) {
@@ -82,10 +83,17 @@ export default class Register extends React.Component {
     });
   }
 
+  goBackToFirstPage = () => {
+    this.setState({ firstSignUpPage: true });
+  }
+
   render() {
     return (
       <div className="login-backdrop">
         <div className='login-container'>
+          <Link to={this.state.firstSignUpPage ? "/" : "/register"} onClick={() => this.goBackToFirstPage()}>
+            <img src={BackArrow} alt="Go Back" className="back-arrow"/>
+          </Link>
           <img src={Logo} alt="Logo" className="logo-image"/>
           <h2>{ this.state.firstSignUpPage ? "Create a new account" : "Contact details" }</h2>
           { this.state.firstSignUpPage ? 

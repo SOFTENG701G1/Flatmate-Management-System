@@ -5,6 +5,7 @@ import './Login.css';
 import APIRequest from '../Util/APIRequest';
 import User from '../Util/User';
 import Logo from '../images/logo-house-blue.png';
+import BackArrow from '../images/back-arrow.png';
 
 export default class Login extends React.Component {
   constructor (props) {
@@ -23,7 +24,7 @@ export default class Login extends React.Component {
     event.preventDefault();
     this.setState({ error: ""});
     if (!this.state.username || !this.state.password) {
-      this.setState({ error: "Please enter a username and password. "});
+      this.setState({ error: "Username and password are required."});
       return;
     }
     
@@ -61,6 +62,7 @@ export default class Login extends React.Component {
       <div className="login-backdrop">
         { User.getUserState() ? <Redirect to="/app/"/> : '' }
         <div className='login-container'>
+          <Link to="/"><img src={BackArrow} alt="Go Back" className="back-arrow"/></Link>
           <img src={Logo} alt="Logo" className="logo-image"/>
           <h2> Login to your account </h2>
           <form action="#" method="POST">

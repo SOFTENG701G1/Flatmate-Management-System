@@ -108,6 +108,14 @@
     animation: appear 2s infinite alternate;
 }
 
+.back-arrow {
+    position: absolute;
+    height: 24px;
+    object-fit: scale-down;
+    margin: -55px 0px 0px -110px;
+    cursor: pointer;
+}
+
 @keyframes appear {
     from { opacity: 0; }
 }
