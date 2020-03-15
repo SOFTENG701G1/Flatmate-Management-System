@@ -1,16 +1,14 @@
-import React from "react";
-import PaymentModule from "./PaymentModule"
+import React, {Component} from "react";
 import "./Payments.css"
 
 /*
     This class renders the Payments page.
 */
-export default class PaymentSchedule extends React.Component {
+export default class PaymentSchedule extends Component {
     constructor () {
         super();
-
-        // Currently are dummy data
         this.state = {
+            // Currently are dummy data
             FixedPayments: [{
                 PaymentType: "Rent",
                 Amount: 240,
@@ -102,4 +100,62 @@ export default class PaymentSchedule extends React.Component {
             </div>
         )
     }
+}
+
+/*
+    This function JSX element takes in the JSON list which is of the form:
+    {
+        PaymentType: String,
+        Amount: Decimal(10,2),
+        StartDate: DateTime String,
+        EndDate: DateTime String,
+        Frequency: String,
+        Contributors: String[]
+    }
+*/
+function PaymentModule(props){
+    const PaymentType = props.Payment.PaymentType;
+    const Amount = props.Payment.Amount;
+    const StartDate = props.Payment.StartDate;
+    const EndDate = props.Payment.EndDate;
+    const Frequency = props.Payment.Frequency;
+    const Contributors = props.Payment.Contributors;
+    const ContributorsToString = Contributors.join(", ");
+    return (
+        <div className="PaymentModule">
+            <table className="PaymentModule">
+                <tr>
+                    <td className="PaymentModuleDataLeft">
+                        <h6 className="PaymentModuleHeader">
+                            <b>{PaymentType}</b>
+                        </h6>
+                    </td>
+                    <td className="PaymentModuleDataRight">
+                        <h6 className="PaymentModuleHeader">
+                            <b>{StartDate}-{EndDate}</b>
+                        </h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td className="PaymentModuleDataLeft">
+                        <h6 className="PaymentModuleData">
+                            Amount: ${Amount}
+                        </h6>
+                    </td>
+                    <td className="PaymentModuleDataRight">
+                        <h6 className="PaymentModuleData">
+                            Frequency: {Frequency}
+                        </h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td colSpan="2" className="PaymentModuleDataLeft">
+                        <h6 className="PaymentModuleData">
+                            Contributors: {ContributorsToString}
+                        </h6>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    )
 }

@@ -63,6 +63,33 @@ button.NewPaymentButton {
     border-radius:5px;
 }
 
+table.PaymentModule {
+    margin-top: 5px;
+    border-color: #1F5673;
+    border-radius: 8px;
+    border-style: solid;
+    max-width: 70%;
+    background-color: #23242A;
+}
+
+td.PaymentModuleDataLeft {
+    text-align: left;
+}
+
+td.PaymentModuleDataRight {
+    text-align: right;
+}
+
+h6.PaymentModuleHeader {
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+h6.PaymentModuleData {
+    margin-top: 0px;
+    margin-bottom: 5px;
+}
+
 td {
     border-style: none;
     min-width: 25%;
