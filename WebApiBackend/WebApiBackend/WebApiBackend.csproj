@@ -18,6 +18,7 @@
     <Compile Remove="Migrations\20200310044947_add-migration ManyToManyMigration.Designer.cs" />
     <Compile Remove="Migrations\20200310045018_ManyToManyMigration.cs" />
     <Compile Remove="Migrations\20200310045018_ManyToManyMigration.Designer.cs" />
+    <PackageReference Include="AutoMapper" Version="9.0.0" />
   </ItemGroup>
 
   <ItemGroup>
