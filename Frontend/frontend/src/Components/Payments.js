@@ -4,7 +4,7 @@ import "./Payments.css"
 /*
     This class renders the Payments page.
 */
-export default class PaymentSchedule extends Component {
+export default class Payments extends Component {
     constructor () {
         super();
         this.state = {
