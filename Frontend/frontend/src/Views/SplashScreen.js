@@ -17,6 +17,7 @@ export default class SplashScreen extends React.Component {
   render() {
     return (
       <div className="login-backdrop" onClick={this.start}>
+        { User.getUserState() && <Redirect to="/app/"/> }
         { this.state.redirectTo && <Redirect to={this.state.redirectTo}/> }
         <img src={Logo} className="splash-logo-image"/>
       </div>
