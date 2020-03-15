@@ -21,18 +21,18 @@ namespace WebApiBackend.Controllers
     public class UserController
     {
         private readonly AppSettings _appSettings;
+        private readonly FlatManagementContext _database;
 
-        public UserController( IOptions<AppSettings> appSettings)
+        public UserController( IOptions<AppSettings> appSettings, FlatManagementContext context)
         {
             _appSettings = appSettings.Value;
+            _database = context;
         }
 
         [HttpPost("login")]
         public ActionResult<LoggedInDto> Login(LoginDto login)
         {
-            FlatManagementContext context = new FlatManagementContext();
-
-            User user = context.User.FirstOrDefault(u => u.UserName.ToLower() == login.Username.ToLower());
+            User user = _database.User.FirstOrDefault(u => u.UserName.ToLower() == login.Username.ToLower());
 
             if (user == null)
             {
@@ -45,8 +45,6 @@ namespace WebApiBackend.Controllers
             {
                 return new ForbidResult();
             }
-
-            context.Dispose();
 
             return new LoggedInDto(user, CreateToken(user.UserName));
         }
@@ -100,22 +98,21 @@ namespace WebApiBackend.Controllers
             string email, string medicalInformation, string bankAccount, string password, out User user)
         {
             user = null;
-            FlatManagementContext context = new FlatManagementContext();
 
             // Returns false if username is not unique (must be unique as per entity schema). Does not create user.
-            if (context.User.FirstOrDefault(u => u.UserName.ToLower() == userName.ToLower()) != null)
+            if (_database.User.FirstOrDefault(u => u.UserName.ToLower() == userName.ToLower()) != null)
             {
                 return false; 
             }
 
             // Returns false if email is not unique (must be unique as per entity schema). Does not create user.
-            if (context.User.FirstOrDefault(u => u.Email.ToLower() == email.ToLower()) != null)
+            if (_database.User.FirstOrDefault(u => u.Email.ToLower() == email.ToLower()) != null)
             {
                 return false;
             }
 
             // Returns false if phone number is not unique (must be unique as per entity schema). Does not create user.
-            if (context.User.FirstOrDefault(u => u.PhoneNumber.ToLower() == phoneNumber.ToLower()) != null)
+            if (_database.User.FirstOrDefault(u => u.PhoneNumber.ToLower() == phoneNumber.ToLower()) != null)
             {
                 return false;
             }
@@ -136,8 +133,8 @@ namespace WebApiBackend.Controllers
             var hashedPassword = hasher.HashPassword(user, password);
             user.HashedPassword = hashedPassword;
 
-            context.Add(user);
-            context.SaveChanges();
+            _database.Add(user);
+            _database.SaveChanges();
 
             return true;
         }
