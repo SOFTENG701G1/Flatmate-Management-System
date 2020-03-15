@@ -1,6 +1,6 @@
-import React from 'react';
-import PaymentModule from "../Components/PaymentModule"
-import "./PaymentSchedule.css"
+import React from "react";
+import PaymentModule from "./PaymentModule"
+import "./Payments.css"
 
 /*
     This class renders the Payments page.
@@ -8,8 +8,9 @@ import "./PaymentSchedule.css"
 export default class PaymentSchedule extends React.Component {
     constructor () {
         super();
+
+        // Currently are dummy data
         this.state = {
-            // Currently are dummy data
             FixedPayments: [{
                 PaymentType: "Rent",
                 Amount: 240,
