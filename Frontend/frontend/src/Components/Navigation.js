@@ -28,6 +28,9 @@ export default class Navigation extends React.Component {
           <li className="menu__list-item">
             <Link to="/app/members"><a className="menu__link" href="#">Members</a></Link>
           </li>
+          <li className="menu__list-item">
+            <Link to="/app/chores"><a className="menu__link" href="#">Chores</a></Link>
+          </li>
         </ul>
       </div>
     </nav>

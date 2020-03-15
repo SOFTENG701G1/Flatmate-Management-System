@@ -12,6 +12,7 @@ import Login from './Views/Login';
 import Logout from './Views/Logout';
 import SplashScreen from './Views/SplashScreen';
 import RequireLogin from './Components/RequireLogin';
+import Chores from './Components/Chores';
 
 export default class App extends React.Component {
   render() {
@@ -44,6 +45,9 @@ export default class App extends React.Component {
                 <Route path="/app/members">
                   <Members />
                 </Route>
+                <Route path="/app/chores">
+                  <Chores />
+                </Route>npm 
                 <Route path="/app/">
                   <Home />
                 </Route>
