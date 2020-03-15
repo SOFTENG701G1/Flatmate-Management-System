@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace WebApiBackend.Migrations
 {
-    public partial class ManyToManyMigration : Migration
+    public partial class IdMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -21,6 +21,19 @@ namespace WebApiBackend.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "TestItems",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Name = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TestItems", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Payment",
                 columns: table => new
                 {
@@ -32,6 +45,7 @@ namespace WebApiBackend.Migrations
                     EndDate = table.Column<DateTime>(nullable: false),
                     PaymentType = table.Column<string>(nullable: false),
                     Frequency = table.Column<string>(nullable: false),
+                    Description = table.Column<string>(nullable: true),
                     FlatId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
@@ -49,7 +63,9 @@ namespace WebApiBackend.Migrations
                 name: "Schedule",
                 columns: table => new
                 {
-                    UserName = table.Column<string>(nullable: false),
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    UserName = table.Column<string>(nullable: true),
                     StartDate = table.Column<DateTime>(nullable: false),
                     EndDate = table.Column<DateTime>(nullable: false),
                     ScheduleType = table.Column<string>(nullable: false),
@@ -57,7 +73,7 @@ namespace WebApiBackend.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Schedule", x => new { x.UserName, x.StartDate, x.EndDate, x.ScheduleType });
+                    table.PrimaryKey("PK_Schedule", x => x.Id);
                     table.ForeignKey(
                         name: "FK_Schedule_Flat_FlatId",
                         column: x => x.FlatId,
@@ -70,7 +86,9 @@ namespace WebApiBackend.Migrations
                 name: "User",
                 columns: table => new
                 {
-                    UserName = table.Column<string>(nullable: false),
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    UserName = table.Column<string>(nullable: true),
                     FirstName = table.Column<string>(nullable: true),
                     LastName = table.Column<string>(nullable: true),
                     DateOfBirth = table.Column<DateTime>(nullable: false),
@@ -78,12 +96,12 @@ namespace WebApiBackend.Migrations
                     Email = table.Column<string>(nullable: true),
                     MedicalInformation = table.Column<string>(nullable: true),
                     BankAccount = table.Column<string>(nullable: true),
-                    Password = table.Column<string>(nullable: true),
+                    HashedPassword = table.Column<string>(nullable: true),
                     FlatId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_User", x => x.UserName);
+                    table.PrimaryKey("PK_User", x => x.Id);
                     table.ForeignKey(
                         name: "FK_User_Flat_FlatId",
                         column: x => x.FlatId,
@@ -96,12 +114,12 @@ namespace WebApiBackend.Migrations
                 name: "UserPayments",
                 columns: table => new
                 {
-                    UserName = table.Column<string>(nullable: false),
+                    UserId = table.Column<int>(nullable: false),
                     PaymentId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_UserPayments", x => new { x.PaymentId, x.UserName });
+                    table.PrimaryKey("PK_UserPayments", x => new { x.PaymentId, x.UserId });
                     table.ForeignKey(
                         name: "FK_UserPayments_Payment_PaymentId",
                         column: x => x.PaymentId,
@@ -109,10 +127,10 @@ namespace WebApiBackend.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_UserPayments_User_UserName",
-                        column: x => x.UserName,
+                        name: "FK_UserPayments_User_UserId",
+                        column: x => x.UserId,
                         principalTable: "User",
-                        principalColumn: "UserName",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -144,15 +162,24 @@ namespace WebApiBackend.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserPayments_UserName",
+                name: "IX_User_UserName",
+                table: "User",
+                column: "UserName",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserPayments_UserId",
                 table: "UserPayments",
-                column: "UserName");
+                column: "UserId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
                 name: "Schedule");
+
+            migrationBuilder.DropTable(
+                name: "TestItems");
 
             migrationBuilder.DropTable(
                 name: "UserPayments");

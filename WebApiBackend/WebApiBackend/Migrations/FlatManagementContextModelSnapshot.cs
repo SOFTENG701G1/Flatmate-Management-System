@@ -71,22 +71,27 @@ namespace WebApiBackend.Migrations
 
             modelBuilder.Entity("WebApiBackend.Model.Schedule", b =>
                 {
-                    b.Property<string>("UserName")
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime>("StartDate")
-                        .HasColumnType("TEXT");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
 
                     b.Property<DateTime>("EndDate")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("ScheduleType")
                         .HasColumnType("TEXT");
 
                     b.Property<int?>("FlatId")
                         .HasColumnType("INTEGER");
 
-                    b.HasKey("UserName", "StartDate", "EndDate", "ScheduleType");
+                    b.Property<string>("ScheduleType")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("UserName")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
 
                     b.HasIndex("FlatId");
 
@@ -109,8 +114,9 @@ namespace WebApiBackend.Migrations
 
             modelBuilder.Entity("WebApiBackend.Model.User", b =>
                 {
-                    b.Property<string>("UserName")
-                        .HasColumnType("TEXT");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("BankAccount")
                         .HasColumnType("TEXT");
@@ -127,19 +133,22 @@ namespace WebApiBackend.Migrations
                     b.Property<int?>("FlatId")
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("HashedPassword")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("LastName")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("MedicalInformation")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("Password")
-                        .HasColumnType("TEXT");
-
                     b.Property<string>("PhoneNumber")
                         .HasColumnType("TEXT");
 
-                    b.HasKey("UserName");
+                    b.Property<string>("UserName")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
 
                     b.HasIndex("Email")
                         .IsUnique();
@@ -147,6 +156,9 @@ namespace WebApiBackend.Migrations
                     b.HasIndex("FlatId");
 
                     b.HasIndex("PhoneNumber")
+                        .IsUnique();
+
+                    b.HasIndex("UserName")
                         .IsUnique();
 
                     b.ToTable("User");
@@ -157,12 +169,12 @@ namespace WebApiBackend.Migrations
                     b.Property<int>("PaymentId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("UserName")
-                        .HasColumnType("TEXT");
+                    b.Property<int>("UserId")
+                        .HasColumnType("INTEGER");
 
-                    b.HasKey("PaymentId", "UserName");
+                    b.HasKey("PaymentId", "UserId");
 
-                    b.HasIndex("UserName");
+                    b.HasIndex("UserId");
 
                     b.ToTable("UserPayments");
                 });
@@ -198,7 +210,7 @@ namespace WebApiBackend.Migrations
 
                     b.HasOne("WebApiBackend.Model.User", "User")
                         .WithMany("UserPayments")
-                        .HasForeignKey("UserName")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
