@@ -34,7 +34,8 @@ input {
 
     margin: 10px 0px 10px 0px;
 
-    color: #eeeeee;
+    font-size: 14px;
+    color: #EEEEEE;
     background-color: #1E1F26;
 
     border-radius: 4px;
@@ -58,10 +59,10 @@ input[type=submit] {
 }
 
 input[type=button]:hover {
-    background-color: #3F86A3;
+    opacity: 0.9;
 }
 
 input[type=submit]:hover {
-    background-color: #3F86A3;
+    opacity: 0.9;
 }
 

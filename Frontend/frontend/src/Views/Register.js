@@ -1,5 +1,5 @@
 import React from 'react';
-import { Redirect } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 import './Login.css';
 import APIRequest from '../Util/APIRequest';
@@ -90,12 +90,15 @@ export default class Register extends React.Component {
           <h2>{ this.state.firstSignUpPage ? "Create a new account" : "Contact details" }</h2>
           { this.state.firstSignUpPage ? 
             <form action="#" method="POST">
-              <input type='text' name='email' onChange={this.bindInput} placeholder='Email'/>
-              <input type='text' name='username' onChange={this.bindInput} placeholder='Username'/>
-              <input type='text' name='password' onChange={this.bindInput} placeholder='Password'/>
-              <input type='text' name='passwordRepeat' onChange={this.bindInput} placeholder='Retype password'/>
+              <input type='text' name='email' onChange={this.bindInput} placeholder='Email*'/>
+              <input type='text' name='username' onChange={this.bindInput} placeholder='Username*'/>
+              <input type='text' name='password' onChange={this.bindInput} placeholder='Password*'/>
+              <input type='text' name='passwordRepeat' onChange={this.bindInput} placeholder='Retype password*'/>
               <input type='submit' value='Continue' onClick={this.checkNewUsername}/>
               { this.state.error ? <div className='login-error'> { this.state.error } </div> : <div className="error-placeholder"/> }
+              <div className="other-actions">
+                <p className="other-actions-text">Already a member? <Link to="/login" className="other-actions-link">Sign in.</Link></p>
+              </div>
             </form> 
             : 
             <form action="#" method="POST">
@@ -107,6 +110,9 @@ export default class Register extends React.Component {
               <input type='text' name='medicalInfo' onChange={this.bindInput} placeholder='Medical information (i.e. allergies, etc)'/>
               <input type='submit' value='Create account' onClick={this.createNewAccount}/>
               { this.state.error ? <div className='login-error'> { this.state.error } </div> : <div className="error-placeholder"/> }
+              <div className="other-actions">
+                <p className="other-actions-text">Already a member? <Link to="/login" className="other-actions-link">Sign in.</Link></p>
+              </div>
             </form> 
           }
         </div>

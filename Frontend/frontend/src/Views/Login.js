@@ -1,5 +1,5 @@
 import React from 'react';
-import { Redirect } from 'react-router-dom';
+import { Redirect, Link } from 'react-router-dom';
 
 import './Login.css';
 import APIRequest from '../Util/APIRequest';
@@ -35,13 +35,13 @@ export default class Login extends React.Component {
     } else {
       switch (loginResult.status) {
         case 404:
-          this.setState({ error: "There's no such user. "});
+          this.setState({ error: "Username does not exist."});
           break;
         case 403:
-          this.setState({ error: "Invalid password. "});
+          this.setState({ error: "Invalid password."});
           break;
         default:
-          this.setState({ error: "Unknown error (check your internet). "});
+          this.setState({ error: "Unknown error (check your internet)."});
           break;
       }
     }
@@ -56,6 +56,7 @@ export default class Login extends React.Component {
   }
 
   render() {
+    // TODO: Add forgot password url to link
     return (
       <div className="login-backdrop">
         { User.getUserState() ? <Redirect to="/app/"/> : '' }
@@ -67,6 +68,11 @@ export default class Login extends React.Component {
             <input type='text' name='password' onChange={this.bindInput} placeholder='Password'/>
             <input type='submit' value='Login' onClick={this.login}/>
             { this.state.error ? <div className='login-error'> { this.state.error } </div> : <div className="error-placeholder"/> }
+            <div className="other-actions">
+              <p className="other-actions-text">Not a memeber? <Link to="/register" className="other-actions-link">Sign up!</Link></p>
+              <Link className="other-actions-link">Forgot your password?</Link>
+            </div>
+            
           </form>
         </div>
       </div>
