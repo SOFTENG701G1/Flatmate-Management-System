@@ -29,3 +29,7 @@ To get the project running, follow these steps:
 5. Run `npm install` to download and install all dependencies.
 6. Run `npm start` to start the React development server. 
 7. Your browser should open (or you may have to open a link from the React command line tool). You should see the home page, and it should successfully connect to the backend. 
+
+### Getting Started Notes
+
+- If the backend starts on a different port (e.g. because you're using Rider on Mac), you can add a `.env.local` file in the `Frontend/frontend` folder and override the default setting in the `.env` file that already exists (.env.local won't be committed to git).

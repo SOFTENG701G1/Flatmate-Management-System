@@ -28,7 +28,13 @@
   color: #61dafb;
 }
 
-.ChoreList {
+hr.LineDivider {
+  height: 2px;
+  background-color: #1F5673;
+  border: none;
+}
+
+.CheckBoxList {
   text-align: left;
   background-color: #1E1F26;
   color: #EEEEEE;
@@ -37,7 +43,7 @@
   border: 2px solid #1F5673;
 }
 
-.ChoreListHeader.row {
+.CheckBoxListHeader.row {
   font-weight: bold;
   color: #EEEEEE;
   text-align: left;
@@ -45,8 +51,8 @@
   font-size: 12px;
 }
 
-.ChoreListContainer.container {
-  width: 40%;
+.CheckBoxListContainer.container {
+  width: 100%;
 }
 
 /* Styling for coloured checkboxes */

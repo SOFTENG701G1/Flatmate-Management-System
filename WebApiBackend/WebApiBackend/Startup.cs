@@ -112,6 +112,7 @@ namespace WebApiBackend
             app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "Flatmate Management API");
+                c.RoutePrefix = string.Empty; // launch swagger from root
             });
 
             app.UseRouting();
