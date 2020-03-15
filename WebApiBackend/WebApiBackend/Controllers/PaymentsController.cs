@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using WebApiBackend.Dto;
 using WebApiBackend.EF;
 using WebApiBackend.Interfaces;
 using WebApiBackend.Model;
@@ -13,7 +15,7 @@ namespace WebApiBackend.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class PaymentsController : BaseController<Payment, PaymentsRepository>
+    public class PaymentsController : BaseController<Payment, PaymentsRepository, PaymentDTO>
     {
         private readonly UserPaymentsRepository userPaymentsRepository;
 
@@ -23,12 +25,15 @@ namespace WebApiBackend.Controllers
 
         private readonly UserRepository userRepository;
 
-        public PaymentsController(PaymentsRepository paymentsRepository, UserPaymentsRepository userPaymentsRepository, FlatRepository flatRepository, UserRepository userRepository) : base(paymentsRepository)
+        private readonly IMapper mapper;
+        public PaymentsController(PaymentsRepository paymentsRepository, UserPaymentsRepository userPaymentsRepository, FlatRepository flatRepository, UserRepository userRepository, IMapper mapper
+            ) : base(paymentsRepository, mapper)
         {
             this.userPaymentsRepository = userPaymentsRepository;
             this.paymentsRepository = paymentsRepository;
             this.flatRepository = flatRepository;
             this.userRepository = userRepository;
+            this.mapper = mapper;
         }
 
         [HttpGet("User/{userId}")]
@@ -46,26 +51,31 @@ namespace WebApiBackend.Controllers
             {
                 return NotFound();
             }
-
-            return Ok(payments);
+            List<PaymentDTO> paymentsDTOs = mapper.Map<List<Payment>, List<PaymentDTO>>(payments);
+            return Ok(paymentsDTOs);
         }
 
-        [HttpGet("Flat/{flatId}")]
-        public async Task<IActionResult> GetPaymentsForFlat(int flatId)
-        {
-            Flat flat = await flatRepository.Get(flatId);
+        //[HttpGet("Flat/{flatId}")]
+        //public async Task<IActionResult> GetPaymentsForFlat(int flatId)
+        //{
+        //    List<Payment> payments = await paymentsRepository.GetAll();
 
-            if (flat == null)
-            {
-                return NotFound();
-            }
+        //    payments = (from p in payments
+        //                where p.flat)
 
-            return Ok(flat.Payments);
-        }
+        //    if (flat == null)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    return Ok(flat.Payments);
+        //}
 
         [HttpPost("Flat/{flatId}")]
-        public async Task<IActionResult> CreatePaymentForFlat(int flatId, [FromBody] Payment payment)
+        public async Task<IActionResult> CreatePaymentForFlat(int flatId, [FromBody] PaymentDTO paymentDTO)
         {
+            Payment payment = mapper.Map<PaymentDTO, Payment>(paymentDTO);
+
             await paymentsRepository.Add(payment);
 
             Flat flat = await flatRepository.Get(flatId);
@@ -83,19 +93,19 @@ namespace WebApiBackend.Controllers
                 await userRepository.Update(user);
             }
 
-            return Ok(payment);
+            return Ok(paymentDTO);
         }
 
-        [HttpDelete("Flat/{flatId}")]
-        public async Task<IActionResult> DeletePaymentForFlat(int flatId, int paymentId)
-        {
-            Flat flat = await flatRepository.Get(flatId);
-            Payment entity = await paymentsRepository.Delete(paymentId);
+        //[HttpDelete("Flat/{flatId}")]
+        //public async Task<IActionResult> DeletePaymentForFlat(int flatId, int paymentId)
+        //{
+        //    Flat flat = await flatRepository.Get(flatId);
+        //    Payment entity = await paymentsRepository.Delete(paymentId);
 
-            //foreach()
+        //    //foreach()
 
-            return Ok(entity);
-        }
+        //    return Ok(entity);
+        //}
 
 
     }
