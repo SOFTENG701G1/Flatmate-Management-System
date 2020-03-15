@@ -28,4 +28,19 @@ export default class APIRequest {
 
         return 'Bearer ' + User.getUserState().token;
     }
+
+    //Checks if the username already exists in the database
+    static async checkNewAccount(username, email) {
+        let res = await fetch(apiBaseUrl + "api/user/check",
+        {
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            method: "POST",
+            body: JSON.stringify({ username: username, email: email})
+        });
+
+        return res;
+    }
 }
