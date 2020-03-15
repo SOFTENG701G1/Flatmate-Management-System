@@ -1,18 +1,21 @@
 import React from 'react';
 import './App.css';
-import Dashboard from './Components/Dashboard';
 
-import NewFlat from './Components/NewFlat';
 import {
   BrowserRouter as Router,
   Switch,
   Route
 } from "react-router-dom";
+
+import Dashboard from './Components/Dashboard';
 import Navigation from './Components/Navigation';
 import Login from './Views/Login';
 import Logout from './Views/Logout';
+import Members from './Views/Members';
 import SplashScreen from './Views/SplashScreen';
 import RequireLogin from './Components/RequireLogin';
+import APIRequest from './Util/APIRequest';
+import NewFlat from './Components/NewFlat';
 
 export default class App extends React.Component {
   render() {
@@ -45,6 +48,9 @@ export default class App extends React.Component {
                 <Route path="/app/members">
                   <Members />
                 </Route>
+                <Route path="/app/newFlat">
+                  <NewFlat />
+                </Route>
                 <Route path="/app/">
                   <Home />
                 </Route>
@@ -64,7 +70,5 @@ function Home() {
 function Payments() {
   return <h2>Payments page</h2>;
 }
-function Members() {
-  return <Link to="/newflat"><h2>Members page</h2></Link>;
-}
+
 

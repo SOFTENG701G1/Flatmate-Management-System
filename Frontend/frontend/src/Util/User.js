@@ -15,9 +15,18 @@ export default class User {
     static getUserState() {
         return this.userState;
     }
+
+    static setFlatState(newState){
+        this.flatState = newState;
+    }
+
+    static getFlatState(){
+        return this.flatState;
+    }
 }
 
 try {
+    User.flatState = {"flatMembers": []};
     User.userState = localStorage.getItem("flatmates_app_user") ?
         JSON.parse(localStorage.getItem("flatmates_app_user")) : undefined;
 } catch (e) {}
