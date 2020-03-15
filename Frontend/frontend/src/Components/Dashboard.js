@@ -4,27 +4,27 @@ import CheckBoxListComponent from './CheckBoxListComponent';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/row';
 import Col from 'react-bootstrap/col';
+import PaymentList from './PaymentList'
 
 export default class Dashboard extends Component {
     render () {
         return (
-            <Container>
+            <Container className='DashboardContainer'>
                 <Row>
-                {/* inline styling is a workaround until further components are added to pad out spacing*/}
-                    <Col style={{"width":"30%", "margin-left":"300px"}}>
-                    <Row>
-                        <CheckBoxListComponent 
+                    <Col>
+                        <PaymentList/>
+                        <hr className="LineDivider" />
+                    </Col>
+                    <Col>
+                        <CheckBoxListComponent
                             title="Chores"
                             listItems={["Wash bathroom", "Buy groceries", "Do laundry", "Cook dinner"]}
                         />
-                    </Row>
-                    <hr className="LineDivider"/>
-                    <Row>
-                        <CheckBoxListComponent 
+                        <hr className="LineDivider" />
+                        <CheckBoxListComponent
                             title="Shopping List"
                             listItems={["Eggs", "Milk", "TP", "Cereal", "Pasta", "Sweetcorn"]}
                         />
-                    </Row>
                     </Col>
                 </Row>
             </Container>

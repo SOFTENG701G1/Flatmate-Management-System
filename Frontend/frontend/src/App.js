@@ -1,4 +1,5 @@
 import React from 'react';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 import Dashboard from './Components/Dashboard';
 import Chores from './Components/Chores';

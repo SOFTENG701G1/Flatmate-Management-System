@@ -34,6 +34,10 @@ hr.LineDivider {
   border: none;
 }
 
+.DashboardContainer .col {
+  margin-left: 15%;
+}
+
 .CheckBoxList {
   text-align: left;
   background-color: #1E1F26;
@@ -41,6 +45,7 @@ hr.LineDivider {
   padding: 30px;
   border-radius: 8px;
   border: 2px solid #1F5673;
+  width: 100%;
 }
 
 .CheckBoxListHeader.row {
@@ -49,10 +54,6 @@ hr.LineDivider {
   text-align: left;
   padding-bottom: 20px;
   font-size: 12px;
-}
-
-.CheckBoxListContainer.container {
-  width: 100%;
 }
 
 /* Styling for coloured checkboxes */
