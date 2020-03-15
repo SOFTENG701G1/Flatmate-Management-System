@@ -24,7 +24,7 @@ To get the project running, follow these steps:
 
 1. Open the backend folder (WebApiBackend) and find the Solution (.sln) file, and open in Visual Studio.
 2. Once Visual Studio loads up, you should have a green "IIS Express" button to start the app in the top toolbar. Click it.
-3. It'll take some time the first run (as Visual Studio should install all dependencies). Once the backend server is running, a new window will open displaying Swagger.
+3. It'll take some time the first run (as Visual Studio should install all dependencies). Once the backend server is running, a new window will open displaying Swagger, which is a tool used for testing the API endpoints.
 4. Open the frontend folder in a command line tool.
 5. Run `npm install` to download and install all dependencies.
 6. Run `npm start` to start the React development server. 
