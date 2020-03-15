@@ -91,7 +91,7 @@ export default class Register extends React.Component {
     return (
       <div className="login-backdrop">
         <div className='login-container'>
-          <Link to={this.state.firstSignUpPage ? "/" : "/register"} onClick={() => this.goBackToFirstPage()}>
+          <Link to={this.state.firstSignUpPage ? "/home" : "/register"} onClick={() => this.goBackToFirstPage()}>
             <img src={BackArrow} alt="Go Back" className="back-arrow"/>
           </Link>
           <img src={Logo} alt="Logo" className="logo-image"/>

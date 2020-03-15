@@ -62,12 +62,12 @@ export default class Login extends React.Component {
       <div className="login-backdrop">
         { User.getUserState() ? <Redirect to="/app/"/> : '' }
         <div className='login-container'>
-          <Link to="/"><img src={BackArrow} alt="Go Back" className="back-arrow"/></Link>
+          <Link to="/home"><img src={BackArrow} alt="Go Back" className="back-arrow"/></Link>
           <img src={Logo} alt="Logo" className="logo-image"/>
           <h2> Login to your account </h2>
           <form action="#" method="POST">
             <input type='text' name='username' onChange={this.bindInput} placeholder='Username'/>
-            <input type='text' name='password' onChange={this.bindInput} placeholder='Password'/>
+            <input type='password' name='password' className="password-field" onChange={this.bindInput} placeholder='Password'/>
             <input type='submit' value='Login' onClick={this.login}/>
             { this.state.error ? <div className='login-error'> { this.state.error } </div> : <div className="error-placeholder"/> }
             <div className="other-actions">
