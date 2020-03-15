@@ -1,6 +1,7 @@
 import React from 'react';
 import './App.css';
 import Dashboard from './Components/Dashboard';
+import Chores from './Components/Chores';
 
 import {
   BrowserRouter as Router,
@@ -37,6 +38,9 @@ export default class App extends React.Component {
               <Switch>
                 <Route path="/app/dashboard">
                   <Dashboard />
+                </Route>
+                <Route path="/app/chores">
+                  <Payments />
                 </Route>
                 <Route path="/app/payments">
                   <Payments />
