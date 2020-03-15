@@ -10,6 +10,7 @@ import Dashboard from './Components/Dashboard';
 import Navigation from './Components/Navigation';
 import Login from './Views/Login';
 import Logout from './Views/Logout';
+import SplashScreen from './Views/SplashScreen';
 import HomePage from './Views/HomePage';
 import RequireLogin from './Components/RequireLogin';
 import MembersPage from './Components/Members';
@@ -20,6 +21,9 @@ export default class App extends React.Component {
         <div className="container center">
           <Router>
             <Route exact path="/">
+              <SplashScreen/>
+            </Route>
+            <Route path="/home">
               <HomePage/>
             </Route>
             <Route path="/login">
