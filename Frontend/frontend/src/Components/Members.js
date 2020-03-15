@@ -1,6 +1,15 @@
 import React, {Component} from 'react';
 import '../App.css';
-
+import {
+    Table,
+    TableBody,
+    TableHeader,
+    TableHeaderColumn,
+    TableRow,
+    TableRowColumn,
+  } from 'material-ui/Table';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
+import TableEx from '../Views/Table.js';
 export default class MembersPage extends Component {
 
     constructor(props){
@@ -8,7 +17,6 @@ export default class MembersPage extends Component {
         this.items =[
             'david','damien','sara','jane',
         ];
-
         this.state ={
             suggestions: [],
             text:'',
@@ -47,13 +55,15 @@ export default class MembersPage extends Component {
     render () {
         const {text} = this.state;
         return (
+            <MuiThemeProvider>
             <div>
                 <h2>Members Page</h2>
-                <p>Add member <input value = {text} onChange= {this.onTextChanged} type = "text"/>
-                </p>
-                
+                <input value = {text} onChange= {this.onTextChanged} type = "text" placeholder = "Enter Username to add and press Enter"/>
+                <button type = "submit">Add User to flat</button>
+                <TableEx/>
                 {this.renderSuggestion()}
             </div>
+            </MuiThemeProvider>
         );
     }
 }
