@@ -23,7 +23,6 @@
 
 .login-container {
     width: 400px;
-    height: 500px;
     
     margin: 0px auto;
 
@@ -44,6 +43,10 @@
 
     color: #B62020;
     font-size: 12px;
+}
+
+.error-placeholder {
+    height: 22px;
 }
 
 .logo-image {
