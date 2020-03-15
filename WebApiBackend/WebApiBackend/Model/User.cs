@@ -18,7 +18,7 @@ namespace WebApiBackend.Model
         public string Email { get; set; }
         public string MedicalInformation { get; set; }
         public string BankAccount { get; set; }
-        public string Password { get; set; }
+        public string HashedPassword { get; set; }
         public ICollection<UserPayment> UserPayments { get; set; }
     }
 }
