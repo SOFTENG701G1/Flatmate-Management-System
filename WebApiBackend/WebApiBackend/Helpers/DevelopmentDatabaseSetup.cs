@@ -57,8 +57,8 @@ namespace WebApiBackend.Helpers
                 LastName = "Ang",
                 DateOfBirth = new DateTime(1984, 02, 09),
                 PhoneNumber = "02243926392",
-                Email = "ZianYangAng@Gmail.com",
-                MedicalInformation = "COVID-19, Extra Chromosome",
+                Email = "BryanAng@Gmail.com",
+                MedicalInformation = "N/A",
                 BankAccount = "98-7654-3211234-210"
             };
             bryan.HashedPassword = hasher.HashPassword(bryan, "password");
