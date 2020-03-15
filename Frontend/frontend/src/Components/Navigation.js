@@ -16,9 +16,6 @@ export default class Navigation extends React.Component {
               { User.getUserState() ? User.getUserState().username : '' }
             </div>
           </li>
-          <li className="menu__list-item menu__logout">
-            <Link to="/logout/"><a className="menu__link" href="#">Logout</a></Link>
-          </li>
           <li className="menu__list-item">
             <Link to="/app/"><a className="menu__link" href="#">Home</a></Link>
           </li>
@@ -33,6 +30,9 @@ export default class Navigation extends React.Component {
           </li>
           <li className="menu__list-item">
             <Link to="/app/members"><a className="menu__link" href="#">Members</a></Link>
+          </li>
+          <li className="menu__list-item menu__logout">
+            <Link to="/logout/"><a className="menu__link" href="#">Logout</a></Link>
           </li>
         </ul>
       </div>
