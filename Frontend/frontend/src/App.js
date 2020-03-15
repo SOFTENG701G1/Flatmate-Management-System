@@ -40,7 +40,7 @@ export default class App extends React.Component {
                   <Dashboard />
                 </Route>
                 <Route path="/app/chores">
-                  <Payments />
+                  <Chores />
                 </Route>
                 <Route path="/app/payments">
                   <Payments />
