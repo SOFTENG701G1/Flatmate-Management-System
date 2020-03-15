@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using SQLiteNetExtensions.Attributes;
+using WebApiBackend.Interfaces;
 
 namespace WebApiBackend.Model
 {
@@ -16,7 +18,7 @@ namespace WebApiBackend.Model
         OneOff, Weekly, Fortnightly, Monthly
     }
 
-    public class Payment
+    public class Payment : IEntity
     {
         [Key]
         public int Id { get; set; }

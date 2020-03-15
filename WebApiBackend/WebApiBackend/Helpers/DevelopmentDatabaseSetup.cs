@@ -91,7 +91,7 @@ namespace WebApiBackend.Helpers
             {
                 Payment = payment1,
                 User = bryan,
-                UserName = bryan.UserName,
+                UserId = bryan.Id,
                 PaymentId = payment1.Id
             };
 
@@ -99,7 +99,7 @@ namespace WebApiBackend.Helpers
             {
                 Payment = payment2,
                 User = bryan,
-                UserName = bryan.UserName,
+                UserId = bryan.Id,
                 PaymentId = payment2.Id
             };
 
@@ -107,7 +107,7 @@ namespace WebApiBackend.Helpers
             {
                 Payment = payment1,
                 User = yin,
-                UserName = yin.UserName,
+                UserId = yin.Id,
                 PaymentId = payment1.Id
             };
 
@@ -115,7 +115,7 @@ namespace WebApiBackend.Helpers
             {
                 Payment = payment2,
                 User = yin,
-                UserName = yin.UserName,
+                UserId = yin.Id,
                 PaymentId = payment2.Id
             };
 
@@ -123,7 +123,7 @@ namespace WebApiBackend.Helpers
             {
                 Payment = payment1,
                 User = teresa,
-                UserName = teresa.UserName,
+                UserId = teresa.Id,
                 PaymentId = payment1.Id
             };
 
@@ -131,7 +131,7 @@ namespace WebApiBackend.Helpers
             {
                 Payment = payment2,
                 User = teresa,
-                UserName = teresa.UserName,
+                UserId = teresa.Id,
                 PaymentId = payment2.Id
             };
 
@@ -152,6 +152,7 @@ namespace WebApiBackend.Helpers
 
             flat1 = new Flat
             {
+                Id = 1,
                 Address = "50 Symonds Street",
                 Users = new List<User> { yin, teresa, bryan },
                 Schedules = new List<Schedule> { schedule1 },

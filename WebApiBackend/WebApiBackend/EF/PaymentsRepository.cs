@@ -7,9 +7,9 @@ using WebApiBackend.Model;
 
 namespace WebApiBackend.EF
 {
-    public class PaymentsRepository : EfRepository<Payment,DbContext>
+    public class PaymentsRepository : EfRepository<Payment,FlatManagementContext>
     {
-        public PaymentsRepository (DbContext context) : base(context)
+        public PaymentsRepository (FlatManagementContext context) : base(context)
         {
 
         }
