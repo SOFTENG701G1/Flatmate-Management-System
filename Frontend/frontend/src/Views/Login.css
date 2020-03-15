@@ -72,6 +72,10 @@
     animation: appear 2s infinite alternate;
 }
 
+.password-field {
+    padding-left: 1em;
+}
+
 @keyframes appear {
     from { opacity: 0; }
 }
