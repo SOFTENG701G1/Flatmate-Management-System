@@ -41,6 +41,9 @@ namespace WebApiBackend.Model
 
                 entity.HasIndex(e => e.PhoneNumber)
                     .IsUnique();
+
+                entity.HasOne(e => e.Flat)
+                    .WithMany(e => e.Users);
             });
 
             modelBuilder.Entity<Payment>(e => {

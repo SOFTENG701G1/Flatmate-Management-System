@@ -21,5 +21,6 @@ namespace WebApiBackend.Model
         public string BankAccount { get; set; }
         public string HashedPassword { get; set; }
         public ICollection<UserPayment> UserPayments { get; set; }
+        public Flat Flat { get; set; }
     }
 }
