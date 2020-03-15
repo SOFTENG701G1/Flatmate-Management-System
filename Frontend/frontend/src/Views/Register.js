@@ -44,6 +44,7 @@ export default class Register extends React.Component {
     }
 
     this.setState({ firstSignUpPage: false }); // TODO: Remove once API Request implemented
+    document.forms["form"].reset();
     
     // let checkNewUsernameResult = await APIRequest.checkNewUsername(this.state.username);
 
@@ -97,12 +98,12 @@ export default class Register extends React.Component {
           <img src={Logo} alt="Logo" className="logo-image"/>
           <h2>{ this.state.firstSignUpPage ? "Create a new account" : "Contact details" }</h2>
           { this.state.firstSignUpPage ? 
-            <form action="#" method="POST">
+            <form id="form" action="#" method="POST">
               <input type='text' name='email' onChange={this.bindInput} placeholder='Email*'/>
               <input type='text' name='username' onChange={this.bindInput} placeholder='Username*'/>
               <input type='text' name='password' onChange={this.bindInput} placeholder='Password*'/>
               <input type='text' name='passwordRepeat' onChange={this.bindInput} placeholder='Retype password*'/>
-              <input type='submit' value='Continue' onClick={this.checkNewUsername}/>
+              <input type='submit' value='Continue' onClick={this.checkNewUsername} defaultValue=""/>
               { this.state.error ? <div className='login-error'> { this.state.error } </div> : <div className="error-placeholder"/> }
               <div className="other-actions">
                 <p className="other-actions-text">Already a member? <Link to="/login" className="other-actions-link">Sign in.</Link></p>
@@ -110,11 +111,11 @@ export default class Register extends React.Component {
             </form> 
             : 
             <form action="#" method="POST">
-              <input type='text' name='firstName' onChange={this.bindInput} placeholder='First name*'/>
-              <input type='text' name='lastName' onChange={this.bindInput} placeholder='Last name*'/>
-              <input type='text' name='dateOfBirth' onChange={this.bindInput} placeholder='Date of birth*'/>
-              <input type='text' name='phoneNumber' onChange={this.bindInput} placeholder='Phone number'/>
-              <input type='text' name='bankAccountNumber' onChange={this.bindInput} placeholder='Bank account number'/>
+              <input type='text' name='firstName' onChange={this.bindInput} placeholder='First name*' defaultValue=""/>
+              <input type='text' name='lastName' onChange={this.bindInput} placeholder='Last name*' defaultValue=""/>
+              <input type='text' name='dateOfBirth' onChange={this.bindInput} placeholder='Date of birth*' defaultValue=""/>
+              <input type='text' name='phoneNumber' onChange={this.bindInput} placeholder='Phone number' defaultValue=""/>
+              <input type='text' name='bankAccountNumber' onChange={this.bindInput} placeholder='Bank account number' defaultValue=""/>
               <input type='text' name='medicalInfo' onChange={this.bindInput} placeholder='Medical information (i.e. allergies, etc)'/>
               <input type='submit' value='Create account' onClick={this.createNewAccount}/>
               { this.state.error ? <div className='login-error'> { this.state.error } </div> : <div className="error-placeholder"/> }
