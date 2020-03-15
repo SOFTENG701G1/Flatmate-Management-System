@@ -11,7 +11,10 @@ export default class Navigation extends React.Component {
         <ul className="menu__list">
           <li className="menu__list-item menu__logo"></li>
           <li className="menu__list-item menu__user_detail">
-            { User.getUserState() ? User.getUserState().username : '' }
+            <div className='user_profile'> </div>
+            <div className='user_profile_name'>
+              { User.getUserState() ? User.getUserState().username : '' }
+            </div>
           </li>
           <li className="menu__list-item menu__logout">
             <Link to="/logout/"><a className="menu__link" href="#">Logout</a></Link>

@@ -48,12 +48,8 @@
 
 .menu__list-item {
     display: block;
-    height: 10%;
+    height: 50px;
     margin-bottom: 0px;
-}
-
-.menu__user_detail {
-    width: 100%;
 }
 
 .menu__logo {
@@ -66,6 +62,31 @@
     background-position: center;
     margin: 0;
     margin-top: 20px;
+}
+
+.menu__user_detail {
+    width: 100%;
+    height: 75px;
+    padding: 10px;
+}
+
+.user_profile {
+    width: 50px;
+    height: 50px;
+
+    float: left;
+
+    background-image: url(../images/user-profile.png);
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.user_profile_name {
+    float: left;
+    
+    padding-left: 10px;
+    padding-top: 15px;
 }
 
 
