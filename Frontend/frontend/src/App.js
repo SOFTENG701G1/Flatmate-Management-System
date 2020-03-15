@@ -63,6 +63,3 @@ function Home() {
 function Payments() {
   return <h2>Payments page</h2>;
 }
-function Members() {
-  return <h2>Members page</h2>;
-}
