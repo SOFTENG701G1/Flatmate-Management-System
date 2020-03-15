@@ -83,14 +83,14 @@ namespace WebApiBackend.Helpers
             {
                 Payment = payment1,
                 User = bryan,
-                UserName = bryan.UserName,
+                UserId = bryan.Id,
                 PaymentId = payment1.Id
             };
             userPaymentBryan2 = new UserPayment
             {
                 Payment = payment2,
                 User = bryan,
-                UserName = bryan.UserName,
+                UserId = bryan.Id,
                 PaymentId = payment2.Id
             };
 
@@ -98,7 +98,7 @@ namespace WebApiBackend.Helpers
             {
                 Payment = payment1,
                 User = yin,
-                UserName = yin.UserName,
+                UserId = yin.Id,
                 PaymentId = payment1.Id
             };
 
@@ -106,7 +106,7 @@ namespace WebApiBackend.Helpers
             {
                 Payment = payment2,
                 User = yin,
-                UserName = yin.UserName,
+                UserId = yin.Id,
                 PaymentId = payment2.Id
             };
 
@@ -114,7 +114,7 @@ namespace WebApiBackend.Helpers
             {
                 Payment = payment1,
                 User = teresa,
-                UserName = teresa.UserName,
+                UserId = teresa.Id,
                 PaymentId = payment1.Id
             };
 
@@ -122,7 +122,7 @@ namespace WebApiBackend.Helpers
             {
                 Payment = payment2,
                 User = teresa,
-                UserName = teresa.UserName,
+                UserId = teresa.Id,
                 PaymentId = payment2.Id
             };
             payment1.UserPayments = new List<UserPayment> { userPaymentBryan1, userPaymentTeresa1, userPaymentYin1 };
