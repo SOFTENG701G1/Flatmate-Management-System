@@ -16,6 +16,7 @@ namespace WebApiBackendTests
     class UserTest
     {
         ServiceDependencyResolver _serviceProvider;
+        private FlatManagementContext _context;
 
         [SetUp]
         public void Setup()
@@ -27,11 +28,11 @@ namespace WebApiBackendTests
             _serviceProvider = new ServiceDependencyResolver(webHost);
 
             // Resets database to inital state so all tests are isolated and repeatable
-            FlatManagementContext context = new FlatManagementContext();
-            context.Database.EnsureDeleted();
-            context.Database.EnsureCreated();
+            _context = new FlatManagementContext();
+            _context.Database.EnsureDeleted();
+            _context.Database.EnsureCreated();
 
-            var testDataGenerator = new DevelopmentDatabaseSetup(context);
+            var testDataGenerator = new DevelopmentDatabaseSetup(_context);
             testDataGenerator.SetupDevelopmentDataSet();
         }
 
@@ -41,10 +42,10 @@ namespace WebApiBackendTests
         [Test]
         public void TestSuccessfulLogin()
         {
-            UserController userController = new UserController(_serviceProvider.GetService<IOptions<AppSettings>>());  
+            UserController userController = new UserController(_serviceProvider.GetService<IOptions<AppSettings>>(), _context);
             ActionResult<LoggedInDto> response = userController.Login(new LoginDto
             {
-                Username = "user",
+                Username = "BeboBryan",
                 Password = "password"
             });
 
@@ -59,7 +60,7 @@ namespace WebApiBackendTests
         [Test]
         public void TestIncorrectUsernameLogin()
         {
-            UserController userController = new UserController(_serviceProvider.GetService<IOptions<AppSettings>>());
+            UserController userController = new UserController(_serviceProvider.GetService<IOptions<AppSettings>>(), _context);
             ActionResult<LoggedInDto> response = userController.Login(new LoginDto
             {
                 Username = "UserDoesNotExist",
@@ -75,7 +76,7 @@ namespace WebApiBackendTests
         [Test]
         public void TestIncorrectPasswordLogin()
         {
-            UserController userController = new UserController(_serviceProvider.GetService<IOptions<AppSettings>>());
+            UserController userController = new UserController(_serviceProvider.GetService<IOptions<AppSettings>>(), _context);
             ActionResult<LoggedInDto> response = userController.Login(new LoginDto
             {
                 Username = "user",
@@ -93,7 +94,7 @@ namespace WebApiBackendTests
         [Test]
         public void TestRegistration()
         {
-            UserController initialLoginUserController = new UserController(_serviceProvider.GetService<IOptions<AppSettings>>());
+            UserController initialLoginUserController = new UserController(_serviceProvider.GetService<IOptions<AppSettings>>(), _context);
             ActionResult<LoggedInDto> initialLoginResponse = initialLoginUserController.Login(new LoginDto
             {
                 Username = "newUser",
@@ -102,7 +103,7 @@ namespace WebApiBackendTests
 
             Assert.IsNull(initialLoginResponse.Value);
 
-            UserController registrationUserController = new UserController(_serviceProvider.GetService<IOptions<AppSettings>>());
+            UserController registrationUserController = new UserController(_serviceProvider.GetService<IOptions<AppSettings>>(), _context);
             ActionResult<RegisterResponseDTO> registrationResponse = registrationUserController.Register(new RegisterRequestDTO
             {
                 UserName = "newUser",
@@ -120,7 +121,7 @@ namespace WebApiBackendTests
             Assert.False(string.IsNullOrEmpty(registrationResponse.Value.UserName));
             Assert.False(string.IsNullOrEmpty(registrationResponse.Value.Token));
 
-            UserController finalLoginUserController = new UserController(_serviceProvider.GetService<IOptions<AppSettings>>());
+            UserController finalLoginUserController = new UserController(_serviceProvider.GetService<IOptions<AppSettings>>(), _context);
             ActionResult<LoggedInDto> finalLoginResponse = finalLoginUserController.Login(new LoginDto
             {
                 Username = "newUser",
@@ -140,7 +141,7 @@ namespace WebApiBackendTests
         [Test]
         public void TestRegistrationWithDuplicateUserName()
         {
-            UserController registrationOneUserController = new UserController(_serviceProvider.GetService<IOptions<AppSettings>>());
+            UserController registrationOneUserController = new UserController(_serviceProvider.GetService<IOptions<AppSettings>>(), _context);
             ActionResult<RegisterResponseDTO> registrationOneResponse = registrationOneUserController.Register(new RegisterRequestDTO
             {
                 UserName = "newUser",
@@ -158,7 +159,7 @@ namespace WebApiBackendTests
             Assert.False(string.IsNullOrEmpty(registrationOneResponse.Value.UserName));
             Assert.False(string.IsNullOrEmpty(registrationOneResponse.Value.Token));
 
-            UserController registrationTwoUserController = new UserController(_serviceProvider.GetService<IOptions<AppSettings>>());
+            UserController registrationTwoUserController =  new UserController(_serviceProvider.GetService<IOptions<AppSettings>>(), _context);
             ActionResult<RegisterResponseDTO> registrationTwoResponse = registrationTwoUserController.Register(new RegisterRequestDTO
             {
                 UserName = "newUser",
@@ -181,7 +182,7 @@ namespace WebApiBackendTests
         [Test]
         public void TestRegistrationWithDuplicateEmail()
         {
-            UserController registrationOneUserController = new UserController(_serviceProvider.GetService<IOptions<AppSettings>>());
+            UserController registrationOneUserController =  new UserController(_serviceProvider.GetService<IOptions<AppSettings>>(), _context);
             ActionResult<RegisterResponseDTO> registrationOneResponse = registrationOneUserController.Register(new RegisterRequestDTO
             {
                 UserName = "newUser",
@@ -199,7 +200,7 @@ namespace WebApiBackendTests
             Assert.False(string.IsNullOrEmpty(registrationOneResponse.Value.UserName));
             Assert.False(string.IsNullOrEmpty(registrationOneResponse.Value.Token));
 
-            UserController registrationTwoUserController = new UserController(_serviceProvider.GetService<IOptions<AppSettings>>());
+            UserController registrationTwoUserController =  new UserController(_serviceProvider.GetService<IOptions<AppSettings>>(), _context);
             ActionResult<RegisterResponseDTO> registrationTwoResponse = registrationTwoUserController.Register(new RegisterRequestDTO
             {
                 UserName = "newUser2",
@@ -222,7 +223,7 @@ namespace WebApiBackendTests
         [Test]
         public void TestRegistrationWithDuplicatePhoneNumber()
         {
-            UserController registrationOneUserController = new UserController(_serviceProvider.GetService<IOptions<AppSettings>>());
+            UserController registrationOneUserController =  new UserController(_serviceProvider.GetService<IOptions<AppSettings>>(), _context);
             ActionResult<RegisterResponseDTO> registrationOneResponse = registrationOneUserController.Register(new RegisterRequestDTO
             {
                 UserName = "newUser",
@@ -240,7 +241,7 @@ namespace WebApiBackendTests
             Assert.False(string.IsNullOrEmpty(registrationOneResponse.Value.UserName));
             Assert.False(string.IsNullOrEmpty(registrationOneResponse.Value.Token));
 
-            UserController registrationTwoUserController = new UserController(_serviceProvider.GetService<IOptions<AppSettings>>());
+            UserController registrationTwoUserController =  new UserController(_serviceProvider.GetService<IOptions<AppSettings>>(), _context);
             ActionResult<RegisterResponseDTO> registrationTwoResponse = registrationTwoUserController.Register(new RegisterRequestDTO
             {
                 UserName = "newUser2",
