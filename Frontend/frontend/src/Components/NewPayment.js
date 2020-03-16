@@ -28,7 +28,6 @@ export default class NewPayment extends Component {
                         </span>
                         <Modal.Title>
                             <h1 class="modal-title w-100 text-center"> Rent</h1>
-
                         </Modal.Title>
 
                     </Modal.Header>
