@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Identity;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -166,10 +167,8 @@ namespace WebApiBackend.Helpers
 
         public void SetupDevelopmentDataSet()
         {
-            _database.Add(new TestModelItem
-            {
-                Name = "A Test Item"
-            });
+            // This function could also be called in the unit tests if not called here
+            InitialiseTestDataObjects();
 
             _database.Add(yin);
             _database.Add(teresa);

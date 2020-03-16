@@ -27,5 +27,6 @@ namespace WebApiBackend.Model
         public PaymentType PaymentType { get; set; }
         public Frequency Frequency { get; set; }
         public ICollection<UserPayment> UserPayments { get; set; }
+        public String Description { get; set; }
     }
 }
