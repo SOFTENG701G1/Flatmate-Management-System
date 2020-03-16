@@ -22,13 +22,25 @@ namespace WebApiBackendTests
         }
 
         [Test]
-        public void TestCreatePayment()
+        public void TestAddUserToExistingPayment()
         {
             Assert.Pass();
         }
 
         [Test]
-        public void TestDeletePayment()
+        public void TestCreatePaymentForFlat()
+        {
+            Assert.Pass();
+        }
+
+        [Test]
+        public void TestDeletePaymentForFlat()
+        {
+            Assert.Pass();
+        }
+
+        [Test]
+        public void TestDeleteUserFromPayment()
         {
             Assert.Pass();
         }
@@ -40,13 +52,13 @@ namespace WebApiBackendTests
         }
 
         [Test]
-        public void TestGetFlatPayments()
+        public void TestGetPaymentsForFlat()
         {
             Assert.Pass();
         }
 
         [Test]
-        public void TestGetUserPayments()
+        public void TestGetAllPaymentsForUser()
         {
             Assert.Pass();
         }
