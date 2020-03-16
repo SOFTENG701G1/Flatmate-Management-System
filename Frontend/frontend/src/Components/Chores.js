@@ -88,7 +88,7 @@ export default class Chores extends Component {
                     </TabPanel>
                 </Tabs>
                 <div style={{"margin":"30px"}}>
-                    <ChoresUpdateButton  ></ChoresUpdateButton>
+                    <ChoresUpdateButton></ChoresUpdateButton>
                 </div>
             </Container>
             );

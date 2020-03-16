@@ -15,8 +15,9 @@ import Select from 'react-select';
 function ChoresUpdateButton(props){
   const [popupState, setPopupState] = React.useState(false);
 
-  const [selected, setSelected] = useState([]);
+  const [membersState, setMembersState] = React.useState([]);
 
+  
 
   const handleOpenPopup = () => {
     setPopupState(true);
@@ -26,10 +27,12 @@ function ChoresUpdateButton(props){
   };
   
   const options = [
-    { value: 'yin', label: 'yin' },
-    { value: 'teresa', label: 'teresa' },
-    { value: 'bryan', label: 'bryan' }
+    { value: 'yin', label: 'Yin' },
+    { value: 'teresa', label: 'Teresa' },
+    { value: 'bryan', label: 'Bryan' }
   ]
+
+
   return (
     <div>
       <Button style={{"background-color":"#1F5673", "color": "white"}} onClick={handleOpenPopup}>
@@ -54,7 +57,7 @@ function ChoresUpdateButton(props){
           <div className="chores_assign">
             <InputLabel  id="demo-simple-select-label" style={{"margin-bottom":"10px"}}>Assigned Flat Members</InputLabel>
             <Select
-              defaultValue={[options[1], options[2]]}
+              defaultValue={props.members}
               isMulti
               name="colors"
               options={options}
