@@ -6,7 +6,11 @@ import './chores.css';
 import ChoresTable from './ChoresTable';
 
 let title = "All" /* Placeholder tab names/content until we can retrieve from backend and chores table implemented */
-
+/**
+ * This class creates the chores components which shows the user all of their chores and 
+ * all of the other people's chores on their flat.
+ * They can also add or modiy chores and set chores to done
+ */
 export default class Chores extends Component {
 
     constructor(props) {
@@ -82,6 +86,7 @@ export default class Chores extends Component {
                             }})}/>
                     </TabPanel>
                 </Tabs>
+                
                 Button to add new chores
             </Container>
             );
