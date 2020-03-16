@@ -8,6 +8,15 @@ namespace WebApiBackend.Helpers
 {
     public class DevelopmentDatabaseSetup
     {
+        User yin, teresa, bryan;
+        Payment payment1, payment2;
+        // Payment[NAME]1 is for electricity
+        // Payment[NAME]2 is for Rent due to many to many relationship
+        UserPayment userPaymentYin1, userPaymentYin2, userPaymentBryan1,
+            userPaymentBryan2, userPaymentTeresa1, userPaymentTeresa2;
+        Schedule schedule1;
+        Flat flat1;
+
         private readonly FlatManagementContext _database;
 
         public void InitialiseTestDataObjects()
@@ -23,6 +32,7 @@ namespace WebApiBackend.Helpers
                 PhoneNumber = "0279284492",
                 Email = "YinWang@qq.com",
                 MedicalInformation = "N/A",
+                BankAccount = "00-0000-0000000-000"
             };
             yin.HashedPassword = hasher.HashPassword(yin, "password");
 
@@ -34,7 +44,8 @@ namespace WebApiBackend.Helpers
                 DateOfBirth = new DateTime(1996, 02, 12),
                 PhoneNumber = "0228937228",
                 Email = "GreenTrees@Yahoo.com",
-                MedicalInformation = "Vegan, Gluten-Free, Lactose Intolerant"
+                MedicalInformation = "Vegan, Gluten-Free, Lactose Intolerant",
+                BankAccount = "12-3456-1234567-123"
             };
             teresa.HashedPassword = hasher.HashPassword(teresa, "password");
 
@@ -45,8 +56,9 @@ namespace WebApiBackend.Helpers
                 LastName = "Ang",
                 DateOfBirth = new DateTime(1984, 02, 09),
                 PhoneNumber = "02243926392",
-                Email = "ZianYangAng@Gmail.com",
-                MedicalInformation = "COVID-19, Extra Chromosome"
+                Email = "BryanAng@Gmail.com",
+                MedicalInformation = "N/A",
+                BankAccount = "98-7654-3211234-210"
             };
             bryan.HashedPassword = hasher.HashPassword(bryan, "password");
 
@@ -59,7 +71,9 @@ namespace WebApiBackend.Helpers
                 Frequency = Frequency.Monthly,
                 StartDate = new DateTime(2020, 03, 07),
                 EndDate = new DateTime(2020, 06, 07),
+                Description = "electricity"
             };
+
             payment2 = new Payment
             {
                 Id = 2,
@@ -69,7 +83,9 @@ namespace WebApiBackend.Helpers
                 Frequency = Frequency.Monthly,
                 StartDate = new DateTime(2020, 03, 01),
                 EndDate = new DateTime(2020, 10, 01),
+                Description = "rent"
             };
+
             userPaymentBryan1 = new UserPayment
             {
                 Payment = payment1,
@@ -77,6 +93,7 @@ namespace WebApiBackend.Helpers
                 UserName = bryan.UserName,
                 PaymentId = payment1.Id
             };
+
             userPaymentBryan2 = new UserPayment
             {
                 Payment = payment2,
@@ -116,8 +133,13 @@ namespace WebApiBackend.Helpers
                 UserName = teresa.UserName,
                 PaymentId = payment2.Id
             };
+
             payment1.UserPayments = new List<UserPayment> { userPaymentBryan1, userPaymentTeresa1, userPaymentYin1 };
             payment2.UserPayments = new List<UserPayment> { userPaymentBryan2, userPaymentTeresa2, userPaymentYin2 };
+            
+            yin.UserPayments = new List<UserPayment> { userPaymentYin1, userPaymentYin2 };
+            bryan.UserPayments = new List<UserPayment> { userPaymentBryan1, userPaymentBryan2 };
+            teresa.UserPayments = new List<UserPayment> { userPaymentTeresa1, userPaymentTeresa2 };
 
             schedule1 = new Schedule
             {

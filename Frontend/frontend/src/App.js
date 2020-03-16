@@ -1,6 +1,7 @@
 import React from 'react';
 import './App.css';
 import Dashboard from './Components/Dashboard';
+import Chores from './Components/Chores';
 
 import {
   BrowserRouter as Router,
@@ -11,6 +12,7 @@ import Navigation from './Components/Navigation';
 import Login from './Views/Login';
 import Logout from './Views/Logout';
 import SplashScreen from './Views/SplashScreen';
+import HomePage from './Views/HomePage';
 import RequireLogin from './Components/RequireLogin';
 
 export default class App extends React.Component {
@@ -21,6 +23,9 @@ export default class App extends React.Component {
           <Router>
             <Route exact path="/">
               <SplashScreen/>
+            </Route>
+            <Route path="/home">
+              <HomePage/>
             </Route>
             <Route path="/login">
               <Login/>
@@ -37,6 +42,9 @@ export default class App extends React.Component {
               <Switch>
                 <Route path="/app/dashboard">
                   <Dashboard />
+                </Route>
+                <Route path="/app/chores">
+                  <Chores />
                 </Route>
                 <Route path="/app/payments">
                   <Payments />
