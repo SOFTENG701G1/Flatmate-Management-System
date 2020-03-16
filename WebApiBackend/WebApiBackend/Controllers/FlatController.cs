@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -35,13 +36,14 @@ namespace WebApiBackend.Controllers
             _context = context;
         }
 
-
-        //Get:api/display/{flatId}
-        [AllowAnonymous]
-        [HttpGet("display/{flatId}")]
-        public ActionResult<List<DisplayMemberDTO>> GetMembers(int flatId)
+        [Authorize]
+        [HttpGet("display")]
+        public ActionResult<List<DisplayMemberDTO>> GetMembers()
         {
-            Flat flat = _context.Flat.Where(f => f.Id == flatId).FirstOrDefault();
+            var identity =(ClaimsIdentity) HttpContext.User.Identity;
+            var username= identity.FindFirst(ClaimTypes.Name).Value;
+            var user = _context.User.Find(username);
+            Flat flat = _context.Flat.Where(f => f.Id ==user.FlatId).FirstOrDefault();
             IQueryable members = _context.Entry(flat).Collection(f => f.Users).Query().OrderBy(u => u.FirstName);
             return _MemberMapper.Map<List<DisplayMemberDTO>>(members);
         }
