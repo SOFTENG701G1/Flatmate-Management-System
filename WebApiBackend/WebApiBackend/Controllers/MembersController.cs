@@ -12,6 +12,7 @@ using WebApiBackend.Model;
 using WebApiBackend.Helpers;
 using Microsoft.Extensions.Options;
 using System.Linq;
+using System.Collections.Generic;
 
 namespace WebApiBackend.Controllers
 {
@@ -34,8 +35,11 @@ namespace WebApiBackend.Controllers
         {
             var identity = HttpContext.User.Identity as ClaimsIdentity;
             var username = identity.FindFirst(ClaimTypes.Name).Value;
-            var user = _database.User.First(user => user.UserName == username);
-            var flat = _database.Flat.First(flat => flat.Users.Contains(user));
+            var user = _database.User.FirstOrDefault(x => x.UserName == username);
+            var flat = _database.Flat.FirstOrDefault(fl => fl.Id == user.FlatId);
+            if(flat != null) {
+                _database.Entry(flat).Collection(fl => fl.Users).Load();
+            }
             return new FlatDTO(flat);
         }
 
@@ -46,9 +50,16 @@ namespace WebApiBackend.Controllers
             var identity = HttpContext.User.Identity as ClaimsIdentity;
             var username = identity.FindFirst(ClaimTypes.Name).Value;
             var user = _database.User.First(user => user.UserName == username);
-            var flat = new Flat();
-            flat.Users = new System.Collections.Generic.List<User> { user };
+            var flat = new Flat
+            {
+                Address = "50 Symonds Street",
+                Users = new List<User> { user },
+                Schedules = new List<Schedule> (),
+                Payments = new List<Payment> ()
+            };
+            user.Flat = flat;
             _database.Add(flat);
+            _database.SaveChanges();
             Response.StatusCode = 201;
             return new FlatDTO(flat);
         }

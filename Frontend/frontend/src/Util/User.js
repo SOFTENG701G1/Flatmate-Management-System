@@ -26,7 +26,7 @@ export default class User {
 }
 
 try {
-    User.flatState = {"flatMembers": []};
+    User.flatState = {"flatMembers": [{"firsname": "temp"}]};
     User.userState = localStorage.getItem("flatmates_app_user") ?
         JSON.parse(localStorage.getItem("flatmates_app_user")) : undefined;
 } catch (e) {}

@@ -9,7 +9,6 @@ import {
   Route
 } from "react-router-dom";
 
-import Dashboard from './Components/Dashboard';
 import Navigation from './Components/Navigation';
 import Login from './Views/Login';
 import Logout from './Views/Logout';

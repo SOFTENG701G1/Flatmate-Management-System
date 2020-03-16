@@ -8,10 +8,6 @@ export default class Members extends React.Component {
     constructor(props) {
         super(props);
 
-        this.state = {
-            flatMembers: ["temp"],
-        }
-
         this.getMembers = this.getMembers.bind(this);
         this.getMembers();
     }
@@ -28,6 +24,7 @@ export default class Members extends React.Component {
 
     render() {
         var flat = User.getFlatState();
+        //Check that user is actually part of a flat
         if (flat.flatMembers.length === 0) {
             return <Redirect to="/app/newFlat"/>
         } else {
