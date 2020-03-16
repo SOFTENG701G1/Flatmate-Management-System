@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+    import React, {Component} from 'react';
 import '../App.css';
 import Container from 'react-bootstrap/Container';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
@@ -44,7 +44,8 @@ export default class Chores extends Component {
     render () {
         return (
             <Container>
-                <h2>Flat Chores</h2>
+                <div class='section-header' style={{"width":"45%", "marginBottom": "50px"}}>Flat Chores</div>
+
                 <Tabs>
                     <TabList>
                         <Tab>{title}</Tab>    
@@ -52,9 +53,15 @@ export default class Chores extends Component {
                         <Tab>Teresa</Tab>
                         <Tab>Bryan</Tab>
                     </TabList>
+<<<<<<< HEAD
                     
                     <TabPanel> 
                         <ChoresTable assignee="All" chores={this.state.chores}/>
+=======
+                    {/* Chores are empty currenty because waiting on actual implementation */}
+                    <TabPanel> 
+                        <h2>List of Everyone's Chores</h2>
+>>>>>>> Improved the header on chores page
                     </TabPanel>
                     <TabPanel>
                         <ChoresTable assignee="Yin" chores={this.state.chores.filter(chore => {
