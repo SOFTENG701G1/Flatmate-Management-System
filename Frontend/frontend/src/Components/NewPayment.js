@@ -4,9 +4,8 @@ import Modal from 'react-bootstrap/Modal';
 import Cross from '../images/cross.png';
 import "./NewPayment.css";
 
-
 /*
-    This class renders the Payments page.
+    This class renders the New Payments page.
 */
 
 export default class NewPayment extends Component {

@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import NewPayment from "./NewPayment"
+import ViewPayment from "./ViewPayment"
 import "./Payments.css"
 
 /*
@@ -88,7 +89,7 @@ export default class Payments extends Component {
                                     Add new
                                 </button>
                             </span>
-                            <NewPayment onClose={this.handleClose} show={this.state.show} />
+                            <ViewPayment onClose={this.handleClose} show={this.state.show} />
                         </td>
                     </tr>
                     <tr>
@@ -104,8 +105,9 @@ export default class Payments extends Component {
                         </td>
                     </tr>
                     <tr>
-                        <td>
+                        <td onClick={this.handleOpen}>
                             {FixedPaymentsHtml}
+                           
                         </td>
                         <td>
                             {VariablePaymentsHtml}
