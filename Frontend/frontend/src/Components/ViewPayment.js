@@ -5,9 +5,6 @@ import Cross from '../images/cross.png';
 import "./NewPayment.css";
 
 
-/*
-    This class renders the Payments page.
-*/
 
 export default class NewPayment extends Component {
     constructor(props) {
