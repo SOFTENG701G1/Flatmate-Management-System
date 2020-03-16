@@ -52,7 +52,7 @@ export default class App extends React.Component {
                   <MembersPage/>
                 </Route>
                 <Route path="/app/">
-                  <Home />
+                  <Home/>
                 </Route>
               </Switch>
             </Route>

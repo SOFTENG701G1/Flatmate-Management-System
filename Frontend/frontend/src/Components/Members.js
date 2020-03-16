@@ -53,13 +53,12 @@ export default class MembersPage extends Component {
           <MuiThemeProvider>
             <div>
                
-                <h2>Members Page</h2>
-                {/* <input value = {text} onChange= {this.onTextChanged} type = "text" placeholder = "Enter Username to add and press Enter"/>
-                <button type = "submit">Add User to flat</button>
-                {this.renderSuggestion()} */}
-                <Form onSubmit={submission =>this.setState({data: [...this.state.data, submission]})}/>
-            </div>
-            </MuiThemeProvider>
+            <div className='section-header'>Members page</div>        
+            <input type = 'text'/>
+            <button className = "button">Add</button>
+
+        </div>
+        </MuiThemeProvider>
         );
     }
 }
