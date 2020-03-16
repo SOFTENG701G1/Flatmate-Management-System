@@ -1,11 +1,7 @@
 import React from 'react';
 import './App.css';
 import Chores from './Components/Chores';
-<<<<<<< HEAD
-=======
 import Payments from './Components/Payments';
-
->>>>>>> 179aba3ccc3fd7a5ed0d39f453e3644f1f6fe5d8
 import {
   BrowserRouter as Router,
   Switch,
@@ -73,6 +69,3 @@ function Home() {
   return <div class='section-header'>Flat Management System</div>;
 }
 
-function Payments() {
-  return <div class='section-header'>Payments page</div>;
-}
