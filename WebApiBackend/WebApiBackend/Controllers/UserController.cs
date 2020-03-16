@@ -117,8 +117,6 @@ namespace WebApiBackend.Controllers
                 return false;
             }
 
-            Flat flat = new Flat { Address = "123" };
-
             user = new User
             {
                 UserName = userName,
@@ -131,12 +129,9 @@ namespace WebApiBackend.Controllers
                 BankAccount = bankAccount,
             };
 
-            user.Flat = flat;
-
             PasswordHasher<User> hasher = new PasswordHasher<User>();
             var hashedPassword = hasher.HashPassword(user, password);
             user.HashedPassword = hashedPassword;
-            _database.Add(flat);
             _database.Add(user);
             _database.SaveChanges();
 
