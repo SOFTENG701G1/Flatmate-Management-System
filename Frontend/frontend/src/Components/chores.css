@@ -1,6 +1,6 @@
 .react-tabs {
   -webkit-tap-highlight-color: transparent;
-  height: 200px; /*Change this to adjust the size of the table. Initally set small to test scroll bar */
+  height: 500px; 
 }
 
 .react-tabs__tab-list {
@@ -50,10 +50,29 @@
 
 .react-tabs__tab-panel {
   display: inline-block;
+  width: 800px;
 }
 
 .react-tabs__tab-panel--selected {
   height: 80%;
   display: inline-block;
-  overflow: scroll;
+  /* overflow-y: scroll; */
+}
+
+
+
+.table {
+  background-color: #1E1F26;
+}
+
+.table-heading {
+  font-weight: bold;
+  color: #8EDCE6;
+  background-color: #1E1F26;
+  font-size: 16px;
+};
+
+.table-cell {
+  color: #EEEEEE;
+  font-size: 14px;
 }
