@@ -67,7 +67,7 @@ export default class Login extends React.Component {
           <h2> Login to your account </h2>
           <form action="#" method="POST">
             <input type='text' name='username' onChange={this.bindInput} placeholder='Username'/>
-            <input type='password' name='password' className="password-field" onChange={this.bindInput} placeholder='Password'/>
+            <input type='password' name='password' className="input-field" onChange={this.bindInput} placeholder='Password'/>
             <input type='submit' value='Login' onClick={this.login}/>
             { this.state.error ? <div className='login-error'> { this.state.error } </div> : <div className="error-placeholder"/> }
             <div className="other-actions">

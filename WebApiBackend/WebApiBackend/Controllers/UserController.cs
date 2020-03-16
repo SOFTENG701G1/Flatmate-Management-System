@@ -32,7 +32,7 @@ namespace WebApiBackend.Controllers
         [HttpPost("login")]
         public ActionResult<LoggedInDto> Login(LoginDto login)
         {
-            User user = _database.User.FirstOrDefault(u => u.UserName.ToLower() == login.Username.ToLower());
+            User user = _database.User.FirstOrDefault(u => u.UserName.ToLower() == login.UserName.ToLower());
 
             if (user == null)
             {

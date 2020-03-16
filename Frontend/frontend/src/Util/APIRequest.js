@@ -43,4 +43,21 @@ export default class APIRequest {
 
         return res;
     }
+
+    static async register(username, firstName, lastName, dateOfBirth, phoneNumber,
+        email, medicalInfo, bankAccountNumber, password) {
+        let res = await fetch(apiBaseUrl + "api/user/register",
+        {
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            method: "POST",
+            body: JSON.stringify({ username: username, firstname: firstName, lastname: lastName,
+                                    dateofbirth: dateOfBirth, phonenumber: phoneNumber, email: email,
+                                    medicalinformation: medicalInfo, bankAccountNumber: bankAccountNumber, password: password})
+        });
+
+        return res;
+    }
 }

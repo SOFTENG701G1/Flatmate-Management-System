@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 
 import './Login.css';
 import APIRequest from '../Util/APIRequest';
@@ -64,12 +64,27 @@ export default class Register extends React.Component {
   async createNewAccount (event) {
     event.preventDefault();
     this.setState({ error: ""});
-    if (!this.state.firstName || !this.state.lastName || !this.state.dateOfBirth) {
-      this.setState({ error: "First name, last name and date of birth is required."});
+    if (!this.state.firstName || !this.state.lastName || !this.state.dateOfBirth || !this.state.phoneNumber) {
+      this.setState({ error: "First name, last name, date of birth, and phone number is required."});
       return;
     }
 
-    // TODO: Create account here
+    let registerResult = await APIRequest.register(this.state.username, this.state.firstName, this.state.lastName,
+      this.state.dateOfBirth, this.state.phoneNumber, this.state.email, this.state.medicalInfo,
+      this.state.bankAccountNumber, this.state.password);
+    if (registerResult.ok) {
+      User.setUserState(await registerResult.json());
+      this.forceUpdate(); // Triggers re-render, which will activate redirect now user is setup
+    } else {
+      switch (registerResult.status) {
+        case 409:
+          this.setState({ error: "Phone number already in use. "});
+          break;
+        default:
+          this.setState({ error: "Unknown error (check your internet)."});
+          break;
+      }
+    }
   }
   
   bindInput (event) {
@@ -87,6 +102,7 @@ export default class Register extends React.Component {
   render() {
     return (
       <div className="login-backdrop">
+        { User.getUserState() ? <Redirect to="/app/"/> : '' }
         <div className='login-container'>
           <Link to={this.state.firstSignUpPage ? "/home" : "/register"} onClick={() => this.goBackToFirstPage()}>
             <img src={BackArrow} alt="Go Back" className="back-arrow"/>
@@ -98,16 +114,16 @@ export default class Register extends React.Component {
               <>
                 <input type='text' name='email' onChange={this.bindInput} placeholder='Email*' defaultValue={this.state.email}/>
                 <input type='text' name='username' onChange={this.bindInput} placeholder='Username*' defaultValue={this.state.username}/>
-                <input type='text' name='password' onChange={this.bindInput} placeholder='Password*' defaultValue={this.state.password}/>
-                <input type='text' name='passwordRepeat' onChange={this.bindInput} placeholder='Retype password*' defaultValue={this.state.passwordRepeat}/>
+                <input type='password' name='password' className="input-field" onChange={this.bindInput} placeholder='Password*' defaultValue={this.state.password}/>
+                <input type='password' name='passwordRepeat' className="input-field" onChange={this.bindInput} placeholder='Retype password*' defaultValue={this.state.passwordRepeat}/>
               </>
             }
             { !this.state.firstSignUpPage && 
               <>
                 <input type='text' name='firstName' onChange={this.bindInput} placeholder='First name*'/>
                 <input type='text' name='lastName' onChange={this.bindInput} placeholder='Last name*' />
-                <input type='text' name='dateOfBirth' onChange={this.bindInput} placeholder='Date of birth*' />
-                <input type='text' name='phoneNumber' onChange={this.bindInput} placeholder='Phone number' />
+                <input type='date' name='dateOfBirth' className="input-field" onChange={this.bindInput} placeholder='Date of birth*' />
+                <input type='number' name='phoneNumber' className="input-field" onChange={this.bindInput} placeholder='Phone number' />
                 <input type='text' name='bankAccountNumber' onChange={this.bindInput} placeholder='Bank account number' />
                 <input type='text' name='medicalInfo' onChange={this.bindInput} placeholder='Medical information (i.e. allergies, etc)'/>
               </>
