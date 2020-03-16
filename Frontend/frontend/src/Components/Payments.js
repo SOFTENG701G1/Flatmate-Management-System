@@ -1,4 +1,4 @@
-import React, {Component} from "react";
+import React, { Component } from "react";
 import NewPayment from "./NewPayment"
 import "./Payments.css"
 
@@ -6,9 +6,10 @@ import "./Payments.css"
     This class renders the Payments page.
 */
 export default class Payments extends Component {
-    constructor () {
+    constructor() {
         super();
         this.state = {
+            show: false,
             // Currently are dummy data
             FixedPayments: [{
                 PaymentType: "Rent",
@@ -43,16 +44,19 @@ export default class Payments extends Component {
         }
     }
 
-    state = {
-        seen: false
-        };
-       togglePop = () => {
+    handleOpen = () => {
         this.setState({
-         seen: !this.state.seen
-        });
-       };
+            show: true
+        })
+    }
 
-    render () {
+    handleClose = () => {
+        this.setState({
+            show: false
+        })
+    }
+
+    render() {
         const FixedPaymentsHtml = [];
         const VariablePaymentsHtml = []
         this.state.FixedPayments.forEach(
@@ -78,13 +82,13 @@ export default class Payments extends Component {
                         <td colSpan="2" className="PaymentPageTitle">
                             <span className="PaymentPageTitle">
                                 <h2 className="PaymentsTitle">Payments</h2>
-                            </span> 
-                            <span className="NewPaymentButton" onClick={this.togglePop}>
+                            </span>
+                            <span className="NewPaymentButton" onClick={this.handleOpen}>
                                 <button className="NewPaymentButton">
-                                    Add new payment
+                                    Add new
                                 </button>
                             </span>
-                            {this.state.seen ? <NewPayment toggle={this.togglePop} /> : null}
+                            <NewPayment onClose={this.handleClose} show={this.state.show} />
                         </td>
                     </tr>
                     <tr>
@@ -124,7 +128,7 @@ export default class Payments extends Component {
         Contributors: String[]
     }
 */
-function PaymentModule(props){
+function PaymentModule(props) {
     const PaymentType = props.Payment.PaymentType;
     const Amount = props.Payment.Amount;
     const StartDate = props.Payment.StartDate;

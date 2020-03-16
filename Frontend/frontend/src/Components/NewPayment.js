@@ -7,44 +7,18 @@ import "./NewPayment.css";
 
 
 export default class NewPayment extends Component {
-
-
-    constructor() {
-        super();
-        this.state = {
-            show: false
-        }
-
-
+    constructor(props) {
+        super(props);
     }
-
-
-
-    handleClick = () => {
-        this.setState({ show: true });
-    };
-
-
-
-    handleShow = () => {
-        this.setState({ show: true });
-    }
-
-    handleClose = () => {
-        this.setState({ show: false });
-    }
-
 
     render() {
+        const {show, onClose} = this.props
         return (
             <>
-                <Button variant="primary" onClick={this.handleShow}>
-                    Launch demo modal
-                                </Button>
-                <Modal show={this.state.show} onHide={this.handleClose} backdrop={true}>
+                <Modal show={show} onHide={onClose} backdrop={true}>
                     <Modal.Header>
                         <span className="CrossButton">
-                            <Button className="CrossButton" variant="secondary" onClick={this.handleClose}>
+                            <Button className="CrossButton" variant="secondary" onClick={onClose}>
                                 <img src={Cross} alt="cross" className="cross-image"/>
                             </Button>
                         </span>
@@ -125,12 +99,12 @@ export default class NewPayment extends Component {
                     </Modal.Body>
                     <Modal.Footer>
                         <span className="CancelButton">
-                            <Button className="CancelButton" variant="secondary" onClick={this.handleClose}>
+                            <Button className="CancelButton" variant="secondary" onClick={onClose}>
                                 Cancel
                                         </Button>
                         </span>
                         <span className="SaveButton">
-                            <Button className="SaveButton" variant="primary" onClick={this.handleClose}>
+                            <Button className="SaveButton" variant="primary" onClick={onClose}>
                                 Save
                                         </Button>
                         </span>
