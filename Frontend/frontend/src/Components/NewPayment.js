@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
-// import Cross from '.../images/cross.png';
+import Cross from '../images/cross.png';
 import "./NewPayment.css";
 
 
@@ -43,16 +43,13 @@ export default class NewPayment extends Component {
                                 </Button>
                 <Modal show={this.state.show} onHide={this.handleClose} backdrop={true}>
                     <Modal.Header>
-                       
-                        {/* image button */}
-                        {/* <span className="CancelButton">
-                            <Button className="CancelButton" variant="secondary" onClick={this.handleClose}>
-
-                            <img src={Cross} alt="cross" className="cross-image"/>
-                                        </Button>
-                        </span> */}
+                        <span className="CrossButton">
+                            <Button className="CrossButton" variant="secondary" onClick={this.handleClose}>
+                                <img src={Cross} alt="cross" className="cross-image"/>
+                            </Button>
+                        </span>
                         <Modal.Title>
-                            <h1  class="modal-title w-100 text-center"> Rent</h1>
+                            <h1 class="modal-title w-100 text-center"> Rent</h1>
                         </Modal.Title>
 
                     </Modal.Header>
