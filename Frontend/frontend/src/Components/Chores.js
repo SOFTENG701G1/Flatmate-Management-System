@@ -2,6 +2,7 @@
 import '../App.css';
 import Container from 'react-bootstrap/Container';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
+import ChoresUpdateButton from './ChoresUpdateButton';
 import './chores.css';
 import ChoresTable from './ChoresTable';
 
@@ -86,8 +87,9 @@ export default class Chores extends Component {
                             }})}/>
                     </TabPanel>
                 </Tabs>
-                
-                Button to add new chores
+                <div style={{"margin":"30px"}}>
+                    <ChoresUpdateButton ></ChoresUpdateButton>
+                </div>
             </Container>
             );
     }
