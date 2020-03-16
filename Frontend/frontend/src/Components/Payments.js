@@ -85,7 +85,7 @@ export default class Payments extends Component {
                             </span>
                             <span className="NewPaymentButton" onClick={this.handleOpen}>
                                 <button className="NewPaymentButton">
-                                    Add new payment
+                                    Add new
                                 </button>
                             </span>
                             <NewPayment onClose={this.handleClose} show={this.state.show} />
