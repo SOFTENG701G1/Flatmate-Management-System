@@ -8,12 +8,12 @@ namespace WebApiBackend.Dto
 {
     public class LoggedInDto
     {
-        public string Username { get; set; }
+        public string UserName { get; set; }
         public string Token { get; set; }
 
         public LoggedInDto(User user, string token)
         {
-            Username = user.UserName;
+            UserName = user.UserName;
             Token = token;
         }
     }

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Redirect } from 'react-router-dom';
+import { Redirect, Link } from 'react-router-dom';
 
 import User from '../Util/User';
 
@@ -7,30 +7,18 @@ import './Login.css';
 import Logo from '../images/logo-house-blue.png';
 
 export default class Login extends React.Component {
-  state = {
-    redirectTo: null,
-  }
-
-  login = () => {
-    this.setState({ redirectTo: '/login' });
-  }
-
-  signUp = () => {
-    this.setState({ redirectTo: '/register' });
-  }
 
   render() {
     return (
       <div className="login-backdrop">
         { User.getUserState() && <Redirect to="/app/"/> }
-        { this.state.redirectTo && <Redirect to={this.state.redirectTo}/> }
         <div className='login-container'>
           <img src={Logo} alt="logo" className="logo-image"/>
           <h2 style={{ marginBottom: 10 }}>FLATMATE</h2>
           <p style={{ margin: 0 }}>Making flat management easier</p>
           <form action="#" method="POST" style={{ marginTop: 20 }}>
-            <input type='submit' value='Login' onClick={this.login}/>
-            <input type='submit' value='Sign up' onClick={this.signUp}/>
+            <Link to="/login"><input type='button' value='Login'/></Link>
+            <Link to="/register"><input type='button' value='Sign up'/></Link>
           </form>
         </div>
       </div>

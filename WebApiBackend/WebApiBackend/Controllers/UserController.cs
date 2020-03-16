@@ -32,7 +32,7 @@ namespace WebApiBackend.Controllers
         [HttpPost("login")]
         public ActionResult<LoggedInDto> Login(LoginDto login)
         {
-            User user = _database.User.FirstOrDefault(u => u.UserName.ToLower() == login.Username.ToLower());
+            User user = _database.User.FirstOrDefault(u => u.UserName.ToLower() == login.UserName.ToLower());
 
             if (user == null)
             {
@@ -47,6 +47,24 @@ namespace WebApiBackend.Controllers
             }
 
             return new LoggedInDto(user, CreateToken(user.UserName));
+        }
+
+        [HttpPost("check")]
+        public ActionResult CheckUser(RegisterRequestDTO registerRequest)
+        {
+            // Check if username is already used (must be unique as per entity schema)
+            if (_database.User.FirstOrDefault(u => u.UserName.ToLower() == registerRequest.UserName.ToLower()) != null)
+            {
+                return new BadRequestResult();
+            }
+
+            // Check if email is already used (must be unique as per entity schema)
+            if (_database.User.FirstOrDefault(u => u.Email.ToLower() == registerRequest.Email.ToLower()) != null)
+            {
+                return new ConflictResult();
+            }
+
+            return new OkResult();
         }
 
         [HttpPost("register")]
