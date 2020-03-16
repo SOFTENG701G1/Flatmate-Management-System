@@ -50,8 +50,14 @@ namespace WebApiBackend.Controllers
             var identity = HttpContext.User.Identity as ClaimsIdentity;
             var username = identity.FindFirst(ClaimTypes.Name).Value;
             var user = _database.User.First(user => user.UserName == username);
+            if(user.FlatId > 0)
+            {
+                Response.StatusCode = 403;
+                return null;
+            }
             var flat = new Flat
             {
+                //Temporary flat address. Will need to be added in with the post request later
                 Address = "50 Symonds Street",
                 Users = new List<User> { user },
                 Schedules = new List<Schedule> (),

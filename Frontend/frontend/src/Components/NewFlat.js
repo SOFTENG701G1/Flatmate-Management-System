@@ -33,8 +33,8 @@ function HomeButton() {
     if(resp.status == 201){
       var flat = await resp.json();
       User.setFlatState(flat);
-      history.push("/app/members") 
-    }  
+    } 
+    history.push("/app/members") 
   }
 
   return (
