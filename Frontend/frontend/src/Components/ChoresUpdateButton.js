@@ -13,6 +13,11 @@ import Select from 'react-select';
 
 /** This sets up the component that is a button which the user can click on 
  * which opens up a popup where the users can fill in chores information
+ * The add functionality currently doesn't work and at the moment it just mimics it.
+ * This component is also meant to for editing existing chores, currently you can 
+ * pass in details to fill in the popup for editing, but the application currently doesn't
+ * have the edit feature. I will be useful in the future
+ * To do: Implement the adding chores functionality
  */
 function ChoresUpdateButton(props){
   const [popupState, setPopupState] = React.useState(false);
@@ -46,7 +51,7 @@ function ChoresUpdateButton(props){
             Use following form to assign people or yourself chores. You can see your assigned chores
             on the dashboard
           </DialogContentText>
-          {/** Allows to add a titel, can pass in title description using props and set it as default value*/}
+          {/** Allows to add a title, can pass in title description using props and set it as default value*/}
           <TextField
             autoFocus
             margin="dense"

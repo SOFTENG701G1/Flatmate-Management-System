@@ -58,15 +58,9 @@ export default class Chores extends Component {
                         <Tab>Teresa</Tab>
                         <Tab>Bryan</Tab>
                     </TabList>
-<<<<<<< HEAD
                     
                     <TabPanel> 
                         <ChoresTable assignee="All" chores={this.state.chores}/>
-=======
-                    {/* Chores are empty currenty because waiting on actual implementation */}
-                    <TabPanel> 
-                        <h2>List of Everyone's Chores</h2>
->>>>>>> Improved the header on chores page
                     </TabPanel>
                     <TabPanel>
                         <ChoresTable assignee="Yin" chores={this.state.chores.filter(chore => {
