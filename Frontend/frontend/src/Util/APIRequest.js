@@ -55,7 +55,7 @@ export default class APIRequest {
             method: "POST",
             body: JSON.stringify({ username: username, firstname: firstName, lastname: lastName,
                                     dateofbirth: dateOfBirth, phonenumber: phoneNumber, email: email,
-                                    medicalinformation: medicalInfo, bankAccountNumber: bankAccountNumber, password: password})
+                                    medicalinformation: medicalInfo, bankAccount: bankAccountNumber, password: password})
         });
 
         return res;
