@@ -1,0 +1,100 @@
+.PaymentPage {
+    position: absolute;
+    top: 0px;
+    right: 20px;
+    background-color: transparent;
+    border: 5px;
+    border-color: aliceblue;
+    border-radius: 10px;
+    border-style: none;
+    max-width: 80%;
+}
+
+.PaymentTable {
+    position: relative;
+    table-layout: fixed;
+    width: 100%;
+}
+
+span.PaymentPageTitle {
+    max-height: 50px;
+    padding-bottom: 10px;
+    min-width: 100%;
+    float: center;
+    display: block;
+}
+
+td.PaymentPageTitle {
+    border-top: transparent;
+    border-left: transparent;
+    border-right: transparent;
+    border-bottom: #1F5673;
+    border-style: solid;
+}
+
+h2.PaymentPageTitle {
+    margin-top: 10px;
+    font-size: 45px;
+}
+
+h4.Subtitle {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    font-size: 20px;
+    text-align: left;
+}
+
+span.NewPaymentButton {
+    float: right;
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    margin:15px;
+}
+
+button.NewPaymentButton {
+    position: relative;
+    float: right;
+    height: 30px;
+    width: 100px;
+    background-color: #1F5673;
+    color: #EEEEEE;
+    border-style: none;
+    border-radius:5px;
+}
+
+table.PaymentModule {
+    margin-top: 5px;
+    border-color: #1F5673;
+    border-radius: 8px;
+    border-style: solid;
+    max-width: 70%;
+    background-color: #23242A;
+}
+
+td.PaymentModuleDataLeft {
+    text-align: left;
+}
+
+td.PaymentModuleDataRight {
+    text-align: right;
+}
+
+h6.PaymentModuleHeader {
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+h6.PaymentModuleData {
+    margin-top: 0px;
+    margin-bottom: 5px;
+}
+
+td {
+    border-style: none;
+    min-width: 25%;
+}
+
+h2 h4 {
+    color: #EEEEEE;
+}
