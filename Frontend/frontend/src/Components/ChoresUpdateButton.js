@@ -8,17 +8,14 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import InputLabel from '@material-ui/core/InputLabel';
-import MenuItem from '@material-ui/core/MenuItem';
 import MultiSelect from "react-multi-select-component";
 import Select from 'react-select';
 
+/** This sets up the component that is a button which the user can click on 
+ * which opens up a popup where the users can fill in chores information
+ */
 function ChoresUpdateButton(props){
   const [popupState, setPopupState] = React.useState(false);
-
-  const [membersState, setMembersState] = React.useState([]);
-
-  
-
   const handleOpenPopup = () => {
     setPopupState(true);
   };
@@ -26,6 +23,9 @@ function ChoresUpdateButton(props){
     setPopupState(false);
   };
   
+  /** Fixed options for the users you can add, 
+   * To do: make this dynamic and depend on actual members
+   */
   const options = [
     { value: 'yin', label: 'Yin' },
     { value: 'teresa', label: 'Teresa' },
@@ -46,6 +46,7 @@ function ChoresUpdateButton(props){
             Use following form to assign people or yourself chores. You can see your assigned chores
             on the dashboard
           </DialogContentText>
+          {/** Allows to add a titel, can pass in title description using props and set it as default value*/}
           <TextField
             autoFocus
             margin="dense"
@@ -54,6 +55,11 @@ function ChoresUpdateButton(props){
             defaultValue={props.title}
             fullWidth
           />
+          {/** Allows members to be assigned to chores, can pass in members using props and set it as default value
+           * The passed in memeber should be an array of objects in format: { value: (username all lower case), label: (username)}
+           * e.g. { value: 'yin', label: 'Yin' }
+           * To do: Improve how members are passed in
+           */}
           <div className="chores_assign">
             <InputLabel  id="demo-simple-select-label" style={{"margin-bottom":"10px"}}>Assigned Flat Members</InputLabel>
             <Select
@@ -65,6 +71,7 @@ function ChoresUpdateButton(props){
               classNamePrefix="select"
             />
           </div>
+          {/** Allows to add a description, can pass in description using props and set it as default value*/}
           <TextField
             autoFocus
             margin="dense"
