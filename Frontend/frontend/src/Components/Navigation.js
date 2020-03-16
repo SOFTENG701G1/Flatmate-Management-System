@@ -9,12 +9,12 @@ export default class Navigation extends React.Component {
     return <nav className="menu">
       <div className="menu__down">
         <ul className="menu__list">
-          <li className="menu__logo"></li>
-          <li className="menu__user_detail">
-            { User.getUserState() ? User.getUserState().username : '' }
-          </li>
-          <li className="menu__logout">
-            <Link to="/logout/"><a className="menu__link" href="#">Logout</a></Link>
+          <li className="menu__list-item menu__logo"></li>
+          <li className="menu__list-item menu__user_detail">
+            <div className='user_profile'> </div>
+            <div className='user_profile_name'>
+              { User.getUserState() ? User.getUserState().username : '' }
+            </div>
           </li>
           <li className="menu__list-item">
             <Link to="/app/"><a className="menu__link" href="#">Home</a></Link>
@@ -30,6 +30,9 @@ export default class Navigation extends React.Component {
           </li>
           <li className="menu__list-item">
             <Link to="/app/members"><a className="menu__link" href="#">Members</a></Link>
+          </li>
+          <li className="menu__list-item menu__logout">
+            <Link to="/logout/"><a className="menu__link" href="#">Logout</a></Link>
           </li>
         </ul>
       </div>
