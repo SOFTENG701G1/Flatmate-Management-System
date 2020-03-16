@@ -1,13 +1,16 @@
 import React from "react";
-import TextField from "material-ui/TextField";
-import RaisedButton from "material-ui/RaisedButton";
+import TextField from '@material-ui/core/TextField';
+import Button from '@material-ui/core/Button';
+import { makeStyles } from '@material-ui/core/styles';
+
+
+
 
 export default class Form extends React.Component {
   state = {
     username: "",
     usernameError: "",
   };
-
   change = e => {
     // this.props.onChange({ [e.target.name]: e.target.value });
     this.setState({
@@ -48,10 +51,14 @@ export default class Form extends React.Component {
     }
   };
 
+
+
   render() {
     return (
       <form>
+        <div>
         <TextField
+          id="outlined-basic"
           name="username"
           hintText="Username"
           floatingLabelText="Username"
@@ -59,51 +66,14 @@ export default class Form extends React.Component {
           onChange={e => this.change(e)}
           errorText={this.state.usernameError}
           floatingLabelFixed
+          
         />
-        <br />
-        <br />
-        <RaisedButton label="Add" onClick={e => this.onSubmit(e)} primary />
-        <br />
-        <br />
-        <br />
+        <Button variant="contained" color="secondary" onClick={e => this.onSubmit(e)}>
+        Add
+        </Button>
+        {/* <Button label="Add" onClick={e => this.onSubmit(e)} /> */}
+        </div>
       </form>
     );
   }
 }
-
-
-
-
-
-
-
-    //DO NOT WORRY ABOUT THIS CODE.
-        // onTextChanged =(e) => {
-        //     const value = e.target.value;
-        //     let suggestions = [];
-        //     if (value.length > 0){
-        //         const regex = new RegExp(`^${value}`,'i');
-        //         suggestions = this.items.sort().filter(v => regex.test(v));
-        //     }
-        //     this.setState(()=>({ suggestions,text: value}));
-
-        // }
-        // renderSuggestion(){
-        //     const {suggestions} = this.state;
-        //     if(suggestions.length === 0){
-        //         return null;
-        //     }
-        //     return (
-        //         <ul> 
-        //             {suggestions.map((item) => <li onClick ={() => this.suggestionSelected(item)}>{item}</li>)}
-        //         </ul>
-        //     )
-
-        // }
-        // suggestionSelected(value){
-        //     this.setState(()=>({
-        //         text: value,
-        //         suggestions:[],
-        //     }))
-
-        // }
