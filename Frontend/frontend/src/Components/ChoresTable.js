@@ -49,7 +49,7 @@ class ChoresTable extends React.Component {
                       <TableCell style={cellStyle}> {row.chore}</TableCell>
                       <TableCell style={cellStyle} align="left">{row.assignee}</TableCell>
                       <TableCell style={cellStyle} align="left">{row.completeBy}</TableCell>
-                      <TableCell style={cellStyle} align="center">
+                      <TableCell style={cellStyle} align="left">
                           <input type="checkbox" checked={row.completed} ></input>
                           </TableCell>
                     </TableRow>
