@@ -1,4 +1,5 @@
 import React, {Component} from "react";
+import NewPayment from "./NewPayment"
 import "./Payments.css"
 
 /*
@@ -42,6 +43,15 @@ export default class Payments extends Component {
         }
     }
 
+    state = {
+        seen: false
+        };
+       togglePop = () => {
+        this.setState({
+         seen: !this.state.seen
+        });
+       };
+
     render () {
         const FixedPaymentsHtml = [];
         const VariablePaymentsHtml = []
@@ -69,11 +79,12 @@ export default class Payments extends Component {
                             <span className="PaymentPageTitle">
                                 <h2 className="PaymentsTitle">Payments</h2>
                             </span> 
-                            <span className="NewPaymentButton">
+                            <span className="NewPaymentButton" onClick={this.togglePop}>
                                 <button className="NewPaymentButton">
-                                    Add new
+                                    Add new payment
                                 </button>
                             </span>
+                            {this.state.seen ? <NewPayment toggle={this.togglePop} /> : null}
                         </td>
                     </tr>
                     <tr>
