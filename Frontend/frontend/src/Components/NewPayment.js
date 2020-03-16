@@ -7,6 +7,7 @@ import "./NewPayment.css";
 
 
 export default class NewPayment extends Component {
+
     constructor(props) {
         super(props);
     }
@@ -24,6 +25,7 @@ export default class NewPayment extends Component {
                         </span>
                         <Modal.Title>
                             <h1 class="modal-title w-100 text-center"> Rent</h1>
+
                         </Modal.Title>
 
                     </Modal.Header>
@@ -99,12 +101,16 @@ export default class NewPayment extends Component {
                     </Modal.Body>
                     <Modal.Footer>
                         <span className="CancelButton">
+
                             <Button className="CancelButton" variant="secondary" onClick={onClose}>
+
                                 Cancel
                                         </Button>
                         </span>
                         <span className="SaveButton">
+
                             <Button className="SaveButton" variant="primary" onClick={onClose}>
+
                                 Save
                                         </Button>
                         </span>
