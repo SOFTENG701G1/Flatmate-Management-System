@@ -41,7 +41,6 @@ namespace WebApiBackend.Controllers
         {
             List<Payment> payments = await paymentsRepository.GetAll();
             List<UserPayment> userPayments = await userPaymentsRepository.GetAll();
-
             payments = (from p in payments
                         join up in userPayments on p.Id equals up.PaymentId
                         where up.UserId.Equals(userId)
@@ -55,21 +54,28 @@ namespace WebApiBackend.Controllers
             return Ok(paymentsDTOs);
         }
 
-        //[HttpGet("Flat/{flatId}")]
-        //public async Task<IActionResult> GetPaymentsForFlat(int flatId)
-        //{
-        //    List<Payment> payments = await paymentsRepository.GetAll();
+        [HttpGet("Flat/{flatId}")]
+        public async Task<IActionResult> GetPaymentsForFlat(int flatId)
+        {
+            List<Payment> payments = await paymentsRepository.GetAll();
+            List<UserPayment> userPayments = await userPaymentsRepository.GetAll();
+            List<User> users = await userRepository.GetAll();
 
-        //    payments = (from p in payments
-        //                where p.flat)
 
-        //    if (flat == null)
-        //    {
-        //        return NotFound();
-        //    }
+            payments = (from p in payments
+                        join up in userPayments on p.Id equals up.PaymentId
+                        join u in users on up.UserId equals u.Id
+                        where u.FlatId.Equals(flatId)
+                        select p).Distinct.ToList();
 
-        //    return Ok(flat.Payments);
-        //}
+
+            if (payments == null)
+            {
+                return NotFound();
+            }
+            List<PaymentDTO> paymentDTOs = mapper.Map<List<Payment>, List<PaymentDTO>>(payments);
+            return Ok(paymentDTOs);
+        }
 
         [HttpPost("Flat/{flatId}")]
         public async Task<IActionResult> CreatePaymentForFlat(int flatId, [FromBody] PaymentDTO paymentDTO)
