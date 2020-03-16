@@ -14,6 +14,8 @@ namespace WebApiBackend.EF
         {
             this.flatManagementContext = context;
         }
+
+            // Deletes the Userpayment mapping for a particular user and payment
             public async Task<UserPayment> DeleteUserFromPayment(int userId, int paymentId)
             {
                 var entity = await flatManagementContext.Set<UserPayment>().FindAsync(userId, paymentId);

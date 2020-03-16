@@ -7,6 +7,7 @@ namespace WebApiBackend.Mappings
 {
     public class ModelToDTOProfile: Profile
     {
+        // Mapper class to user AutoMapper
         public ModelToDTOProfile()
         {
             CreateMap<Flat, FlatDTO>();
