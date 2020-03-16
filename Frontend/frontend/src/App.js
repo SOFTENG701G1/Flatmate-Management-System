@@ -2,6 +2,7 @@ import React from 'react';
 import './App.css';
 import Dashboard from './Components/Dashboard';
 import Chores from './Components/Chores';
+import Payments from './Components/Payments';
 
 import {
   BrowserRouter as Router,
@@ -69,9 +70,6 @@ function Home() {
   return <div class='section-header'>Flat Management System</div>;
 }
 
-function Payments() {
-  return <div class='section-header'>Payments page</div>;
-}
 function Members() {
   return <div class='section-header'>Members page</div>;
 }
