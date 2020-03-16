@@ -66,7 +66,7 @@ namespace WebApiBackend.Controllers
                         join up in userPayments on p.Id equals up.PaymentId
                         join u in users on up.UserId equals u.Id
                         where u.FlatId.Equals(flatId)
-                        select p).Distinct.ToList();
+                        select p).Distinct().ToList();
 
 
             if (payments == null)
@@ -102,16 +102,24 @@ namespace WebApiBackend.Controllers
             return Ok(paymentDTO);
         }
 
-        //[HttpDelete("Flat/{flatId}")]
-        //public async Task<IActionResult> DeletePaymentForFlat(int flatId, int paymentId)
-        //{
-        //    Flat flat = await flatRepository.Get(flatId);
-        //    Payment entity = await paymentsRepository.Delete(paymentId);
+        [HttpDelete("Flat/{flatId}")]
+        public async Task<IActionResult> DeletePaymentForFlat(int flatId, int paymentId)
+        {
 
-        //    //foreach()
+            //Payment payment = await paymentsRepository.Get(paymentId);
+            Payment payment = await paymentsRepository.Delete(paymentId);
+            PaymentDTO paymentDTO = mapper.Map<Payment, PaymentDTO>(payment);
+            return Ok(paymentDTO);
+        }
 
-        //    return Ok(entity);
-        //}
+        [HttpDelete("User/{userId}")]
+        public async Task<IActionResult> DeleteUserFromPayment(int paymentId, int userId)
+        {
+            await userPaymentsRepository.DeleteUserFromPayment(userId, paymentId);
+            //Payment payment = await paymentsRepository.Get(paymentId);
+            //PaymentDTO paymentDTO = mapper.Map<Payment, PaymentDTO>(payment);
+            return Ok();
+        }
 
 
     }
