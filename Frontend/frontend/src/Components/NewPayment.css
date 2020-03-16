@@ -80,6 +80,27 @@ button.SaveButton {
   border-radius:5px;
 }
 
+span.CrossButton {
+  float: left;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  margin:15px;
+  width: 10px;
+}
+
+button.CrossButton {
+  position: absolute;
+  float: left;
+  background-color: #0C0F13;
+  border-style: none;
+}
+
+img.cross-image{
+  width: 10px;  
+  height: 10px;
+}
+
 label.AmountLabel{
   font-size: 12px;
 }
