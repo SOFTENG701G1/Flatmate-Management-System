@@ -1,30 +1,30 @@
 .react-tabs {
   -webkit-tap-highlight-color: transparent;
-  height: 200px; /*Change this to adjust the size of the table. Initally set small to test scroll bar */
+  height: 500px; 
+  display: flex;
+  flex-direction: column;
+  margin-left: 100px;
 }
 
 .react-tabs__tab-list {
-  border-bottom: 1px solid #000000;
-  margin: 0 0 10px;
-  padding: 0;
+  border-bottom: 1px solid #1E1F26;
+  display: flex;
+  flex-direction: row;
+  font-size: 18px;
+  justify-content: left;
 }
 
 .react-tabs__tab {
-  display: inline-block;
-  border: 1px solid transparent;
-  border-bottom: none;
-  bottom: -1px;
-  position: relative;
   list-style: none;
   padding: 6px 12px;
   cursor: pointer;
+  width: 10%;
 }
 
 .react-tabs__tab--selected {
-  background: #fff;
-  border-color: #aaa;
-  color: black;
-  border-radius: 5px 5px 0 0;
+  background: #1F5673;
+  color: #EEEEEE;
+  border-radius: 8px 8px 0 0;
 }
 
 .react-tabs__tab--disabled {
@@ -50,10 +50,27 @@
 
 .react-tabs__tab-panel {
   display: inline-block;
+  width: 100%;
 }
 
 .react-tabs__tab-panel--selected {
-  height: 80%;
-  display: inline-block;
-  overflow: scroll;
+  height: 75%;
+  display: flex;
+  flex-direction: column;
+}
+
+.table {
+  background-color: #1E1F26;
+}
+
+.table-heading {
+  font-weight: bold;
+  color: #8EDCE6;
+  background-color: #1E1F26;
+  font-size: 16px;
+};
+
+.table-cell {
+  color: #EEEEEE;
+  font-size: 14px;
 }
