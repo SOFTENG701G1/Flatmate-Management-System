@@ -42,7 +42,8 @@ namespace WebApiBackend.Model
                     .IsUnique();
 
                 entity.HasOne(e => e.Flat)
-                    .WithMany(e => e.Users);
+                    .WithMany(e => e.Users)
+                    .HasForeignKey(e => e.FlatId);
             });
 
             modelBuilder.Entity<Payment>(e => {

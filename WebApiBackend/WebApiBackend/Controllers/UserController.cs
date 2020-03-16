@@ -144,13 +144,12 @@ namespace WebApiBackend.Controllers
                 PhoneNumber = phoneNumber,
                 Email = email,
                 MedicalInformation = medicalInformation,
-                BankAccount = bankAccount
+                BankAccount = bankAccount,
             };
 
             PasswordHasher<User> hasher = new PasswordHasher<User>();
             var hashedPassword = hasher.HashPassword(user, password);
             user.HashedPassword = hashedPassword;
-
             _database.Add(user);
             _database.SaveChanges();
 
