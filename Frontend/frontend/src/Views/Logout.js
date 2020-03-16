@@ -5,6 +5,6 @@ import { Redirect } from 'react-router-dom';
 export default class Logout extends React.Component {
     render () {
         User.clearUserState();
-        return <Redirect to='/' />;
+        return <Redirect to='/home/' />;
     }
 }

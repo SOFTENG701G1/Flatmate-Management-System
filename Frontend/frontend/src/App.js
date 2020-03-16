@@ -11,6 +11,7 @@ import {
 import Navigation from './Components/Navigation';
 import Login from './Views/Login';
 import Logout from './Views/Logout';
+import SplashScreen from './Views/SplashScreen';
 import HomePage from './Views/HomePage';
 import RequireLogin from './Components/RequireLogin';
 
@@ -21,6 +22,9 @@ export default class App extends React.Component {
         <div className="container center">
           <Router>
             <Route exact path="/">
+              <SplashScreen/>
+            </Route>
+            <Route path="/home">
               <HomePage/>
             </Route>
             <Route path="/login">
@@ -61,12 +65,12 @@ export default class App extends React.Component {
 }
 /*Router is linked to functions for the time being*/
 function Home() {
-  return <h2>Flat Management System</h2>;
+  return <div class='section-header'>Flat Management System</div>;
 }
 
 function Payments() {
-  return <h2>Payments page</h2>;
+  return <div class='section-header'>Payments page</div>;
 }
 function Members() {
-  return <h2>Members page</h2>;
+  return <div class='section-header'>Members page</div>;
 }

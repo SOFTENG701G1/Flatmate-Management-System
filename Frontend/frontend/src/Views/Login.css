@@ -69,7 +69,11 @@
     height: 200px;
     object-fit: scale-down;
     margin-bottom: 80px;
-    animation: appear 2s infinite alternate;
+    animation: appear 1.25s infinite alternate;
+}
+
+.password-field {
+    padding-left: 1em;
 }
 
 @keyframes appear {
