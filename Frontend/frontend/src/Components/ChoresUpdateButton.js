@@ -1,5 +1,5 @@
 import React, {Component, useState} from 'react';
-import '../App.css';
+import './ChoresUpdateButton.css';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
@@ -28,8 +28,8 @@ function ChoresUpdateButton(){
       </Button>
       <Dialog open={popupState} onClose={handleClosePopup} aria-labelledby="form-dialog-title">
         <DialogTitle id="form-dialog-title">Add Chore</DialogTitle>
-        <DialogContent>
-          <DialogContentText>
+        <DialogContent > 
+          <DialogContentText className="chores_description">
             Use following form to assign people or yourself chores. You can see your assigned chores
             on the dashboard
           </DialogContentText>
@@ -40,13 +40,12 @@ function ChoresUpdateButton(){
             label="Title"
             fullWidth
           />
-          <div className="ChoresFlatMembers">
+          <div className="chores_assign">
             <InputLabel  id="demo-simple-select-label">Assigned Flat Members</InputLabel>
             <Select
-            style={{color: 'red'}}
               labelId="demo-simple-select-label"
               id="demo-simple-select"
-              
+              className="chores_select-members"
             >
               <MenuItem >Ten</MenuItem>
               <MenuItem >Twenty</MenuItem>
