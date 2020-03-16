@@ -10,6 +10,7 @@ import {
 } from "react-router-dom";
 import Navigation from './Components/Navigation';
 import Login from './Views/Login';
+import Register from './Views/Register';
 import Logout from './Views/Logout';
 import SplashScreen from './Views/SplashScreen';
 import HomePage from './Views/HomePage';
@@ -31,7 +32,7 @@ export default class App extends React.Component {
               <Login/>
             </Route>
             <Route path="/register">
-              Register
+              <Register/>
             </Route>
             <Route path="/logout">
               <Logout/>

@@ -13,7 +13,7 @@ export default class Navigation extends React.Component {
           <li className="menu__list-item menu__user_detail">
             <div className='user_profile'> </div>
             <div className='user_profile_name'>
-              { User.getUserState() ? User.getUserState().username : '' }
+              { User.getUserState() ? User.getUserState().userName : '' }
             </div>
           </li>
           <li className="menu__list-item">
