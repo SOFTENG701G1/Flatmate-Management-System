@@ -1,6 +1,11 @@
 import React from 'react';
 import './App.css';
 import Chores from './Components/Chores';
+<<<<<<< HEAD
+=======
+import Payments from './Components/Payments';
+
+>>>>>>> 179aba3ccc3fd7a5ed0d39f453e3644f1f6fe5d8
 import {
   BrowserRouter as Router,
   Switch,
@@ -9,6 +14,7 @@ import {
 import Dashboard from './Components/Dashboard';
 import Navigation from './Components/Navigation';
 import Login from './Views/Login';
+import Register from './Views/Register';
 import Logout from './Views/Logout';
 import SplashScreen from './Views/SplashScreen';
 import HomePage from './Views/HomePage';
@@ -30,7 +36,7 @@ export default class App extends React.Component {
               <Login/>
             </Route>
             <Route path="/register">
-              Register
+              <Register/>
             </Route>
             <Route path="/logout">
               <Logout/>
