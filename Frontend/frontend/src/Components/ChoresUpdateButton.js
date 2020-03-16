@@ -23,7 +23,7 @@ function ChoresUpdateButton(){
 
   return (
     <div>
-      <Button color="primary" onClick={handleOpenPopup}>
+      <Button style={{"background-color":"#1F5673", "color": "white"}} onClick={handleOpenPopup}>
         Add Chore
       </Button>
       <Dialog open={popupState} onClose={handleClosePopup} aria-labelledby="form-dialog-title">
