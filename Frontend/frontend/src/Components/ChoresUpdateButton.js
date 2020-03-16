@@ -11,8 +11,9 @@ import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 
-function ChoresUpdateButton(){
+function ChoresUpdateButton(props){
   const [popupState, setPopupState] = React.useState(false);
+
 
   const handleOpenPopup = () => {
     setPopupState(true);
@@ -38,6 +39,7 @@ function ChoresUpdateButton(){
             margin="dense"
             id="title"
             label="Title"
+            defaultValue={props.title}
             fullWidth
           />
           <div className="chores_assign">
@@ -46,6 +48,7 @@ function ChoresUpdateButton(){
               labelId="demo-simple-select-label"
               id="demo-simple-select"
               className="chores_select-members"
+
             >
               <MenuItem >Ten</MenuItem>
               <MenuItem >Twenty</MenuItem>
