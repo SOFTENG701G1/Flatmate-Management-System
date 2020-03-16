@@ -43,7 +43,7 @@ export default class Chores extends Component {
 
     render () {
         return (
-            <Container>
+            <Container >
                 <div class='section-header' style={{"width":"45%", "marginBottom": "50px"}}>Flat Chores</div>
 
                 <Tabs>
