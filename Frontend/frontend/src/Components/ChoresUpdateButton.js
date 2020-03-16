@@ -9,10 +9,13 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
-import Select from '@material-ui/core/Select';
+import MultiSelect from "react-multi-select-component";
+import Select from 'react-select';
 
 function ChoresUpdateButton(props){
   const [popupState, setPopupState] = React.useState(false);
+
+  const [selected, setSelected] = useState([]);
 
 
   const handleOpenPopup = () => {
@@ -21,7 +24,12 @@ function ChoresUpdateButton(props){
   const handleClosePopup = () => {
     setPopupState(false);
   };
-
+  
+  const options = [
+    { value: 'yin', label: 'yin' },
+    { value: 'teresa', label: 'teresa' },
+    { value: 'bryan', label: 'bryan' }
+  ]
   return (
     <div>
       <Button style={{"background-color":"#1F5673", "color": "white"}} onClick={handleOpenPopup}>
@@ -29,6 +37,7 @@ function ChoresUpdateButton(props){
       </Button>
       <Dialog open={popupState} onClose={handleClosePopup} aria-labelledby="form-dialog-title">
         <DialogTitle id="form-dialog-title">Add Chore</DialogTitle>
+        {/*To do: Change highlight colour from*/}
         <DialogContent > 
           <DialogContentText className="chores_description">
             Use following form to assign people or yourself chores. You can see your assigned chores
@@ -43,23 +52,22 @@ function ChoresUpdateButton(props){
             fullWidth
           />
           <div className="chores_assign">
-            <InputLabel  id="demo-simple-select-label">Assigned Flat Members</InputLabel>
+            <InputLabel  id="demo-simple-select-label" style={{"margin-bottom":"10px"}}>Assigned Flat Members</InputLabel>
             <Select
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
-              className="chores_select-members"
-
-            >
-              <MenuItem >Ten</MenuItem>
-              <MenuItem >Twenty</MenuItem>
-              <MenuItem >Thirty</MenuItem>
-            </Select>
+              defaultValue={[options[1], options[2]]}
+              isMulti
+              name="colors"
+              options={options}
+              className="basic-multi-select"
+              classNamePrefix="select"
+            />
           </div>
           <TextField
             autoFocus
             margin="dense"
             id="description"
             label="Description"
+            defaultValue={props.description}
             fullWidth
             multiline
             rows="4"
