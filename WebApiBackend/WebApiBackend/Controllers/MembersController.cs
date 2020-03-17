@@ -29,13 +29,19 @@ namespace WebApiBackend.Controllers
             _database = context;
         }
 
+        /// <summary>
+        /// GET Method - Get a list of members in the current users flat
+        /// </summary>
+        /// <response code="200">Able to find the user are retrieve members of their flat</response>
+        /// <response code="401">Not an authorised user</response>
+        /// <returns>Retrieves an array consisting of all the users in the current users flat in the form {"flatMembers":[{"member1}, {member2} ...]}. If the user is not part of a flat, returns an empty array</returns>
         [HttpGet("getMembers")]
         [Authorize]
         public ActionResult<FlatDTO> GetFlatMembers()
         {
             var identity = HttpContext.User.Identity as ClaimsIdentity;
-            var username = identity.FindFirst(ClaimTypes.Name).Value;
-            var user = _database.User.FirstOrDefault(x => x.UserName == username);
+            int userID = Int16.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value);
+            var user = _database.User.FirstOrDefault(x => x.Id == userID);
             var flat = _database.Flat.FirstOrDefault(fl => fl.Id == user.FlatId);
             if(flat != null) {
                 _database.Entry(flat).Collection(fl => fl.Users).Load();
@@ -43,14 +49,21 @@ namespace WebApiBackend.Controllers
             return new FlatDTO(flat);
         }
 
+        /// <summary>
+        /// GET Method - Get a list of members in the current users flat
+        /// </summary>
+        /// <response code="201">Able to find the user and create a new flat for them</response>
+        /// <response code="401">Not an authorised user</response>
+        /// /// <response code="403">Attempting to create a new flat while already part of one</response>
+        /// <returns>The JSON representation of the users newly created flat</returns>
         [HttpPost("createFlat")]
         [Authorize]
         public ActionResult<FlatDTO> createFlat()
         {
             var identity = HttpContext.User.Identity as ClaimsIdentity;
-            var username = identity.FindFirst(ClaimTypes.Name).Value;
-            var user = _database.User.First(user => user.UserName == username);
-            if(user.FlatId > 0)
+            int userID = Int16.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value);
+            var user = _database.User.FirstOrDefault(x => x.Id == userID);
+            if (user.FlatId > 0)
             {
                 Response.StatusCode = 403;
                 return null;
