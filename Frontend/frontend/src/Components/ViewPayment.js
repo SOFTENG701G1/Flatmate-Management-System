@@ -18,7 +18,7 @@ export default class ViewPayment extends Component {
     }
 
     render() {
-        const { showView, onCloseView, onEdit } = this.props
+        const { showView, onCloseView, onEdit, payment } = this.props
         return (
             <>
                 <Modal show={showView} onHide={onCloseView} backdrop={true}>
@@ -29,7 +29,7 @@ export default class ViewPayment extends Component {
                             </Button>
                         </span>
                         <Modal.Title>
-                            <h1 class="modal-title w-100 text-center"> RENT</h1>
+                            <h1 class="modal-title w-100 text-center"> {payment.PaymentType}</h1>
                         </Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
@@ -38,13 +38,13 @@ export default class ViewPayment extends Component {
                                 <td className="RowOneColOne" colSpan="2">
                                     <form>
                                         <label className="AmountLabel"> Amount: </label>
-                                        <label className="Amount"> $240 </label>
+                                        <label className="Amount"> {payment.Amount} </label>
                                     </form>
                                 </td>
                                 <td className="RowOneColTwo">
                                     <form>
                                         <label className="StartDateLabel"> Start Date: </label>
-                                        <label className="StartDate"> 09/03/2020 </label>
+                                        <label className="StartDate"> {payment.StartDate} </label>
                                     </form>
                                 </td>
                             </tr>
@@ -52,13 +52,13 @@ export default class ViewPayment extends Component {
                                 <td colSpan="2">
                                     <form>
                                         <label className="PaidToLabel"> Paid To: </label>
-                                        <label className="PaidTo"> Professor Samuel Oak </label>
+                                        <label className="PaidTo"> Ken </label>
                                     </form>
                                 </td>
                                 <td>
                                     <form>
                                         <label className="EndDateLabel"> End Date: </label>
-                                        <label className="EndDate"> 09/12/2020 </label>
+                                        <label className="EndDate"> {payment.EndDate} </label>
                                     </form>
                                 </td>
                             </tr>
@@ -72,7 +72,7 @@ export default class ViewPayment extends Component {
                                 <td>
                                     <form>
                                         <label className="FrequencyLabel"> Frequency: </label>
-                                        <label className="Frequency"> Monthly </label>
+                                        <label className="Frequency"> {payment.Frequency} </label>
                                     </form>
                                 </td>
                             </tr>
@@ -80,7 +80,7 @@ export default class ViewPayment extends Component {
                                 <td colSpan="3">
                                     <form>
                                         <label className="ContributorsPendingLabel"> Contributors Pending: </label>
-                                        <label className="ContributorsPending"> Ash </label>
+                                        <label className="ContributorsPending"> </label>
                                     </form>
                                 </td>
                             </tr>
@@ -88,7 +88,7 @@ export default class ViewPayment extends Component {
                                 <td colSpan="3">
                                     <form>
                                         <label className="ContributorsPaidLabel"> Contributors Paid: </label>
-                                        <label className="ContributorsPaid"> Misty, Brock </label>
+                                        <label className="ContributorsPaid"> {payment.Contributors.join(", ")} </label>
                                     </form>
                                 </td>
                             </tr>
