@@ -120,6 +120,13 @@
     cursor: pointer;
 }
 
+.instructions-text {
+    font-size: 12px;
+
+    margin: 10px 0px;
+    padding: 0px;
+}
+
 @keyframes appear {
     from { opacity: 0; }
 }
