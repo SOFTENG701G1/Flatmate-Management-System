@@ -20,6 +20,7 @@ using WebApiBackend.Helpers;
 using WebApiBackend.Model;
 using Microsoft.OpenApi.Models;
 using WebApiBackend.EF;
+using AutoMapper;
 
 namespace WebApiBackend
 {
@@ -80,7 +81,8 @@ namespace WebApiBackend
             services.AddScoped<UserPaymentsRepository>();
             services.AddScoped<UserRepository>();
             services.AddScoped<FlatRepository>();
-
+            services.AddAutoMapper(typeof(Startup));
+      
             //swagger
             services.AddSwaggerGen(c =>
             {
@@ -117,6 +119,7 @@ namespace WebApiBackend
             app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "Flatmate Management API");
+                c.RoutePrefix = string.Empty; // launch swagger from root
             });
 
             app.UseRouting();

@@ -1,15 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Threading.Tasks;
+using WebApiBackend.Interfaces;
 
-namespace WebApiBackend.Model
+namespace WebApiBackend.Dto
 {
-    public class User
+    public class UserDTO : IEntity
     {
-        [Key]
         public int Id { get; set; }
         public string UserName { get; set; }
         public string FirstName { get; set; }
@@ -20,8 +15,5 @@ namespace WebApiBackend.Model
         public string MedicalInformation { get; set; }
         public string BankAccount { get; set; }
         public string HashedPassword { get; set; }
-        public ICollection<UserPayment> UserPayments { get; set; }
-        public Flat Flat { get; set; }
-        public int? FlatId { get; set; }
     }
 }
