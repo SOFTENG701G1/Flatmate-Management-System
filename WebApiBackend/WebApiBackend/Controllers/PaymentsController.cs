@@ -90,6 +90,7 @@ namespace WebApiBackend.Controllers
         /// <param name="flatId"></param>
         /// <param name="paymentDTO"></param>
         /// <param name="userIds"></param>
+        /// <response code="200">Payment created</response>
         /// <returns> The paymentDTO that is created</returns>        
         [HttpPost("Flat/{flatId}")]
         public async Task<IActionResult> CreatePaymentForFlat(int flatId, [FromBody] PaymentDTO paymentDTO, [FromHeader] List<int> userIds)
