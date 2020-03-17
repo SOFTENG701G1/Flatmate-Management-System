@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using WebApiBackend.Interfaces;
 
 namespace WebApiBackend.Model
 {
@@ -11,7 +12,7 @@ namespace WebApiBackend.Model
         Away
     }
 
-    public class Schedule
+    public class Schedule : IEntity
     {
         [Key]
         public int Id { get; set; }
