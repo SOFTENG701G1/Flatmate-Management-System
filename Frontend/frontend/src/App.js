@@ -1,56 +1,80 @@
 import React from 'react';
-import logo from './logo.png';
 import './App.css';
-import TestComponent from './Components/TestComponent';
+import Dashboard from './Components/Dashboard';
+import Chores from './Components/Chores';
+import Payments from './Components/Payments';
+
 import {
   BrowserRouter as Router,
   Switch,
-  Route,
-  Link
+  Route
 } from "react-router-dom";
+<<<<<<< HEAD
  import Members from './Components/Members';
+=======
+import Navigation from './Components/Navigation';
+import Login from './Views/Login';
+import Register from './Views/Register';
+import Logout from './Views/Logout';
+import SplashScreen from './Views/SplashScreen';
+import HomePage from './Views/HomePage';
+import RequireLogin from './Components/RequireLogin';
+
+>>>>>>> 50-display-members-of-flat
 export default class App extends React.Component {
-  render () {
+  render() {
     return (
-        <div className="App">
-          <div className="container center">
+      <div className="App">
+        <div className="container center">
           <Router>
-          <nav className="menu">
-              <div className="menu__down">
-                  <ul className="menu__list">
-                      <li className="menu__logo"></li>
-                      <li className="menu__list-item"><Link to="/"><a className="menu__link" href="#">Home</a></Link></li>
-                      <li className="menu__list-item"><Link to="/dashboard"><a className="menu__link" href="#">Dashboard</a></Link></li>
-                      <li className="menu__list-item"><Link to="/payments"><a className="menu__link" href="#">Payments</a></Link></li>
-                      <li className="menu__list-item"><Link to="/members"><a className="menu__link" href="#">Members</a></Link></li>
-                  </ul>
-              </div>
-            </nav>
-          <Switch>
-            <Route path="/dashboard">
-              <Dashboard />
+            <Route exact path="/">
+              <SplashScreen/>
             </Route>
-            <Route path="/payments">
-              <Payments />
+            <Route path="/home">
+              <HomePage/>
             </Route>
-            <Route path="/members">
-              <Members />
+            <Route path="/login">
+              <Login/>
             </Route>
-            <Route path="/">
-              <Home />
+            <Route path="/register">
+              <Register/>
             </Route>
-          </Switch>
-           </Router>
-          </div>
+            <Route path="/logout">
+              <Logout/>
+            </Route>
+            <Route path="/app/*">
+              <RequireLogin/>
+              <Navigation/>
+              <Switch>
+                <Route path="/app/dashboard">
+                  <Dashboard />
+                </Route>
+                <Route path="/app/chores">
+                  <Chores />
+                </Route>
+                <Route path="/app/payments">
+                  <Payments />
+                </Route>
+                <Route path="/app/members">
+                  <Members />
+                </Route>
+                <Route path="/app/">
+                  <Home />
+                </Route>
+              </Switch>
+            </Route>
+          </Router>
         </div>
+      </div>
     );
   }
 }
 /*Router is linked to functions for the time being*/
 function Home() {
-  return <h2>Flat Management System</h2>;
+  return <div class='section-header'>Flat Management System</div>;
 }
 
+<<<<<<< HEAD
 function Dashboard() {
   return <h2>Dashboard page</h2>;
 }
@@ -59,3 +83,8 @@ function Payments() {
   return <h2>Payments page</h2>;
 }
 
+=======
+function Members() {
+  return <div class='section-header'>Members page</div>;
+}
+>>>>>>> 50-display-members-of-flat

@@ -36,6 +36,7 @@ namespace WebApiBackend.Controllers
         }
 
 
+        //Get:api/display/{flatId}
         [AllowAnonymous]
         [HttpGet("display/{flatId}")]
         public ActionResult<List<DisplayMemberDTO>> GetMembers(int flatId)

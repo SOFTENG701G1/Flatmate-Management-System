@@ -15,77 +15,143 @@ using System.Linq;
 
 namespace WebApiBackend.Controllers
 {
+
     [Route("api/[controller]")]
     [ApiController]
     public class UserController
     {
-        private readonly FlatManagementContext _context;
-        private readonly PasswordHasher<User> _hasher;
         private readonly AppSettings _appSettings;
+        private readonly FlatManagementContext _database;
 
-        public UserController(FlatManagementContext context, IOptions<AppSettings> appSettings)
+        public UserController( IOptions<AppSettings> appSettings, FlatManagementContext context)
         {
-            _context = context;
             _appSettings = appSettings.Value;
-            _hasher = new PasswordHasher<User>();
+            _database = context;
         }
 
         [HttpPost("login")]
         public ActionResult<LoggedInDto> Login(LoginDto login)
         {
-            User user = _context.User.FirstOrDefault(u => u.UserName.ToLower() == login.Username.ToLower());
+            User user = _database.User.FirstOrDefault(u => u.UserName.ToLower() == login.UserName.ToLower());
 
             if (user == null)
             {
                 return new NotFoundResult();
             }
 
-            if (_hasher.VerifyHashedPassword(user, user.Password, login.Password) != PasswordVerificationResult.Success)
+            PasswordHasher<User> hasher = new PasswordHasher<User>();
+
+            if (hasher.VerifyHashedPassword(user, user.HashedPassword, login.Password) != PasswordVerificationResult.Success)
             {
                 return new ForbidResult();
             }
 
-            // Issue JWT
+            return new LoggedInDto(user, CreateToken(user.UserName));
+        }
+
+        [HttpPost("check")]
+        public ActionResult CheckUser(RegisterRequestDTO registerRequest)
+        {
+            // Check if username is already used (must be unique as per entity schema)
+            if (_database.User.FirstOrDefault(u => u.UserName.ToLower() == registerRequest.UserName.ToLower()) != null)
+            {
+                return new BadRequestResult();
+            }
+
+            // Check if email is already used (must be unique as per entity schema)
+            if (_database.User.FirstOrDefault(u => u.Email.ToLower() == registerRequest.Email.ToLower()) != null)
+            {
+                return new ConflictResult();
+            }
+
+            return new OkResult();
+        }
+
+        [HttpPost("register")]
+        public ActionResult<RegisterResponseDTO> Register(RegisterRequestDTO registerRequest)
+        {
+            // Checking if the non nullable fields (as per business rules) are not empty/null 
+            if (string.IsNullOrEmpty(registerRequest.UserName) || string.IsNullOrEmpty(registerRequest.Email) || 
+                string.IsNullOrEmpty(registerRequest.PhoneNumber) || string.IsNullOrEmpty(registerRequest.Password))
+            {
+                return new BadRequestResult();
+            }
+
+            User user;
+            if (TryCreateUser(registerRequest.UserName, registerRequest.FirstName, registerRequest.LastName, registerRequest.DateOfBirth, registerRequest.PhoneNumber, 
+                registerRequest.Email, registerRequest.MedicalInformation, registerRequest.BankAccount, registerRequest.Password, out user))
+            {
+                return new RegisterResponseDTO
+                {
+                    UserName = user.UserName,
+                    Token = CreateToken(user.UserName)
+                };
+            }
+            else
+            {
+                return new ConflictResult();
+            }
+        }
+
+        private string CreateToken(string username)
+        {
+            // Creates jwt token for user based on user's username as username is the primary key of the user.
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(_appSettings.JWTSecret);
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(new Claim[]
                 {
-                    new Claim(ClaimTypes.Name, user.UserName)
+                    new Claim(ClaimTypes.Name, username)
                 }),
                 Expires = DateTime.UtcNow.AddDays(7),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
             var token = tokenHandler.CreateToken(tokenDescriptor);
 
-            return new LoggedInDto(user, tokenHandler.WriteToken(token));
+            return tokenHandler.WriteToken(token);
         }
 
-        protected bool AddUser(string username, string email, string password)
+        private bool TryCreateUser(string userName, string firstName, string lastName, DateTime dateOfBirth, string phoneNumber, 
+            string email, string medicalInformation, string bankAccount, string password, out User user)
         {
-            if (_context.User.FirstOrDefault(u => u.UserName.ToLower() == username.ToLower()) != null)
+            user = null;
+
+            // Returns false if username is not unique (must be unique as per entity schema). Does not create user.
+            if (_database.User.FirstOrDefault(u => u.UserName.ToLower() == userName.ToLower()) != null)
+            {
+                return false; 
+            }
+
+            // Returns false if email is not unique (must be unique as per entity schema). Does not create user.
+            if (_database.User.FirstOrDefault(u => u.Email.ToLower() == email.ToLower()) != null)
             {
                 return false;
             }
 
-            if (_context.User.FirstOrDefault(u => u.Email.ToLower() == email.ToLower()) != null)
+            // Returns false if phone number is not unique (must be unique as per entity schema). Does not create user.
+            if (_database.User.FirstOrDefault(u => u.PhoneNumber.ToLower() == phoneNumber.ToLower()) != null)
             {
                 return false;
             }
 
-            var user = new User
+            user = new User
             {
-                UserName = username,
-                Email = email
+                UserName = userName,
+                FirstName = firstName,
+                LastName = lastName,
+                DateOfBirth = dateOfBirth,
+                PhoneNumber = phoneNumber,
+                Email = email,
+                MedicalInformation = medicalInformation,
+                BankAccount = bankAccount,
             };
 
-            var hashed = _hasher.HashPassword(user, password);
-
-            user.Password = hashed;
-
-            _context.User.Add(user);
-            _context.SaveChanges();
+            PasswordHasher<User> hasher = new PasswordHasher<User>();
+            var hashedPassword = hasher.HashPassword(user, password);
+            user.HashedPassword = hashedPassword;
+            _database.Add(user);
+            _database.SaveChanges();
 
             return true;
         }

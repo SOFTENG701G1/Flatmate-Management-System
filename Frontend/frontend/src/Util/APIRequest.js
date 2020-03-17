@@ -60,6 +60,7 @@ export default class APIRequest {
 
         return res;
     }
+<<<<<<< HEAD
     static async componentDidMount(){
         let authString = await APIRequest.getAuthString();
         const res = await fetch(apiBaseUrl + "api/flat/display/1/",{
@@ -72,4 +73,6 @@ export default class APIRequest {
         })
         return res;
     }
+=======
+>>>>>>> 50-display-members-of-flat
 }
