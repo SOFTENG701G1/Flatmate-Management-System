@@ -22,7 +22,7 @@ namespace WebApiBackend.Controllers
             _context = context;
         }
 
-        //TODO: Change AllowAnonymous to [Authorize] after integrate with front end
+ 
         //Delete:api/delete/{username}
 
         [Authorize]
@@ -35,11 +35,11 @@ namespace WebApiBackend.Controllers
             User deleteUser = _context.User.Find(deleteUserName);
             Flat flat = _context.Flat.Find(user.FlatId);
 
-            //TODO change param1 to newFlat later
-            var redirectToActionResult = new RedirectToActionResult("RedirectTest", "Flat", null);
+ 
+            var redirectToActionResult = new RedirectToActionResult("createFlat", "Flat", null);
             flat.Users.Remove(deleteUser);
             _context.SaveChanges();
-            var afterCount = flat.Users.Count;
+     
             if (user.UserName == deleteUserName)
             {
                 if (flat.Users.Count == 0)
@@ -49,17 +49,12 @@ namespace WebApiBackend.Controllers
                 }
                 return redirectToActionResult;
             }
-            _context.SaveChanges();
-            return Ok(deleteUser.UserName + " has been removed from the flat. " + _context.Flat.First().ToString());
+
+            return Ok(deleteUser.UserName + " has been removed from the flat.");
         }
 
 
-        [AllowAnonymous]
-        [HttpGet]
-        public string RedirectTest()
-        {
-            return "redirect successfully";
-        }
+       
     }
 }
 
