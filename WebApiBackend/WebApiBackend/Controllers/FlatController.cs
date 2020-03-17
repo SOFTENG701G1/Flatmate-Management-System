@@ -23,7 +23,7 @@ namespace WebApiBackend.Controllers
             var mapperConfigure = new MapperConfiguration(
                 config =>
                 {
-                    config.CreateMap<User, DisplayMemberDTO>();                  
+                    config.CreateMap<User, DisplayMemberDTO>();
                 }
 
             );
@@ -40,10 +40,10 @@ namespace WebApiBackend.Controllers
         [HttpGet("display")]
         public ActionResult<List<DisplayMemberDTO>> GetMembers()
         {
-            var identity =(ClaimsIdentity) HttpContext.User.Identity;
-            var userId= Int32.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value);
-            var user = _context.User.Find(userId);
-            Flat flat = _context.Flat.Where(f => f.Id ==user.FlatId).FirstOrDefault();
+            var identity = (ClaimsIdentity)HttpContext.User.Identity;
+            var username = identity.FindFirst(ClaimTypes.Name).Value;
+            var user = _context.User.Find(username);
+            Flat flat = _context.Flat.Where(f => f.Id == user.FlatId).FirstOrDefault();
             IQueryable members = _context.Entry(flat).Collection(f => f.Users).Query().OrderBy(u => u.FirstName);
             return _MemberMapper.Map<List<DisplayMemberDTO>>(members);
         }
