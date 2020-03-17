@@ -1,5 +1,4 @@
-﻿using System;
-namespace WebApiBackend.Interfaces
+﻿namespace WebApiBackend.Interfaces
 {
     public interface IEntity
     {

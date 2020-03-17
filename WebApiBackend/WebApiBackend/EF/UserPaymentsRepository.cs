@@ -1,7 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
-using WebApiBackend.Interfaces;
+﻿using System.Threading.Tasks;
 using WebApiBackend.Model;
 
 namespace WebApiBackend.EF

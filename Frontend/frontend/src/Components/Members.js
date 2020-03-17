@@ -1,7 +1,9 @@
 import React from 'react';
 import { Redirect, Link } from 'react-router-dom';
 import APIRequest from '../Util/APIRequest';
-import "./Members.css";
+import '../App.css';
+import './Members.css';
+import AddMember from './AddMember';
 
 export default class Members extends React.Component {
     constructor (props) {
@@ -32,7 +34,14 @@ export default class Members extends React.Component {
         }
         else{
             return (
-            <div className = "MembersPage"> 
+            <div className = "MembersPage">
+              <div>
+                <div className='section-header'>
+                  Members page
+                </div>
+                <AddMember/>
+                <h4 className = 'currentMember'>Current Members</h4>
+                </div>  
                 <td className = "MembersCells">
                     <table class="MembersModule">
                         <td>
