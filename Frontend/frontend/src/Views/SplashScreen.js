@@ -24,7 +24,7 @@ export default class SplashScreen extends React.Component {
       </script>
         { User.getUserState() && <Redirect to="/app/"/> }
         { this.state.redirectTo && <Redirect to={this.state.redirectTo}/> }
-        <img src={Logo} className="splash-logo-image"/>
+        <img src={Logo} alt="logo" className="splash-logo-image"/>
       </div>
     );
   }
