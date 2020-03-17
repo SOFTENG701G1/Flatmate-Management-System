@@ -71,6 +71,13 @@ export default class Payments extends Component {
         })
     }
 
+    handleEdit = () => {
+        this.setState({
+            show: true,
+            showView: false
+        })
+    }
+
     render() {
         const FixedPaymentsHtml = [];
         const VariablePaymentsHtml = []
@@ -125,7 +132,7 @@ export default class Payments extends Component {
                         <td onClick={this.handleOpenView}>
                             {VariablePaymentsHtml}
                         </td>
-                        <ViewPayment onCloseView={this.handleCloseView} showView={this.state.showView} />
+                        <ViewPayment onCloseView={this.handleCloseView} showView={this.state.showView} onEdit={this.handleEdit}/>
                     </tr>
                 </table>
             </div>
