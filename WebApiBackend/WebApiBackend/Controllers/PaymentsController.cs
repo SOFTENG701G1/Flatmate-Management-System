@@ -19,23 +19,23 @@ namespace WebApiBackend.Controllers
     [ApiController]
     public class PaymentsController : BaseController<Payment, PaymentsRepository, PaymentDTO>
     {
-        private readonly UserPaymentsRepository userPaymentsRepository;
+        private readonly UserPaymentsRepository _userPaymentsRepository;
 
-        private readonly PaymentsRepository paymentsRepository;
+        private readonly PaymentsRepository _paymentsRepository;
 
-        private readonly FlatRepository flatRepository;
+        private readonly FlatRepository _flatRepository;
 
-        private readonly UserRepository userRepository;
+        private readonly UserRepository _userRepository;
 
-        private readonly IMapper mapper;
+        private readonly IMapper _mapper;
         public PaymentsController(PaymentsRepository paymentsRepository, UserPaymentsRepository userPaymentsRepository, FlatRepository flatRepository, UserRepository userRepository, IMapper mapper
             ) : base(paymentsRepository, mapper)
         {
-            this.userPaymentsRepository = userPaymentsRepository;
-            this.paymentsRepository = paymentsRepository;
-            this.flatRepository = flatRepository;
-            this.userRepository = userRepository;
-            this.mapper = mapper;
+            this._userPaymentsRepository = userPaymentsRepository;
+            this._paymentsRepository = paymentsRepository;
+            this._flatRepository = flatRepository;
+            this._userRepository = userRepository;
+            this._mapper = mapper;
         }
         /// <summary>
         /// GET Method - Gets all the payments that are associated with a specific user
@@ -51,8 +51,8 @@ namespace WebApiBackend.Controllers
             var userID = identity.FindFirst(ClaimTypes.NameIdentifier).Value;
 
          
-            List<Payment> payments = await paymentsRepository.GetAll();
-            List<UserPayment> userPayments = await userPaymentsRepository.GetAll();
+            List<Payment> payments = await _paymentsRepository.GetAll();
+            List<UserPayment> userPayments = await _userPaymentsRepository.GetAll();
             payments = (from p in payments
                         join up in userPayments on p.Id equals up.PaymentId
                         where up.UserId.Equals(userID)
@@ -62,7 +62,7 @@ namespace WebApiBackend.Controllers
             {
                 return NotFound();
             }
-            List<PaymentDTO> paymentsDTOs = mapper.Map<List<Payment>, List<PaymentDTO>>(payments);
+            List<PaymentDTO> paymentsDTOs = _mapper.Map<List<Payment>, List<PaymentDTO>>(payments);
             return Ok(paymentsDTOs);
         }
         /// <summary>
@@ -79,7 +79,7 @@ namespace WebApiBackend.Controllers
             {
                 return NotFound();
             }
-            List<PaymentDTO> paymentDTOs = mapper.Map<List<Payment>, List<PaymentDTO>>(payments);
+            List<PaymentDTO> paymentDTOs = _mapper.Map<List<Payment>, List<PaymentDTO>>(payments);
             return Ok(paymentDTOs);
         }
 
@@ -95,29 +95,29 @@ namespace WebApiBackend.Controllers
         [HttpPost("Flat/{flatId}")]
         public async Task<IActionResult> CreatePaymentForFlat(int flatId, [FromBody] PaymentDTO paymentDTO, [FromHeader] List<int> userIds)
         {
-            Payment payment = mapper.Map<PaymentDTO, Payment>(paymentDTO);
+            Payment payment = _mapper.Map<PaymentDTO, Payment>(paymentDTO);
 
-            await paymentsRepository.Add(payment);
+            await _paymentsRepository.Add(payment);
 
             List<Payment> payments = await GetAllPaymentsFromFlatId(flatId);
 
-            Flat flat = await flatRepository.Get(flatId);
+            Flat flat = await _flatRepository.Get(flatId);
 
             payments.Add(payment);
 
             flat.Payments = payments;
 
-            await flatRepository.Update(flat);
+            await _flatRepository.Update(flat);
 
             foreach (int userId in userIds)
             {
-                User user = await userRepository.Get(userId);
+                User user = await _userRepository.Get(userId);
 
                 UserPayment userPayment = new UserPayment { Payment = payment, User = user, PaymentId = payment.Id, UserId = user.Id };
 
                 user.UserPayments.Add(userPayment);
 
-                await userRepository.Update(user);
+                await _userRepository.Update(user);
             }
 
             return Ok(paymentDTO);
@@ -131,12 +131,12 @@ namespace WebApiBackend.Controllers
         [HttpPut("User/{paymentId}")]
         public async Task<IActionResult> AddUserToExistingPayment(int paymentId,[FromQuery] int userID)
         {
-            Payment payment = await paymentsRepository.Get(paymentId);
-            User user = await userRepository.Get(userID);
+            Payment payment = await _paymentsRepository.Get(paymentId);
+            User user = await _userRepository.Get(userID);
 
             UserPayment userPayment = new UserPayment { UserId = userID, PaymentId = paymentId, User = user, Payment = payment };
 
-            await userPaymentsRepository.Add(userPayment);
+            await _userPaymentsRepository.Add(userPayment);
 
             return NoContent();
         } 
@@ -149,8 +149,8 @@ namespace WebApiBackend.Controllers
         [HttpDelete("Flat/{flatId}")]
         public async Task<IActionResult> DeletePaymentForFlat(int paymentId)
         {
-            Payment payment = await paymentsRepository.Delete(paymentId);
-            PaymentDTO paymentDTO = mapper.Map<Payment, PaymentDTO>(payment);
+            Payment payment = await _paymentsRepository.Delete(paymentId);
+            PaymentDTO paymentDTO = _mapper.Map<Payment, PaymentDTO>(payment);
             return Ok(paymentDTO);
         }
 
@@ -164,7 +164,7 @@ namespace WebApiBackend.Controllers
         [HttpDelete("User/{paymentId}")]
         public async Task<IActionResult> DeleteUserFromPayment(int paymentId, [FromQuery] int userId)
         {
-            await userPaymentsRepository.DeleteUserFromPayment(userId, paymentId);
+            await _userPaymentsRepository.DeleteUserFromPayment(userId, paymentId);
             return NoContent();
         }
         /// <summary>
@@ -174,9 +174,9 @@ namespace WebApiBackend.Controllers
         /// <returns>List of payments</returns>
         private async Task<List<Payment>> GetAllPaymentsFromFlatId(int flatId)
         {
-            List<Payment> payments = await paymentsRepository.GetAll();
-            List<UserPayment> userPayments = await userPaymentsRepository.GetAll();
-            List<User> users = await userRepository.GetAll();
+            List<Payment> payments = await _paymentsRepository.GetAll();
+            List<UserPayment> userPayments = await _userPaymentsRepository.GetAll();
+            List<User> users = await _userRepository.GetAll();
 
 
             payments = (from p in payments
