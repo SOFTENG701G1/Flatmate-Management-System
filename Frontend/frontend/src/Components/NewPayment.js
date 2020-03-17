@@ -4,13 +4,11 @@ import Modal from 'react-bootstrap/Modal';
 import Cross from '../images/cross.png';
 import "./NewPayment.css";
 
-
 /*
-    This class renders the Payments page.
+    This class renders the New Payments page.
 */
 
 export default class NewPayment extends Component {
-
     constructor(props) {
         super(props);
     }
@@ -28,9 +26,7 @@ export default class NewPayment extends Component {
                         </span>
                         <Modal.Title>
                             <h1 class="modal-title w-100 text-center"> Rent</h1>
-
                         </Modal.Title>
-
                     </Modal.Header>
                     <Modal.Body>
                         <table className="InputTable">
@@ -104,18 +100,14 @@ export default class NewPayment extends Component {
                     </Modal.Body>
                     <Modal.Footer>
                         <span className="CancelButton">
-
                             <Button className="CancelButton" variant="secondary" onClick={onClose}>
-
                                 Cancel
-                                        </Button>
+                            </Button>
                         </span>
                         <span className="SaveButton">
-
                             <Button className="SaveButton" variant="primary" onClick={onClose}>
-
                                 Save
-                                        </Button>
+                            </Button>
                         </span>
                     </Modal.Footer>
                 </Modal>
