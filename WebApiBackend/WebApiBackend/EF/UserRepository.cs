@@ -1,5 +1,4 @@
-﻿using System;
-using WebApiBackend.Model;
+﻿using WebApiBackend.Model;
 
 namespace WebApiBackend.EF
 {
