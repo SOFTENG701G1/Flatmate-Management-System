@@ -72,9 +72,8 @@ export default class Login extends React.Component {
             { this.state.error ? <div className='login-error'> { this.state.error } </div> : <div className="error-placeholder"/> }
             <div className="other-actions">
               <p className="other-actions-text">Not a memeber? <Link to="/register" className="other-actions-link">Sign up!</Link></p>
-              <Link className="other-actions-link">Forgot your password?</Link>
+              <Link to="/login/forgot-password" className="other-actions-link">Forgot your password?</Link>
             </div>
-            
           </form>
         </div>
       </div>
