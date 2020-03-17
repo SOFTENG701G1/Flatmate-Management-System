@@ -2,6 +2,7 @@ import React from 'react';
 import './App.css';
 import Dashboard from './Components/Dashboard';
 import Chores from './Components/Chores';
+import Payments from './Components/Payments';
 
 import {
   BrowserRouter as Router,
@@ -11,6 +12,7 @@ import {
 
 import Navigation from './Components/Navigation';
 import Login from './Views/Login';
+import Register from './Views/Register';
 import Logout from './Views/Logout';
 import Members from './Views/Members';
 import SplashScreen from './Views/SplashScreen';
@@ -35,7 +37,7 @@ export default class App extends React.Component {
               <Login/>
             </Route>
             <Route path="/register">
-              Register
+              <Register/>
             </Route>
             <Route path="/logout">
               <Logout/>
@@ -72,11 +74,7 @@ export default class App extends React.Component {
 }
 /*Router is linked to functions for the time being*/
 function Home() {
-  return <h2>Flat Management System</h2>;
-}
-
-function Payments() {
-  return <h2>Payments page</h2>;
+  return <div class='section-header'>Flat Management System</div>;
 }
 
 

@@ -1,12 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using WebApiBackend.Interfaces;
 
 namespace WebApiBackend.Dto
 {
-    public class UserDTO
+    public class UserDTO : IEntity
     {
+        public int Id { get; set; }
         public string UserName { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
@@ -15,6 +14,7 @@ namespace WebApiBackend.Dto
         public string Email { get; set; }
         public string MedicalInformation { get; set; }
         public string BankAccount { get; set; }
+        public string HashedPassword { get; set; }
 
         public UserDTO(Model.User user)
         {

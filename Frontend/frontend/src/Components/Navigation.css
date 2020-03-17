@@ -1,22 +1,32 @@
 
 .menu {
-    background-color: white;
-    box-shadow: 0px 2px 24px 0px rgba(0, 0, 0, 0.15);
-    border-radius: 8px;
-    width: 15%;
-    height: 100%;
-    display: flex;
-    justify-content: space-between;
-    padding: 0 40px;
     position: fixed;
     top: 0px;
     left: 0px;
+
+    width: 15%;
+    min-width: 250px;
+    height: 100%;
+    
+    padding: 0;
+    padding-left: 20px;
+    padding-right: 10px;
+    
+    color: #EEEEEE;
+    background-color: #1E1F26;
+    box-shadow: 0px 2px 24px 0px rgba(0, 0, 0, 0.15);
+
+    display: flex;
+    justify-content: space-between;
 }
 
 .menu__down {
     display: flex;
     align-items: center;
     height: 100%;
+    width: 100%;
+    
+    padding-top: 20px;
 }
 
 .menu__list {
@@ -25,26 +35,76 @@
     height: 100%;
     margin: 0;
     margin-bottom: 40px; 
-
+    width: 100%;
 }
 
 .menu__list-item {
     display: block;
-    height: 10%;
+    height: 50px;
     margin-bottom: 0px;
 }
 
-.menu__list-item:last-child {
-    margin-bottom: 0;
+.menu__logo {
+    display: block;
+    width: 100%;
+
+    background-image: url(../images/logo-blue.png);
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position-x: center;
+    background-position-y: top;
+
+    margin: 0;
+    margin-left: -10px;
+    margin-top: 20px;
+
+    height: 80px;
+
+    border-bottom: solid 1px #1F5673;
+}
+
+.menu__user_detail {
+    width: 100%;
+    margin-top: 10px;
+
+    height: 75px;
+    padding: 10px;
+}
+
+.user_profile {
+    width: 50px;
+    height: 50px;
+
+    float: left;
+
+    background-image: url(../images/user-profile.png);
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.user_profile_name {
+    float: left;
+    
+    padding-left: 10px;
+    padding-top: 15px;
+}
+
+.menu__logout {
+    position: absolute;
+    bottom: 0;
+    margin-bottom: 10px;
 }
 
 .menu__link {
-    color: #3a3e47;
+    color: #eeeeee;
     display: inline-block;
     height: 100%;
+
     font-size: 16px;
-    text-decoration: none;
-    text-transform: uppercase;
+    text-decoration: none !important;
+    text-decoration-line: none !important;
+
     display: flex;
     align-items: center;
     padding: 0 3px;
@@ -59,16 +119,3 @@
     border-top: 4px solid #ffaa3b;
     font-weight: 700;
 }
-
-.menu__logo {
-    /*text-indent: -9999999px; */
-    display: block;
-    height: 30%;
-    width: 100px;
-    background-image: url(../logo.png);
-    background-size: cover 100%;
-    background-repeat: no-repeat;
-    background-position: center;
-    margin: 0;
-}
-
