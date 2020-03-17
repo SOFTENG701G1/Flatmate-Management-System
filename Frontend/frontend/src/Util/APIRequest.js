@@ -60,6 +60,18 @@ export default class APIRequest {
 
         return res;
     }
+    static async componentDidMount(){
+        let authString = await APIRequest.getAuthString();
+        const res = await fetch(apiBaseUrl + "api/flat/display",{
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization':  authString
+            },
+            method: "GET",
+        })
+        return res;
+    }
 
     //Retrieves the list of flat memebrs in the current users flat
     static async getFlatMembers(){
