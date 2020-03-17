@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNet.Mvc" Version="5.2.7" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.0.0" />
     <Compile Remove="Migrations\20200310032350_InitialMigration.cs" />
     <Compile Remove="Migrations\20200310032350_InitialMigration.Designer.cs" />
