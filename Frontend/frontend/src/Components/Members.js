@@ -6,44 +6,79 @@ export default class MembersPage extends Component {
     constructor(props){
         super(props)
         this.state ={
-            //dummy data
-            userNames: []
-
+            userName: "",
+            userNameError: ""
         }
 
     }
+
+    change = e => {
+        // this.props.onChange({ [e.target.name]: e.target.value });
+        this.setState({
+          [e.target.name]: e.target.value
+        });
+        console.log(e.target.value)
+      };
+    
+      validate = () => {
+        let isError = false;
+        const errors = {
+          userNameError: "",
+        };
+    
+        if (this.state.userName !== "BeboBryan") {
+          isError = true;
+          errors.userNameError = "Username does not match to the system";
+        }
+        
+        this.setState({
+          ...this.state,
+          ...errors
+        });
+        return isError;
+      };
+    
+      onSubmit = e => {
+        e.preventDefault();
+        const err = this.validate();
+        if (!err) {
+          //this.props.onSubmit(this.state);
+          // clear form
+          this.setState({
+            userName: "",
+            userNameError: "",
+          });
+        }
+      };
     
     addUser(e){
         e.preventDefault();
-        const {userNames} = this.state;
-        const newUser = this.newUser.value;
         this.setState({
-            userNames: [...this.state.userNames, newUser]
-        })
+            [e.target.name]: e.target.value
+        });
+        console.log(e.target.value)
     }
+
+
     
     render () {
-        const {userNames} = this.state
         return (
         <div>
             <div className='section-header'>
                 Members page
             </div>
-                            
-                <form onSubmit = { (e) => {this.addUser(e)}}>    
+                <form>    
                 <div>        
-                <input ref = {input => this.newUser = input}type = 'text' name = 'userName' className = 'Usernamebox' placeholder='Enter Username'/>
+                <input type = 'text' name = 'userName' onChange={e => this.change(e)}
+                 className = 'Usernamebox' placeholder='Enter Username'/>
+                 <p></p>
+                 <p className = 'error'>{this.state.userNameError}</p>
                 </div>
-                <button type = 'submit' className = "button" >Add</button>
+                <button type = 'submit' className = "button" onClick = { (e) => {this.onSubmit(e)}} >Add</button>
                 </form> 
             <div>
             <h4 className = 'currentMember'>Current Members</h4></div>
                 <div>
-                    {userNames.map(user =>{
-                        return <div className ="MemberProfile">{user}</div>
-                            
-                    })
-                }
                 </div>
             </div>
         )
