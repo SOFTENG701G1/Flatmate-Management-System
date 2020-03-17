@@ -20,6 +20,34 @@ export default class APIRequest {
         return res;
     }
 
+    static async forgotPassword(userOrEmail){
+        let res = await fetch(apiBaseUrl + "api/user/forgotPassword",
+        {
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            method: "POST",
+            body: JSON.stringify({ userOrEmail: userOrEmail })
+        });
+
+        return res;
+    }
+
+    static async checkResetToken(email, resetToken){
+        let res = await fetch(apiBaseUrl + "api/user/resetTokenCheck",
+        {
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            method: "POST",
+            body: JSON.stringify({ Emaol: email, ResetToken: resetToken })
+        });
+
+        return res;
+    }
+
     // Gets the auth string, which can be added to header "Authorization" for requests that need auth
     static async getAuthString() {
         if (!User.getUserState()) {

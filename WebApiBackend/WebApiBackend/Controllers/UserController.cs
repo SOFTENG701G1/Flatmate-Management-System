@@ -49,12 +49,11 @@ namespace WebApiBackend.Controllers
             {
                 return new ForbidResult();
             }
-
             return new LoggedInDto(user, CreateToken(user.UserName));
         }
 
         [HttpPost("resetTokenCheck")]
-        public ActionResult CheckResetToken(ResetPasswordDTO resetPassword)
+        public ActionResult<ResetConfirmedDTO> CheckResetToken(ResetPasswordDTO resetPassword)
         {
             if (string.IsNullOrEmpty(resetPassword.Email) && string.IsNullOrEmpty(resetPassword.ResetToken))
             {
@@ -82,15 +81,35 @@ namespace WebApiBackend.Controllers
                     if (!CheckExpired(resetPassword.ResetToken))
                     { 
                         findUser.HaveReset = true;
-                        return new OkResult();
+                        _database.SaveChanges();
+                        return new ResetConfirmedDTO
+                        {
+                            Email = resetPassword.Email
+                        };
                     }
                 }
             }
             return new BadRequestResult();
         }
+        
+        [HttpPost("resetPassword")]
+        public ActionResult ResetPassWord(LoginDto login)
+        {
+            User user = _database.User.FirstOrDefault(u => u.UserName.ToLower() == login.UserName.ToLower());
 
-        // ToDo - API to take in a email and be able to find the user and reset password
-        // Need to clear all its JWT token once reset is completed.
+            if (user == null)
+            {
+                return new NotFoundResult();
+            }
+
+            PasswordHasher<User> hasher = new PasswordHasher<User>();
+            var hashedPassword = hasher.HashPassword(user, login.Password);
+            user.HashedPassword = hashedPassword;
+            _database.Add(user);
+            _database.SaveChanges();
+
+            return new OkResult();
+        }
 
         [HttpPost("forgotPassword")]
         public ActionResult<ForgotPassResponseDTO> ForgotPassword(ForgotPassRequestDTO forgotPass)
@@ -99,7 +118,7 @@ namespace WebApiBackend.Controllers
             // Checking if the non nullable fields (as per business rules) are not empty/null 
             if (string.IsNullOrEmpty(forgotPass.userOrEmail))
             {
-                return new BadRequestResult();
+                return new NotFoundResult();
             }
 
             // Check if user input their username or password
@@ -114,7 +133,7 @@ namespace WebApiBackend.Controllers
                 // Check if email exists in the DB, if not then it's a bad request
                 if (_database.User.FirstOrDefault(u => u.Email.ToLower() == email_tmp.ToLower()) == null)
                 {
-                    return new BadRequestResult();
+                    return new NotFoundResult();
                 }
             }
             else
@@ -124,10 +143,14 @@ namespace WebApiBackend.Controllers
                 if (_database.User.FirstOrDefault(u => u.UserName.ToLower() == user_tmp.ToLower()) != null)
                 {
                     // TODO Get the email by querying username and set email_tmp to the response
+                    var findUser = _database.User.FirstOrDefault(u => u.UserName.ToLower() == user_tmp.ToLower());
+                    findUser.Email = email_tmp;
+                    _database.SaveChanges();
+
                 }
                 else
                 {
-                    return new BadRequestResult();
+                    return new NotFoundResult();
                 }
             }
 
