@@ -15,7 +15,6 @@ using WebApiBackend.Model;
 
 namespace WebApiBackend.Controllers
 {
-    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class PaymentsController : BaseController<Payment, PaymentsRepository, PaymentDTO>
@@ -74,11 +73,6 @@ namespace WebApiBackend.Controllers
         [HttpGet("Flat/{flatId}")]
         public async Task<IActionResult> GetPaymentsForFlat(int flatId)
         {
-            var identity = HttpContext.User.Identity as ClaimsIdentity;
-            var userID = identity.FindFirst(ClaimTypes.NameIdentifier).Value;
-
-
-
             List<Payment> payments = await GetAllPaymentsFromFlatId(flatId);
 
             if (payments == null)
