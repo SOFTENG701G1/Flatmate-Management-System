@@ -253,13 +253,13 @@ function PaymentModule(props) {
                         </h6>
                     </td>
                 </tr>
-                <tr>
+                {/* <tr>
                     <td colSpan="2" className="PaymentModuleDataLeft">
                         <h6 className="PaymentModuleData">
                             Contributors: {ContributorsToString}
                         </h6>
                     </td>
-                </tr>
+                </tr> */}
             </table>
         </div>
     )
