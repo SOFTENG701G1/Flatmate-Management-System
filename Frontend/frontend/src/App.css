@@ -36,6 +36,11 @@ hr.LineDivider {
 
 .DashboardContainer .col {
   margin-left: 15%;
+  margin-top: 80px;
+}
+
+.CheckBoxListContainer.container {
+  margin-top: 0;
 }
 
 .CheckBoxList {
