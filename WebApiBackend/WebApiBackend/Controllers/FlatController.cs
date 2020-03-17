@@ -41,8 +41,8 @@ namespace WebApiBackend.Controllers
         public ActionResult<List<DisplayMemberDTO>> GetMembers()
         {
             var identity = (ClaimsIdentity)HttpContext.User.Identity;
-            var username = identity.FindFirst(ClaimTypes.Name).Value;
-            var user = _context.User.Find(username);
+            int userID = Int16.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value);
+            var user = _context.User.Find(userID);
             Flat flat = _context.Flat.Where(f => f.Id == user.FlatId).FirstOrDefault();
             IQueryable members = _context.Entry(flat).Collection(f => f.Users).Query().OrderBy(u => u.FirstName);
             return _MemberMapper.Map<List<DisplayMemberDTO>>(members);
