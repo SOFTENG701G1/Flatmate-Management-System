@@ -22,5 +22,7 @@ namespace WebApiBackend.Model
         public ICollection<UserPayment> UserPayments { get; set; }
         public Flat Flat { get; set; }
         public int? FlatId { get; set; }
+        public string ResetToken { get; set; }
+        public Boolean HaveReset { get; set; }
     }
 }

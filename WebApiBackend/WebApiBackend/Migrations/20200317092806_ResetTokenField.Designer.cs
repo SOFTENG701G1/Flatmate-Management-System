@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebApiBackend.Model;
 
 namespace WebApiBackend.Migrations
 {
     [DbContext(typeof(FlatManagementContext))]
-    partial class FlatManagementContextModelSnapshot : ModelSnapshot
+    [Migration("20200317092806_ResetTokenField")]
+    partial class ResetTokenField
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
