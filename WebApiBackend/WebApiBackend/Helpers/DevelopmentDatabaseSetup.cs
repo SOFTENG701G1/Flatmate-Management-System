@@ -16,7 +16,7 @@ namespace WebApiBackend.Helpers
         UserPayment userPaymentYin1, userPaymentYin2, userPaymentBryan1,
             userPaymentBryan2, userPaymentTeresa1, userPaymentTeresa2;
         Schedule schedule1;
-        Flat flat1;
+        Flat flat1,flat2;
 
         private readonly FlatManagementContext _database;
 
@@ -26,6 +26,7 @@ namespace WebApiBackend.Helpers
 
             yin = new User
             {
+                Id = 1,
                 UserName = "YinWang",
                 FirstName = "Yin",
                 LastName = "Wang",
@@ -39,6 +40,7 @@ namespace WebApiBackend.Helpers
 
             teresa = new User
             {
+                Id = 2,
                 UserName = "TreesAreGreen",
                 FirstName = "Teresa",
                 LastName = "Green",
@@ -52,6 +54,7 @@ namespace WebApiBackend.Helpers
 
             bryan = new User
             {
+                Id = 3,
                 UserName = "BeboBryan",
                 FirstName = "Bryan",
                 LastName = "Ang",
@@ -59,7 +62,9 @@ namespace WebApiBackend.Helpers
                 PhoneNumber = "02243926392",
                 Email = "BryanAng@Gmail.com",
                 MedicalInformation = "N/A",
-                BankAccount = "98-7654-3211234-210"
+                BankAccount = "98-7654-3211234-210",
+                FlatId = 2
+                
             };
             bryan.HashedPassword = hasher.HashPassword(bryan, "password");
 
@@ -154,11 +159,16 @@ namespace WebApiBackend.Helpers
             {
                 Id = 1,
                 Address = "50 Symonds Street",
-                Users = new List<User> { yin, teresa, bryan },
+                Users = new List<User> { yin },
                 Schedules = new List<Schedule> { schedule1 },
                 Payments = new List<Payment> { payment1, payment2 }
             };
-
+            flat2 = new Flat
+            {
+                Id = 2,
+                Address = "51 Symonds Street",
+                Users = new List<User> { bryan},
+            };
         }
 
         public DevelopmentDatabaseSetup(FlatManagementContext database)
@@ -184,6 +194,7 @@ namespace WebApiBackend.Helpers
             _database.Add(userPaymentYin2);
             _database.Add(schedule1);
             _database.Add(flat1);
+            _database.Add(flat2);
 
             _database.SaveChanges();
         }
