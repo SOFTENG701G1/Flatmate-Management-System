@@ -9,7 +9,6 @@ import "./NewPayment.css";
 */
 
 export default class NewPayment extends Component {
-
     constructor(props) {
         super(props);
     }
@@ -106,7 +105,6 @@ export default class NewPayment extends Component {
                             </Button>
                         </span>
                         <span className="SaveButton">
-
                             <Button className="SaveButton" variant="primary" onClick={onClose}>
                                 Save
                             </Button>
