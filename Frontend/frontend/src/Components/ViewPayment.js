@@ -17,7 +17,7 @@ export default class ViewPayment extends Component {
     }
 
     render() {
-        const { showView, onCloseView } = this.props
+        const { showView, onCloseView, onEdit } = this.props
         return (
             <>
                 <Modal show={showView} onHide={onCloseView} backdrop={true}>
@@ -109,7 +109,7 @@ export default class ViewPayment extends Component {
                             </Button>
                         </span>
                         <span className="EditButton">
-                            <Button className="EditButton" variant="secondary" onClick={onCloseView}>
+                            <Button className="EditButton" variant="secondary" onClick={onEdit}>
                                 <img src={Edit} alt="edit" className="edit-image" />
                             </Button>
                         </span>
