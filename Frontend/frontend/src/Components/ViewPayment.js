@@ -44,7 +44,7 @@ export default class ViewPayment extends Component {
                                 <td className="RowOneColTwo">
                                     <form>
                                         <label className="StartDateLabel"> Start Date: </label>
-                                        <label className="StartDate"> $240 </label>
+                                        <label className="StartDate"> 09/03/2020 </label>
                                     </form>
                                 </td>
                             </tr>
@@ -52,13 +52,13 @@ export default class ViewPayment extends Component {
                                 <td colSpan="2">
                                     <form>
                                         <label className="PaidToLabel"> Paid To: </label>
-                                        <label className="PaidTo"> $240 </label>
+                                        <label className="PaidTo"> Professor Samuel Oak </label>
                                     </form>
                                 </td>
                                 <td>
                                     <form>
                                         <label className="EndDateLabel"> End Date: </label>
-                                        <label className="EndDate"> $240 </label>
+                                        <label className="EndDate"> 09/12/2020 </label>
                                     </form>
                                 </td>
                             </tr>
@@ -66,13 +66,13 @@ export default class ViewPayment extends Component {
                                 <td colSpan="2">
                                     <form>
                                         <label className="AccountLabel"> Account: </label>
-                                        <label className="Account"> $240 </label>
+                                        <label className="Account"> 0800 83 83 83 </label>
                                     </form>
                                 </td>
                                 <td>
                                     <form>
                                         <label className="FrequencyLabel"> Frequency: </label>
-                                        <label className="Frequency"> $240 </label>
+                                        <label className="Frequency"> Monthly </label>
                                     </form>
                                 </td>
                             </tr>
@@ -80,7 +80,7 @@ export default class ViewPayment extends Component {
                                 <td colSpan="3">
                                     <form>
                                         <label className="ContributorsPendingLabel"> Contributors Pending: </label>
-                                        <label className="ContributorsPending"> $240 </label>
+                                        <label className="ContributorsPending"> Ash </label>
                                     </form>
                                 </td>
                             </tr>
@@ -88,7 +88,7 @@ export default class ViewPayment extends Component {
                                 <td colSpan="3">
                                     <form>
                                         <label className="ContributorsPaidLabel"> Contributors Paid: </label>
-                                        <label className="ContributorsPaid"> $240 </label>
+                                        <label className="ContributorsPaid"> Misty, Brock </label>
                                     </form>
                                 </td>
                             </tr>
@@ -96,7 +96,7 @@ export default class ViewPayment extends Component {
                                 <td colSpan="3">
                                     <form>
                                         <label className="DescriptionLabel"> Description: </label>
-                                        <label className="Description"> $240 </label>
+                                        <label className="Description"> Pikachu, I choose you! </label>
                                     </form>
                                 </td>
                             </tr>
