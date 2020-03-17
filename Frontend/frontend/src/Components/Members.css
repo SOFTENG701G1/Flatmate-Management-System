@@ -7,7 +7,11 @@
     display: inline-block;
     font-size: 16px;
     border-radius: 8px;
-
+    position:relative;
+    top: -60px;
+    left:280px;
+    right: 80px;
+    bottom:100px;
     
   }
   .Usernamebox{

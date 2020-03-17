@@ -26,7 +26,7 @@ export default class MembersPage extends Component {
           userNameError: "",
         };
     
-        if (this.state.userName !== "BeboBryan") {
+        if (this.state.userName !== "test") {
           isError = true;
           errors.userNameError = "Username does not match to the system";
         }
@@ -63,24 +63,18 @@ export default class MembersPage extends Component {
     
     render () {
         return (
-        <div>
+          <div>
             <div className='section-header'>
                 Members page
             </div>
-                <form>    
-                <div>        
+                <form>       
                 <input type = 'text' name = 'userName' onChange={e => this.change(e)}
                  className = 'Usernamebox' placeholder='Enter Username'/>
-                 <p></p>
-                 <p className = 'error'>{this.state.userNameError}</p>
-                </div>
-                <button type = 'submit' className = "button" onClick = { (e) => {this.onSubmit(e)}} >Add</button>
+                 <button type = 'submit' className = "button" onClick = { (e) => {this.onSubmit(e)}} >Add</button>   
                 </form> 
-            <div>
-            <h4 className = 'currentMember'>Current Members</h4></div>
-                <div>
-                </div>
-            </div>
+                <p className = 'error'>{this.state.userNameError}</p>
+            <h4 className = 'currentMember'>Current Members</h4>
+          </div>  
         )
     }
 }
