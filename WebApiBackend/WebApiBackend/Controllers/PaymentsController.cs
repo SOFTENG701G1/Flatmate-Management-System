@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -41,14 +43,19 @@ namespace WebApiBackend.Controllers
         /// <param name="userId"></param>
         /// <returns> Payments that are for that user</returns>
         // TODO: Change the method to use authentication instead of userId
-        [HttpGet("User/{userId}")]
-        public async Task<IActionResult> GetAllPaymentForUser(int userId)
+        [HttpGet("User/userId")]
+        public async Task<IActionResult> GetAllPaymentForUser()
         {
+
+            var identity = HttpContext.User.Identity as ClaimsIdentity;
+            var userID = identity.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+         
             List<Payment> payments = await paymentsRepository.GetAll();
             List<UserPayment> userPayments = await userPaymentsRepository.GetAll();
             payments = (from p in payments
                         join up in userPayments on p.Id equals up.PaymentId
-                        where up.UserId.Equals(userId)
+                        where up.UserId.Equals(userID)
                         select p).ToList();
 
             if (payments.Count() == 0)
