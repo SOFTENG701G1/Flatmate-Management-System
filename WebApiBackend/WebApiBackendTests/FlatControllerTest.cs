@@ -46,7 +46,7 @@ namespace WebApiBackendTests
             //Creates a new httpContext and adds a user identity to it, imitating being already logged in.
             DefaultHttpContext httpContext = new DefaultHttpContext();
             GenericIdentity MyIdentity = new GenericIdentity("YinWang");
-            ClaimsIdentity objClaim = new ClaimsIdentity(new List<Claim> { new Claim(ClaimTypes.Name, "YinWang") });
+            ClaimsIdentity objClaim = new ClaimsIdentity(new List<Claim> { new Claim(ClaimTypes.NameIdentifier, "1") });
             _flatController.ControllerContext = new ControllerContext();
             _flatController.ControllerContext.HttpContext = httpContext;
             httpContext.User = new ClaimsPrincipal(objClaim);
