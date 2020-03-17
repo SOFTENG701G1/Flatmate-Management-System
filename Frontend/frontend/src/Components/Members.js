@@ -5,7 +5,7 @@ import '../App.css';
 import './Members.css';
 import AddMember from './AddMember';
 
-export default class Members extends React.Component {
+export default class MembersPage extends React.Component {
     constructor (props) {
       super(props);
   

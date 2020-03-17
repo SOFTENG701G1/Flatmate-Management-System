@@ -42,6 +42,8 @@
     display: block;
     height: 50px;
     margin-bottom: 0px;
+    padding-top: 50px;
+    margin-top: 1px;
 }
 
 .menu__logo {
@@ -66,7 +68,6 @@
 .menu__user_detail {
     width: 100%;
     margin-top: 10px;
-
     height: 75px;
     padding: 10px;
 }
@@ -84,10 +85,10 @@
 }
 
 .user_profile_name {
-    float: left;
-    
-    padding-left: 10px;
+    position: relative;
+    text-align: center;
     padding-top: 15px;
+    padding-bottom: 10px;
 }
 
 .menu__logout {

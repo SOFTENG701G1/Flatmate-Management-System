@@ -63,15 +63,12 @@ h2 h4 {
     font-size: 16px;
     border-radius: 8px;
     position:relative;
-    top: -60px;
-    left:280px;
-    right: 80px;
-    bottom:100px;
-  }
+    left: 20px;
+}
 
-  .Usernamebox{
+.Usernamebox{
 
-  width: 100%;
+  width: 80%;
   padding: 12px 20px;
   margin: 12px 0;
   box-sizing: border-box;
