@@ -1,15 +1,15 @@
-import React, { Component } from "react";
+import React from 'react';
+import PaymentModule from "./PaymentModule"
 import NewPayment from "./NewPayment"
-import "./Payments.css"
+import "./PaymentSchedule.css"
 
 /*
     This class renders the Payments page.
 */
-export default class Payments extends Component {
-    constructor() {
+export default class PaymentSchedule extends React.Component {
+    constructor () {
         super();
         this.state = {
-            show: false,
             // Currently are dummy data
             FixedPayments: [{
                 PaymentType: "Rent",
@@ -44,19 +44,16 @@ export default class Payments extends Component {
         }
     }
 
-    handleOpen = () => {
+    state = {
+        seen: false
+        };
+       togglePop = () => {
         this.setState({
-            show: true
-        })
-    }
+         seen: !this.state.seen
+        });
+       };
 
-    handleClose = () => {
-        this.setState({
-            show: false
-        })
-    }
-
-    render() {
+    render () {
         const FixedPaymentsHtml = [];
         const VariablePaymentsHtml = []
         this.state.FixedPayments.forEach(
@@ -82,13 +79,13 @@ export default class Payments extends Component {
                         <td colSpan="2" className="PaymentPageTitle">
                             <span className="PaymentPageTitle">
                                 <h2 className="PaymentsTitle">Payments</h2>
-                            </span>
-                            <span className="NewPaymentButton" onClick={this.handleOpen}>
+                            </span> 
+                            <span className="NewPaymentButton" onClick={this.togglePop}>
                                 <button className="NewPaymentButton">
-                                    Add new
+                                    Add new payment
                                 </button>
                             </span>
-                            <NewPayment onClose={this.handleClose} show={this.state.show} />
+                            {this.state.seen ? <NewPayment toggle={this.togglePop} /> : null}
                         </td>
                     </tr>
                     <tr>
@@ -115,62 +112,4 @@ export default class Payments extends Component {
             </div>
         )
     }
-}
-
-/*
-    This function JSX element takes in the JSON list which is of the form:
-    {
-        PaymentType: String,
-        Amount: Decimal(10,2),
-        StartDate: DateTime String,
-        EndDate: DateTime String,
-        Frequency: String,
-        Contributors: String[]
-    }
-*/
-function PaymentModule(props) {
-    const PaymentType = props.Payment.PaymentType;
-    const Amount = props.Payment.Amount;
-    const StartDate = props.Payment.StartDate;
-    const EndDate = props.Payment.EndDate;
-    const Frequency = props.Payment.Frequency;
-    const Contributors = props.Payment.Contributors;
-    const ContributorsToString = Contributors.join(", ");
-    return (
-        <div className="PaymentModule">
-            <table className="PaymentModule">
-                <tr>
-                    <td className="PaymentModuleDataLeft">
-                        <h6 className="PaymentModuleHeader">
-                            <b>{PaymentType}</b>
-                        </h6>
-                    </td>
-                    <td className="PaymentModuleDataRight">
-                        <h6 className="PaymentModuleHeader">
-                            <b>{StartDate}-{EndDate}</b>
-                        </h6>
-                    </td>
-                </tr>
-                <tr>
-                    <td className="PaymentModuleDataLeft">
-                        <h6 className="PaymentModuleData">
-                            Amount: ${Amount}
-                        </h6>
-                    </td>
-                    <td className="PaymentModuleDataRight">
-                        <h6 className="PaymentModuleData">
-                            Frequency: {Frequency}
-                        </h6>
-                    </td>
-                </tr>
-                <tr>
-                    <td colSpan="2" className="PaymentModuleDataLeft">
-                        <h6 className="PaymentModuleData">
-                            Contributors: {ContributorsToString}
-                        </h6>
-                    </td>
-                </tr>
-            </table>
-        </div>
-    )
 }
