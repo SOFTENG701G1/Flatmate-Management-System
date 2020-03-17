@@ -75,10 +75,10 @@ namespace WebApiBackendTests
         public void GetMember_RirectToCreateFlatPage_WhenUserRemoveOneselfFromFlat()
         {
             User user = _context.User.Find(1);
-            IQueryable<Flat> flat = _context.Flat.Where(f => f.Id == user.FlatId);
-            int flatId = flat.FirstOrDefault().Id;
+            Flat flat = _context.Flat.First(u=>u.Id==user.FlatId);
+            int flatId = flat.Id;
             ActionResult response = _flatController.RemoveMember("YinWang");
-            //Assert.IsFalse(flat.Users.Contains(user));
+            Assert.IsFalse(flat.Users.Contains(user));
             Assert.That(response, Is.InstanceOf<RedirectToActionResult>());
         }
 

@@ -22,14 +22,16 @@ namespace WebApiBackend.Model
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Schedule>(entity => {
+            modelBuilder.Entity<Schedule>(entity =>
+            {
                 entity.Property(e => e.ScheduleType)
                     .HasConversion(
                         e => e.ToString(),
                         e => (ScheduleType)Enum.Parse(typeof(ScheduleType), e));
             });
 
-            modelBuilder.Entity<User>(entity => {
+            modelBuilder.Entity<User>(entity =>
+            {
                 entity.HasIndex(e => e.UserName)
                     .IsUnique();
 
@@ -44,7 +46,8 @@ namespace WebApiBackend.Model
                     .HasForeignKey(e => e.FlatId);
             });
 
-            modelBuilder.Entity<Payment>(e => {
+            modelBuilder.Entity<Payment>(e =>
+            {
                 e.Property(e => e.PaymentType)
                     .HasConversion(
                         e => e.ToString(),
@@ -56,7 +59,8 @@ namespace WebApiBackend.Model
                         e => (Frequency)Enum.Parse(typeof(Frequency), e));
             });
 
-            modelBuilder.Entity<UserPayment>(e => {
+            modelBuilder.Entity<UserPayment>(e =>
+            {
                 e.HasKey(e => new { e.PaymentId, e.UserId });
 
                 e.HasOne(e => e.Payment)
@@ -68,28 +72,23 @@ namespace WebApiBackend.Model
                     .HasForeignKey(e => e.UserId);
             });
 
-            modelBuilder.Entity<Flat>(e =>
-            {
-                e.HasMany(e => e.Payments)
-                .WithOne()
-                .OnDelete(DeleteBehavior.Cascade);
+            //modelBuilder.Entity<Flat>(e =>
+            //{
+            //    e.HasMany(e => e.Payments)
+            //    .WithOne()
+            //    .OnDelete(DeleteBehavior.Cascade);
 
-            });
+            //    e.HasMany(e => e.Schedules)
+            //    .WithOne()
+            //    .OnDelete(DeleteBehavior.Cascade);
 
-            modelBuilder.Entity<Flat>(e =>
-            {
-                e.HasMany(e => e.Schedules)
-                .WithOne()
-                .OnDelete(DeleteBehavior.Cascade);
+            //    e.HasMany(e => e.Users)
+            //    .WithOne(u => u.Flat)
+            //    .OnDelete(DeleteBehavior.SetNull);
+            //});
 
-            });
 
-            modelBuilder.Entity<Flat>(e =>
-            {
-                e.HasMany(e => e.Users).
-                WithOne(u => u.Flat)
-                .OnDelete(DeleteBehavior.SetNull);
-            });
+
         }
     }
 }
