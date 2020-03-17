@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import NewPayment from "./NewPayment"
+import ViewPayment from "./ViewPayment"
 import "./Payments.css"
 
 /*
@@ -9,6 +10,7 @@ export default class Payments extends Component {
     constructor() {
         super();
         this.state = {
+            showView: false,
             show: false,
             // Currently are dummy data
             FixedPayments: [{
@@ -44,15 +46,36 @@ export default class Payments extends Component {
         }
     }
 
-    handleOpen = () => {
+    //Methods for opening new payment component
+    _handleOpen = () => {
         this.setState({
             show: true
         })
     }
 
-    handleClose = () => {
+    _handleClose = () => {
         this.setState({
             show: false
+        })
+    }
+
+    //Methods for opening view payment component
+    _handleOpenView = () => {
+        this.setState({
+            showView: true
+        })
+    }
+
+    _handleCloseView = () => {
+        this.setState({
+            showView: false
+        })
+    }
+
+    _handleEdit = () => {
+        this.setState({
+            show: true,
+            showView: false
         })
     }
 
@@ -83,12 +106,12 @@ export default class Payments extends Component {
                             <span className="PaymentPageTitle">
                                 <h2 className="PaymentsTitle">Payments</h2>
                             </span>
-                            <span className="NewPaymentButton" onClick={this.handleOpen}>
+                            <span className="NewPaymentButton" onClick={this._handleOpen}>
                                 <button className="NewPaymentButton">
                                     Add new
                                 </button>
                             </span>
-                            <NewPayment onClose={this.handleClose} show={this.state.show} />
+                            <NewPayment onClose={this._handleClose} show={this.state.show} />
                         </td>
                     </tr>
                     <tr>
@@ -104,12 +127,13 @@ export default class Payments extends Component {
                         </td>
                     </tr>
                     <tr>
-                        <td>
+                        <td onClick={this._handleOpenView}>
                             {FixedPaymentsHtml}
                         </td>
-                        <td>
+                        <td onClick={this._handleOpenView}>
                             {VariablePaymentsHtml}
                         </td>
+                        <ViewPayment onCloseView={this._handleCloseView} showView={this.state.showView} onEdit={this._handleEdit}/>
                     </tr>
                 </table>
             </div>
