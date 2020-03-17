@@ -1,6 +1,7 @@
 import React from 'react';
 import { Redirect, Link } from 'react-router-dom';
 import APIRequest from '../Util/APIRequest';
+import "./Members.css";
 
 export default class Members extends React.Component {
     constructor (props) {
@@ -13,7 +14,7 @@ export default class Members extends React.Component {
       }
       this.getMember();
     }
-
+    /* Function used to fetch JSON data from the API */ 
     async getMember(){
         const memberResult = await APIRequest.componentDidMount()
         const json = await memberResult.json();
@@ -31,14 +32,40 @@ export default class Members extends React.Component {
         }
         else{
             return (
-            <div className = "Members"> 
-                <ul>
-                    {items.map(item =>(
-                        <li key={item.userName}>
-                            Name: {item.firstName} | Email: {item.email}   
-                        </li>
-                    ))}
-                </ul>
+            <div className = "MembersPage"> 
+                <td className = "MembersCells">
+                    <table class="MembersModule">
+                        <td>
+                            <div className = "user_profile"> </div>
+                            <p> Name: {items[2].firstName} {items[2].lastName} </p>
+                            <p> Email: {items[2].email} </p>
+                            <p> Username: {items[2].userName}</p>
+                        </td>
+                    </table>
+                </td>
+                <td className = "MembersCells">
+                    <table class="MembersModule">
+                        <td>
+                            <div className = "user_profile"> </div>
+                            <p> Name: {items[1].firstName} {items[1].lastName} </p> 
+                            <p> Email: {items[1].email} </p>
+                            <p> Username: {items[1].userName}</p>
+                        </td>
+                    </table>
+                </td>
+
+                <td className = "MembersCells">
+                    <table class="MembersModule">
+                        <td>
+                            <div className = "user_profile"> </div>
+                            <p> Name: {items[0].firstName} {items[0].lastName} </p> 
+                            <p> Email: {items[0].email} </p>
+                            <p> Username: {items[0].userName}</p>
+                        </td>
+                    </table>
+                </td>
+
+                
             </div>);
         }
     }

@@ -1,0 +1,67 @@
+.MembersPage {
+    position: absolute;
+    top: 100px;
+    left: 25%;
+    background-color: transparent;
+    border: 5px;
+    border-color: aliceblue;
+    border-radius: 10px;
+    border-style: none;
+    max-width: 100%;
+}
+
+.MembersTable {
+    position: relative;
+    table-layout: fixed;
+    width: 100%;
+}
+
+span.MembersPageTitle {
+    max-height: 50px;
+    padding-bottom: 10px;
+    min-width: 100%;
+    float: center;
+    display: block;
+}
+
+td.MembersPageTitle {
+    border-top: transparent;
+    border-left: transparent;
+    border-right: transparent;
+    border-bottom: #1F5673;
+    border-style: solid;
+}
+
+
+table.MembersModule {
+    margin-top: 60px;
+    border-color: #1F5673;
+    border-radius: 8px;
+    border-style: solid;
+    background-color: #23242A;
+    text-align: center;
+}
+
+h2 h4 {
+    color: #EEEEEE;
+}
+
+.user_profile {
+    width: 100%;
+    height: 100%;
+
+    float: left;
+
+    background-image: url(../images/user-profile.png);
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+td.MembersCells {
+    border-style: none;
+    width: 20%;
+    margin-right: 20px;
+    height: 150px;
+}
+
