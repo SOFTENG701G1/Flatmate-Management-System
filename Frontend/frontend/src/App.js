@@ -12,7 +12,6 @@ import Navigation from './Components/Navigation';
 import Login from './Views/Login';
 import Register from './Views/Register';
 import Logout from './Views/Logout';
-import Members from './Views/Members';
 import SplashScreen from './Views/SplashScreen';
 import HomePage from './Views/HomePage';
 import RequireLogin from './Components/RequireLogin';
@@ -81,6 +80,3 @@ function Home() {
   return <div class='section-header'>Flat Management System</div>;
 }
 
-function Members() {
-  return <div class='section-header'>Members page</div>;
-}

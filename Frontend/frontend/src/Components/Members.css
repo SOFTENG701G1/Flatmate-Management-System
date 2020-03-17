@@ -16,14 +16,6 @@
     width: 100%;
 }
 
-span.MembersPageTitle {
-    max-height: 50px;
-    padding-bottom: 10px;
-    min-width: 100%;
-    float: center;
-    display: block;
-}
-
 td.MembersPageTitle {
     border-top: transparent;
     border-left: transparent;
@@ -64,6 +56,7 @@ h2 h4 {
     border-radius: 8px;
     position:relative;
     left: 20px;
+    width: 10%;
 }
 
 .Usernamebox{
@@ -76,6 +69,7 @@ h2 h4 {
 
   
 }
+
 .MemberProfile{
   background-color: #282c34; 
   border: 2px solid #1F5673;
@@ -90,6 +84,7 @@ h2 h4 {
   margin: 20px ;
 
 }
+
 .fullName{
 
   width: 100%;
