@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using AutoMapper;
@@ -24,15 +25,14 @@ namespace WebApiBackend.Controllers
 
  
         //Delete:api/delete/{username}
-
         [Authorize]
         [HttpDelete("{deleteUserName}")]
         public ActionResult RemoveMember(string deleteUserName)
         {
             ClaimsIdentity identity = (ClaimsIdentity)HttpContext.User.Identity;
-            var userName = identity.FindFirst(ClaimTypes.Name).Value;
-            User user = _context.User.Find(userName);
-            User deleteUser = _context.User.Find(deleteUserName);
+            var userId = Int32.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value);
+            User user = _context.User.Find(userId);
+            User deleteUser = _context.User.Where(u => u.UserName == deleteUserName).FirstOrDefault();
             Flat flat = _context.Flat.Find(user.FlatId);
 
  
