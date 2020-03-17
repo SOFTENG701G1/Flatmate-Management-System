@@ -2,35 +2,30 @@ import React, { Component } from "react";
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import Cross from '../images/cross.png';
-import Delete from '../images/delete.png';
-import Edit from '../images/edit.png';
-import "./ViewPayment.css";
+import "./NewPayment.css";
 
-/*
-    This class renders the View Payments page.
-    Dummy data is currently used
-*/
 
-export default class ViewPayment extends Component {
 
+export default class NewPayment extends Component {
     constructor(props) {
         super(props);
     }
 
     render() {
-        const { showView, onCloseView, onEdit } = this.props
+        const {show, onClose} = this.props
         return (
             <>
-                <Modal show={showView} onHide={onCloseView} backdrop={true}>
+                <Modal show={show} onHide={onClose} backdrop={true}>
                     <Modal.Header>
                         <span className="CrossButton">
-                            <Button className="CrossButton" variant="secondary" onClick={onCloseView}>
-                                <img src={Cross} alt="cross" className="cross-image" />
+                            <Button className="CrossButton" variant="secondary" onClick={onClose}>
+                                <img src={Cross} alt="cross" className="cross-image"/>
                             </Button>
                         </span>
                         <Modal.Title>
-                            <h1 class="modal-title w-100 text-center"> RENT</h1>
+                            <h1 class="modal-title w-100 text-center"> Rent</h1>
                         </Modal.Title>
+
                     </Modal.Header>
                     <Modal.Body>
                         <table className="InputTable">
@@ -38,13 +33,13 @@ export default class ViewPayment extends Component {
                                 <td className="RowOneColOne" colSpan="2">
                                     <form>
                                         <label className="AmountLabel"> Amount: </label>
-                                        <label className="Amount"> $240 </label>
+                                        <input className="AmountInput" type="text" amount="amount" />
                                     </form>
                                 </td>
                                 <td className="RowOneColTwo">
                                     <form>
                                         <label className="StartDateLabel"> Start Date: </label>
-                                        <label className="StartDate"> 09/03/2020 </label>
+                                        <input className="StartDateInput" type="text" startDate="startDate" />
                                     </form>
                                 </td>
                             </tr>
@@ -52,13 +47,13 @@ export default class ViewPayment extends Component {
                                 <td colSpan="2">
                                     <form>
                                         <label className="PaidToLabel"> Paid To: </label>
-                                        <label className="PaidTo"> Professor Samuel Oak </label>
+                                        <input className="PaidToInput" type="text" paidTo="paidTo" />
                                     </form>
                                 </td>
                                 <td>
                                     <form>
                                         <label className="EndDateLabel"> End Date: </label>
-                                        <label className="EndDate"> 09/12/2020 </label>
+                                        <input className="EndDateInput" type="text" endDate="endDate" />
                                     </form>
                                 </td>
                             </tr>
@@ -66,13 +61,13 @@ export default class ViewPayment extends Component {
                                 <td colSpan="2">
                                     <form>
                                         <label className="AccountLabel"> Account: </label>
-                                        <label className="Account"> 0800 83 83 83 </label>
+                                        <input className="AccountInput" type="text" Account="Account" />
                                     </form>
                                 </td>
                                 <td>
                                     <form>
                                         <label className="FrequencyLabel"> Frequency: </label>
-                                        <label className="Frequency"> Monthly </label>
+                                        <input className="FrequencyInput" type="text" frequency="frequency" />
                                     </form>
                                 </td>
                             </tr>
@@ -80,7 +75,7 @@ export default class ViewPayment extends Component {
                                 <td colSpan="3">
                                     <form>
                                         <label className="ContributorsPendingLabel"> Contributors Pending: </label>
-                                        <label className="ContributorsPending"> Ash </label>
+                                        <input className="ContributorsPendingInput" type="text" contributorsPending="contributorsPending" />
                                     </form>
                                 </td>
                             </tr>
@@ -88,7 +83,7 @@ export default class ViewPayment extends Component {
                                 <td colSpan="3">
                                     <form>
                                         <label className="ContributorsPaidLabel"> Contributors Paid: </label>
-                                        <label className="ContributorsPaid"> Misty, Brock </label>
+                                        <input className="ContributorsPaidInput" type="text" contributorPaids="contributorsPaid" />
                                     </form>
                                 </td>
                             </tr>
@@ -96,27 +91,22 @@ export default class ViewPayment extends Component {
                                 <td colSpan="3">
                                     <form>
                                         <label className="DescriptionLabel"> Description: </label>
-                                        <label className="Description"> Pikachu, I choose you! </label>
+                                        <input className="DescriptionInput" type="text" description="description" />
                                     </form>
                                 </td>
                             </tr>
                         </table>
                     </Modal.Body>
                     <Modal.Footer>
-                        <span className="DeleteButton">
-                            <Button className="DeleteButton" variant="secondary" onClick={onCloseView}>
-                                <img src={Delete} alt="delete" className="delete-image" />
-                            </Button>
+                        <span className="CancelButton">
+                            <Button className="CancelButton" variant="secondary" onClick={onClose}>
+                                Cancel
+                                        </Button>
                         </span>
-                        <span className="EditButton">
-                            <Button className="EditButton" variant="secondary" onClick={onEdit}>
-                                <img src={Edit} alt="edit" className="edit-image" />
-                            </Button>
-                        </span>
-                        <span className="PaidButton">
-                            <Button className="PaidButton" variant="primary" onClick={onCloseView}>
-                                Paid
-                            </Button>
+                        <span className="SaveButton">
+                            <Button className="SaveButton" variant="primary" onClick={onClose}>
+                                Save
+                                        </Button>
                         </span>
                     </Modal.Footer>
                 </Modal>
