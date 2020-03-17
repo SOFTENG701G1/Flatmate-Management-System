@@ -10,6 +10,7 @@ export default class Payments extends Component {
     constructor() {
         super();
         this.state = {
+            showView: false,
             show: false,
             // Currently are dummy data
             FixedPayments: [{
@@ -57,6 +58,19 @@ export default class Payments extends Component {
         })
     }
 
+    //Methods for opening view
+    handleOpenView = () => {
+        this.setState({
+            showView: true
+        })
+    }
+
+    handleCloseView = () => {
+        this.setState({
+            showView: false
+        })
+    }
+
     render() {
         const FixedPaymentsHtml = [];
         const VariablePaymentsHtml = []
@@ -89,7 +103,7 @@ export default class Payments extends Component {
                                     Add new
                                 </button>
                             </span>
-                            <ViewPayment onClose={this.handleClose} show={this.state.show} />
+                            <NewPayment onClose={this.handleClose} show={this.state.show} />
                         </td>
                     </tr>
                     <tr>
@@ -105,13 +119,13 @@ export default class Payments extends Component {
                         </td>
                     </tr>
                     <tr>
-                        <td onClick={this.handleOpen}>
+                        <td onClick={this.handleOpenView}>
                             {FixedPaymentsHtml}
-                           
                         </td>
-                        <td>
+                        <td onClick={this.handleOpenView}>
                             {VariablePaymentsHtml}
                         </td>
+                        <ViewPayment onCloseView={this.handleCloseView} showView={this.state.showView} />
                     </tr>
                 </table>
             </div>

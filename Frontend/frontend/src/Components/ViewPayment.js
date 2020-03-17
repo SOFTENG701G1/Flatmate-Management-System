@@ -17,13 +17,13 @@ export default class ViewPayment extends Component {
     }
 
     render() {
-        const { show, onClose } = this.props
+        const { showView, onCloseView } = this.props
         return (
             <>
-                <Modal show={show} onHide={onClose} backdrop={true}>
+                <Modal show={showView} onHide={onCloseView} backdrop={true}>
                     <Modal.Header>
                         <span className="CrossButton">
-                            <Button className="CrossButton" variant="secondary" onClick={onClose}>
+                            <Button className="CrossButton" variant="secondary" onClick={onCloseView}>
                                 <img src={Cross} alt="cross" className="cross-image" />
                             </Button>
                         </span>
@@ -105,17 +105,17 @@ export default class ViewPayment extends Component {
                     </Modal.Body>
                     <Modal.Footer>
                         <span className="DeleteButton">
-                            <Button className="DeleteButton" variant="secondary" onClick={onClose}>
+                            <Button className="DeleteButton" variant="secondary" onClick={onCloseView}>
                                 <img src={Delete} alt="delete" className="delete-image" />
                             </Button>
                         </span>
                         <span className="EditButton">
-                            <Button className="EditButton" variant="secondary" onClick={onClose}>
+                            <Button className="EditButton" variant="secondary" onClick={onCloseView}>
                                 <img src={Edit} alt="edit" className="edit-image" />
                             </Button>
                         </span>
                         <span className="PaidButton">
-                            <Button className="PaidButton" variant="primary" onClick={onClose}>
+                            <Button className="PaidButton" variant="primary" onClick={onCloseView}>
                                 Paid
                             </Button>
                         </span>
