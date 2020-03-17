@@ -51,7 +51,7 @@ export default class Payments extends Component {
         this.setState({
             show: true
         })
-    }
+   }
 
     _handleClose = () => {
         this.setState({

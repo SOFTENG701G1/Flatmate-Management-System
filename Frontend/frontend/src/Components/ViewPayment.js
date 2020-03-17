@@ -29,7 +29,7 @@ export default class ViewPayment extends Component {
                             </Button>
                         </span>
                         <Modal.Title>
-                            <h1 class="modal-title w-100 text-center"> Rent</h1>
+                            <h1 class="modal-title w-100 text-center"> RENT</h1>
                         </Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
