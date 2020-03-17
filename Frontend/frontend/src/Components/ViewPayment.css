@@ -257,4 +257,6 @@ label.Description{
   width: 300px;
   margin-top: 15px;
   margin-bottom: 20px; 
+  display: inline-block;
+  color: #EEEEEE;
 } 
