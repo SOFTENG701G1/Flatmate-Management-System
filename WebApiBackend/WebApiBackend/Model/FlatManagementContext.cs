@@ -72,20 +72,20 @@ namespace WebApiBackend.Model
                     .HasForeignKey(e => e.UserId);
             });
 
-            //modelBuilder.Entity<Flat>(e =>
-            //{
-            //    e.HasMany(e => e.Payments)
-            //    .WithOne()
-            //    .OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<Flat>(e =>
+            {
+                e.HasMany(e => e.Payments)
+                .WithOne()
+                .OnDelete(DeleteBehavior.Cascade);
 
-            //    e.HasMany(e => e.Schedules)
-            //    .WithOne()
-            //    .OnDelete(DeleteBehavior.Cascade);
+                e.HasMany(e => e.Schedules)
+                .WithOne()
+                .OnDelete(DeleteBehavior.Cascade);
 
-            //    e.HasMany(e => e.Users)
-            //    .WithOne(u => u.Flat)
-            //    .OnDelete(DeleteBehavior.SetNull);
-            //});
+                e.HasMany(e => e.Users)
+                .WithOne(u => u.Flat)
+                .OnDelete(DeleteBehavior.SetNull);
+            });
 
 
 

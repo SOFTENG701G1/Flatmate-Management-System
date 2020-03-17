@@ -12,7 +12,6 @@ using WebApiBackend.Controllers;
 using WebApiBackend.Dto;
 using WebApiBackend.Helpers;
 using WebApiBackend.Model;
-using Moq;
 using System.Security.Principal;
 using System.Security.Claims;
 
