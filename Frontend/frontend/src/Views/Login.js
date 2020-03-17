@@ -36,10 +36,10 @@ export default class Login extends React.Component {
     } else {
       switch (loginResult.status) {
         case 404:
-          this.setState({ error: "Username does not exist."});
+          this.setState({ error: "Invalid username, email or password."});
           break;
         case 403:
-          this.setState({ error: "Invalid password."});
+          this.setState({ error: "Invalid username, email or password."});
           break;
         default:
           this.setState({ error: "Unknown error (check your internet)."});
