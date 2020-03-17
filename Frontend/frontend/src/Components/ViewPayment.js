@@ -8,6 +8,7 @@ import "./ViewPayment.css";
 
 /*
     This class renders the View Payments page.
+    Dummy data is currently used
 */
 
 export default class ViewPayment extends Component {
@@ -30,7 +31,6 @@ export default class ViewPayment extends Component {
                         <Modal.Title>
                             <h1 class="modal-title w-100 text-center"> Rent</h1>
                         </Modal.Title>
-
                     </Modal.Header>
                     <Modal.Body>
                         <table className="InputTable">
