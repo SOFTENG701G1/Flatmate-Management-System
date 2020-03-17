@@ -25,37 +25,32 @@ namespace WebApiBackend.Controllers
         //TODO: Change AllowAnonymous to [Authorize] after integrate with front end
         //Delete:api/delete/{username}
 
-        [AllowAnonymous]
+        [Authorize]
         [HttpDelete("{deleteUserName}")]
         public ActionResult RemoveMember(string deleteUserName)
         {
-            //ClaimsIdentity identity =(ClaimsIdentity) HttpContext.User.Identity;
-            //var userName = identity.FindFirst(ClaimTypes.NameIdentifier).Value;
-            var userName = "YinWang";
+            ClaimsIdentity identity = (ClaimsIdentity)HttpContext.User.Identity;
+            var userName = identity.FindFirst(ClaimTypes.Name).Value;
             User user = _context.User.Find(userName);
             User deleteUser = _context.User.Find(deleteUserName);
             Flat flat = _context.Flat.Find(user.FlatId);
 
             //TODO change param1 to newFlat later
             var redirectToActionResult = new RedirectToActionResult("RedirectTest", "Flat", null);
-            var beforeCount = flat.Users.Count;
             flat.Users.Remove(deleteUser);
+            _context.SaveChanges();
             var afterCount = flat.Users.Count;
             if (user.UserName == deleteUserName)
             {
-                //if (flat.Users.Count == 0)
-                //{
-                //    _context.Flat.Remove(flat);
-     
-                //    deleteUser.Flat = null;
-                //    deleteUser.FlatId = null;         
-                //    _context.User.Update(deleteUser);
-                //    _context.SaveChanges();
-                //}
-    //            return redirectToActionResult;
+                if (flat.Users.Count == 0)
+                {
+                    _context.Flat.Remove(flat);
+                    _context.SaveChanges();
+                }
+                return redirectToActionResult;
             }
             _context.SaveChanges();
-            return Ok(deleteUser.UserName + " has been removed from the flat. Current member " + flat.Users.Count() + " before " + beforeCount + " after " + afterCount);
+            return Ok(deleteUser.UserName + " has been removed from the flat. " + _context.Flat.First().ToString());
         }
 
 
@@ -65,10 +60,6 @@ namespace WebApiBackend.Controllers
         {
             return "redirect successfully";
         }
-
-
-
-
     }
 }
 
