@@ -16,6 +16,7 @@ import SplashScreen from './Views/SplashScreen';
 import HomePage from './Views/HomePage';
 import RequireLogin from './Components/RequireLogin';
 import MembersPage from './Components/Members';
+import ForgotPassword from './Views/ForgotPassword';
 export default class App extends React.Component {
   render() {
     return (
@@ -30,6 +31,9 @@ export default class App extends React.Component {
             </Route>
             <Route path="/login">
               <Login/>
+            </Route>
+            <Route path="/login/forgot-password">
+              <ForgotPassword/>
             </Route>
             <Route path="/register">
               <Register/>

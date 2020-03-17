@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using WebApiBackend.Dto;
 using WebApiBackend.EF;
-using WebApiBackend.Interfaces;
 using WebApiBackend.Model;
 
 namespace WebApiBackend.Controllers
@@ -17,51 +16,63 @@ namespace WebApiBackend.Controllers
     [ApiController]
     public class PaymentsController : BaseController<Payment, PaymentsRepository, PaymentDTO>
     {
-        private readonly UserPaymentsRepository userPaymentsRepository;
+        private readonly UserPaymentsRepository _userPaymentsRepository;
 
-        private readonly PaymentsRepository paymentsRepository;
+        private readonly PaymentsRepository _paymentsRepository;
 
-        private readonly FlatRepository flatRepository;
+        private readonly FlatRepository _flatRepository;
 
-        private readonly UserRepository userRepository;
+        private readonly UserRepository _userRepository;
 
-        private readonly IMapper mapper;
+        private readonly IMapper _mapper;
         public PaymentsController(PaymentsRepository paymentsRepository, UserPaymentsRepository userPaymentsRepository, FlatRepository flatRepository, UserRepository userRepository, IMapper mapper
             ) : base(paymentsRepository, mapper)
         {
-            this.userPaymentsRepository = userPaymentsRepository;
-            this.paymentsRepository = paymentsRepository;
-            this.flatRepository = flatRepository;
-            this.userRepository = userRepository;
-            this.mapper = mapper;
+            this._userPaymentsRepository = userPaymentsRepository;
+            this._paymentsRepository = paymentsRepository;
+            this._flatRepository = flatRepository;
+            this._userRepository = userRepository;
+            this._mapper = mapper;
         }
+
         /// <summary>
         /// GET Method - Gets all the payments that are associated with a specific user
         /// </summary>
-        /// <param name="userId"></param>
+        /// <response code="200">All payments are retrieved for user</response>
+        /// <response code="401">Not an authorised user</response>
+        /// <response code="404">No payments found for user</response>
         /// <returns> Payments that are for that user</returns>
-        // TODO: Change the method to use authentication instead of userId
-        [HttpGet("User/{userId}")]
-        public async Task<IActionResult> GetAllPaymentForUser(int userId)
+        [HttpGet("User")]
+        public async Task<IActionResult> GetAllPaymentsForUser()
         {
-            List<Payment> payments = await paymentsRepository.GetAll();
-            List<UserPayment> userPayments = await userPaymentsRepository.GetAll();
+            ClaimsIdentity identity = HttpContext.User.Identity as ClaimsIdentity;
+
+            int userID = Int16.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value);
+
+         
+            List<Payment> payments = await _paymentsRepository.GetAll();
+            List<UserPayment> userPayments = await _userPaymentsRepository.GetAll();
             payments = (from p in payments
                         join up in userPayments on p.Id equals up.PaymentId
-                        where up.UserId.Equals(userId)
+                        where up.UserId.Equals(userID)
                         select p).ToList();
 
             if (payments.Count() == 0)
             {
                 return NotFound();
             }
-            List<PaymentDTO> paymentsDTOs = mapper.Map<List<Payment>, List<PaymentDTO>>(payments);
+            List<PaymentDTO> paymentsDTOs = _mapper.Map<List<Payment>, List<PaymentDTO>>(payments);
+
             return Ok(paymentsDTOs);
         }
+
         /// <summary>
         /// GET Method - Gets all payments for a specific flat
         /// </summary>
-        /// <param name="flatId"></param>
+        /// <param name="flatId">The Id of the flat you want payments for</param>        
+        /// <response code="200">All payments are retrieved for flat</response>
+        /// <response code="401">Not an authorised user</response>
+        /// <response code="404">No payments found for user</response>
         /// <returns> The payments that are associated with the flat</returns>
         [HttpGet("Flat/{flatId}")]
         public async Task<IActionResult> GetPaymentsForFlat(int flatId)
@@ -72,77 +83,115 @@ namespace WebApiBackend.Controllers
             {
                 return NotFound();
             }
-            List<PaymentDTO> paymentDTOs = mapper.Map<List<Payment>, List<PaymentDTO>>(payments);
+            List<PaymentDTO> paymentDTOs = _mapper.Map<List<Payment>, List<PaymentDTO>>(payments);
+
             return Ok(paymentDTOs);
+        }
+
+        /// <summary>
+        /// GET Method - Gets all users contributing to a payment
+        /// </summary>
+        /// <param name="paymentId">The id for the payment that you want all the contributors for</param>
+        /// <response code="200">All users retreived for payment</response>
+        /// <response code="401">Not an authorised user</response>
+        /// <response code="404">No payments found with given id</response>
+        /// <returns> The users associated with payment</returns>
+        [HttpGet("Users")]
+        public async Task<IActionResult> GetAllUsersForPayment([FromQuery] int paymentId)
+        {            
+            List<User> users = await _userRepository.GetAll();
+            List<UserPayment> userPayments = await _userPaymentsRepository.GetAll();
+
+            users = (from u in users
+                     join up in userPayments on u.Id equals up.UserId
+                     where up.PaymentId.Equals(paymentId)
+                     select u).ToList();
+
+            if(users.Count == 0)
+            {
+                return NotFound();
+            }
+
+            List<UserDTO> userDtos = _mapper.Map<List<User>, List<UserDTO>>(users);
+
+            return Ok(userDtos);
         }
 
         /// <summary>
         /// POST Method - Creates a new payment for the flat by taking in a list of users
         /// that are meant to be in the list
         /// </summary>
-        /// <param name="flatId"></param>
-        /// <param name="paymentDTO"></param>
-        /// <param name="userIds"></param>
-        /// <returns> The paymentDTO that is created</returns>        
+        /// <param name="flatId">The Id of the flat you want to add a payment for</param>
+        /// <param name="paymentDTO">The payment you want to be created</param>
+        /// <param name="userIds">List of user id's to associate with the payment</param>
+        /// <response code="200">Payment created</response>
+        /// <response code="401">Not an authorised user</response>
+        /// <returns> The created payment is returned </returns>        
         [HttpPost("Flat/{flatId}")]
         public async Task<IActionResult> CreatePaymentForFlat(int flatId, [FromBody] PaymentDTO paymentDTO, [FromHeader] List<int> userIds)
         {
-            Payment payment = mapper.Map<PaymentDTO, Payment>(paymentDTO);
+            Payment payment = _mapper.Map<PaymentDTO, Payment>(paymentDTO);
 
-            await paymentsRepository.Add(payment);
+            await _paymentsRepository.Add(payment);
 
             List<Payment> payments = await GetAllPaymentsFromFlatId(flatId);
 
-            Flat flat = await flatRepository.Get(flatId);
+            Flat flat = await _flatRepository.Get(flatId);
 
             payments.Add(payment);
 
             flat.Payments = payments;
 
-            await flatRepository.Update(flat);
+            await _flatRepository.Update(flat);
 
             foreach (int userId in userIds)
             {
-                User user = await userRepository.Get(userId);
+                User user = await _userRepository.Get(userId);
 
                 UserPayment userPayment = new UserPayment { Payment = payment, User = user, PaymentId = payment.Id, UserId = user.Id };
 
                 user.UserPayments.Add(userPayment);
 
-                await userRepository.Update(user);
+                await _userRepository.Update(user);
             }
 
             return Ok(paymentDTO);
         }
+
         /// <summary>
         /// PUT Method - Adds a user to an existing payment
         /// </summary>
-        /// <param name="paymentId"></param>
-        /// <param name="userID"></param>
+        /// <param name="paymentId">Id of the payment you want to add an user to</param>
+        /// <param name="userId">Id of the user you want to add</param>
+        /// <response code="204">Payment was successfully updated</response>
+        /// <response code="401">Not an authorised user</response>
+        /// <response code="404">No payments found for user or the user with the given id is not found</response>
         /// <returns> NoContent </returns>
         [HttpPut("User/{paymentId}")]
-        public async Task<IActionResult> AddUserToExistingPayment(int paymentId,[FromQuery] int userID)
+        public async Task<IActionResult> AddUserToExistingPayment(int paymentId, [FromQuery] int userId)
         {
-            Payment payment = await paymentsRepository.Get(paymentId);
-            User user = await userRepository.Get(userID);
+            Payment payment = await _paymentsRepository.Get(paymentId);
+            User user = await _userRepository.Get(userId);
 
-            UserPayment userPayment = new UserPayment { UserId = userID, PaymentId = paymentId, User = user, Payment = payment };
+            UserPayment userPayment = new UserPayment { UserId = userId, PaymentId = paymentId, User = user, Payment = payment };
 
-            await userPaymentsRepository.Add(userPayment);
+            await _userPaymentsRepository.Add(userPayment);
 
             return NoContent();
-        } 
+        }
 
         /// <summary>
         /// DELETE Method - Removes a whole Payment for the flat
         /// </summary>
-        /// <param name="paymentId"></param>
+        /// <param name="paymentId">Id of payment you want to delete</param>
+        /// <response code="200">Payment deleted for a flat</response>
+        /// <response code="401">Not an authorised user</response>
         /// <returns> Returns the payment that got removed </returns>
-        [HttpDelete("Flat/{flatId}")]
+        [HttpDelete("Flat")]
         public async Task<IActionResult> DeletePaymentForFlat(int paymentId)
         {
-            Payment payment = await paymentsRepository.Delete(paymentId);
-            PaymentDTO paymentDTO = mapper.Map<Payment, PaymentDTO>(payment);
+            Payment payment = await _paymentsRepository.Delete(paymentId);
+            PaymentDTO paymentDTO = _mapper.Map<Payment, PaymentDTO>(payment);
             return Ok(paymentDTO);
         }
 
@@ -150,15 +199,18 @@ namespace WebApiBackend.Controllers
         /// DELETE Method - Removes User from a specific patyment by removing a
         /// row from UserPayments table
         /// </summary>
-        /// <param name="paymentId"></param>
-        /// <param name="userId"></param>
-        /// <returns> 200 OK if deleted successfully </returns>
+        /// <param name="paymentId">Id of payment you want user to be removed from</param>
+        /// <param name="userId">Id of user to be removed</param>
+        /// <response code="204">User removed successfully from payment</response>
+        /// <response code="401">Not an authorised user</response>
+        /// <returns> No content when user is removed </returns>
         [HttpDelete("User/{paymentId}")]
         public async Task<IActionResult> DeleteUserFromPayment(int paymentId, [FromQuery] int userId)
         {
-            await userPaymentsRepository.DeleteUserFromPayment(userId, paymentId);
+            await _userPaymentsRepository.DeleteUserFromPayment(userId, paymentId);
             return NoContent();
         }
+
         /// <summary>
         /// Helper method to get all payments for a specific flat
         /// </summary>
@@ -166,9 +218,9 @@ namespace WebApiBackend.Controllers
         /// <returns>List of payments</returns>
         private async Task<List<Payment>> GetAllPaymentsFromFlatId(int flatId)
         {
-            List<Payment> payments = await paymentsRepository.GetAll();
-            List<UserPayment> userPayments = await userPaymentsRepository.GetAll();
-            List<User> users = await userRepository.GetAll();
+            List<Payment> payments = await _paymentsRepository.GetAll();
+            List<UserPayment> userPayments = await _userPaymentsRepository.GetAll();
+            List<User> users = await _userRepository.GetAll();
 
 
             payments = (from p in payments
