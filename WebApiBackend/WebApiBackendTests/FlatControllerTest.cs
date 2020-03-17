@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using NUnit.Framework;
 using System;
@@ -12,6 +12,9 @@ using WebApiBackend.Controllers;
 using WebApiBackend.Dto;
 using WebApiBackend.Helpers;
 using WebApiBackend.Model;
+using Moq;
+using System.Security.Principal;
+using System.Security.Claims;
 
 namespace WebApiBackendTests
 {
@@ -19,6 +22,7 @@ namespace WebApiBackendTests
     {
         ServiceDependencyResolver _serviceProvider;
         private FlatManagementContext _context;
+        private FlatController _flatController;
 
         [SetUp]
         public void Setup()
@@ -36,6 +40,18 @@ namespace WebApiBackendTests
 
             var testDataGenerator = new DevelopmentDatabaseSetup(_context);
             testDataGenerator.SetupDevelopmentDataSet();
+
+            _flatController = new FlatController(_context);
+
+            //Creates a new httpContext and adds a user identity to it, imitating being already logged in.
+            DefaultHttpContext httpContext = new DefaultHttpContext();
+            GenericIdentity MyIdentity = new GenericIdentity("YinWang");
+            ClaimsIdentity objClaim = new ClaimsIdentity(new List<Claim> { new Claim(ClaimTypes.Name, "YinWang") });
+            _flatController.ControllerContext = new ControllerContext();
+            _flatController.ControllerContext.HttpContext = httpContext;
+            httpContext.User = new ClaimsPrincipal(objClaim);
+
+
         }
 
         /// <summary>
@@ -44,8 +60,9 @@ namespace WebApiBackendTests
         [Test]
         public void TestGetMemberList()
         {
-            FlatController flatController = new FlatController(_context);
-            ActionResult<List<DisplayMemberDTO>> response = flatController.GetMembers(1);
+            
+
+            ActionResult<List<DisplayMemberDTO>> response = _flatController.GetMembers();
 
             Assert.IsNotNull(response.Value);
             Assert.That(response.Value.Count, Is.EqualTo(3));
@@ -56,7 +73,6 @@ namespace WebApiBackendTests
 
 
         }
-
 
     }
 }
