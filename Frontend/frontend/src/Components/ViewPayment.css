@@ -45,7 +45,7 @@ h1 {
 span.DeleteButton {
   position: absolute;
   bottom: 0px;
-  left: 120px;
+  left: 170px;
   margin:15px;
 }
 
@@ -57,7 +57,7 @@ button.DeleteButton {
 span.EditButton {
   position: absolute;
   bottom: 0px;
-  left: 170px;
+  left: 120px;
   margin:15px;
 }
 
