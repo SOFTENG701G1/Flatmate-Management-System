@@ -46,6 +46,7 @@ export default class Payments extends Component {
         }
     }
 
+    //Methods for opening new payment component
     _handleOpen = () => {
         this.setState({
             show: true
@@ -58,7 +59,7 @@ export default class Payments extends Component {
         })
     }
 
-    //Methods for opening view
+    //Methods for opening view payment component
     _handleOpenView = () => {
         this.setState({
             showView: true
