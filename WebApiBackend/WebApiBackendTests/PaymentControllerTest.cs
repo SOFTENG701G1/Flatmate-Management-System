@@ -1,10 +1,13 @@
-﻿using Microsoft.Extensions.Options;
+﻿using AutoMapper;
+using Microsoft.Extensions.Options;
+using Moq;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using WebApiBackend.Controllers;
+using WebApiBackend.Dto;
 using WebApiBackend.EF;
 using WebApiBackend.Helpers;
 using WebApiBackend.Model;
@@ -15,8 +18,9 @@ namespace WebApiBackendTests
     class PaymentControllerTest
     {
         private DatabaseSetUpHelper _dbSetUpHelper;
-        private ServiceDependencyResolver _serviceProvider;
         private FlatManagementContext _context;
+
+        private MapperHelper _mapperHelper;
 
         private PaymentsRepository _paymentsRepository;
         private UserPaymentsRepository _userPaymentsRepository;
@@ -29,7 +33,6 @@ namespace WebApiBackendTests
         public void Setup()
         {
             _dbSetUpHelper = new DatabaseSetUpHelper();
-            _serviceProvider = _dbSetUpHelper.GetServiceDependencyResolver();
             _context = _dbSetUpHelper.GetContext();
 
             _paymentsRepository = new PaymentsRepository(_context);
@@ -37,8 +40,10 @@ namespace WebApiBackendTests
             _flatRepository = new FlatRepository(_context);
             _userRepository = new UserRepository(_context);
 
-            // ISSUE: controller takes in IMapper, but no way of instantiating
-            _paymentsController = new PaymentsController(_paymentsRepository, _userPaymentsRepository, _flatRepository, _userRepository, null);
+            _mapperHelper = new MapperHelper();
+            var mockMapper = _mapperHelper.GetMapper();
+
+            _paymentsController = new PaymentsController(_paymentsRepository, _userPaymentsRepository, _flatRepository, _userRepository, mockMapper);
         }
 
         [Test]
@@ -77,15 +82,14 @@ namespace WebApiBackendTests
         [Test]
         public async Task TestGetPaymentsForFlatAsync()
         {
-            //// Arrange
-            //var flatId = 1;
+            // Arrange
+            var flatId = 1;
 
-            //// Act
-            //var response = await _paymentsController.GetPaymentsForFlat(flatId);
+            // Act
+            var response = await _paymentsController.GetPaymentsForFlat(flatId);
 
-            //// Assert
-            //Assert.IsNotNull(response);
-            Assert.Pass();
+            // Assert
+            Assert.IsNotNull(response);
         }
 
         [Test]
