@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -11,6 +12,7 @@ using WebApiBackend.Model;
 
 namespace WebApiBackend.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public abstract class BaseController<TEntity, TRepository, TEntityDTO> : ControllerBase
@@ -28,6 +30,10 @@ namespace WebApiBackend.Controllers
         }
 
         // GET: api/[controller]
+        /// <summary>
+        /// FOR DEV TESTING
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public async Task<ActionResult<IEnumerable<TEntityDTO>>> Get()
         {
@@ -37,6 +43,11 @@ namespace WebApiBackend.Controllers
         }
 
         // GET: api/[controller]/5
+        /// <summary>
+        /// FOR DEV TESTING
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpGet("{id}")]
         public async Task<ActionResult<TEntityDTO>> Get(int id)
         {
@@ -53,6 +64,12 @@ namespace WebApiBackend.Controllers
         }
 
         // PUT: api/[controller]/5
+        /// <summary>
+        /// FOR DEV TESTING
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="entityDTO"></param>
+        /// <returns></returns>
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
         [HttpPut("{id}")]
@@ -70,6 +87,11 @@ namespace WebApiBackend.Controllers
         }
 
         // POST: api/[controller]
+        /// <summary>
+        /// FOR DEV TESTING
+        /// </summary>
+        /// <param name="entityDTO"></param>
+        /// <returns></returns>
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
         [HttpPost]
@@ -81,6 +103,11 @@ namespace WebApiBackend.Controllers
             return CreatedAtAction("Get", new { id = entityDTO.Id }, entityDTO);
         }
 
+        /// <summary>
+        /// FOR DEV TESTING
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         // DELETE: api/[controller]/5
         [HttpDelete("{id}")]
         public async Task<ActionResult<TEntityDTO>> Delete(int id)

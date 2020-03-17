@@ -18,6 +18,10 @@ namespace WebApiBackend.Model
         public string UserName { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
+
+        /// <summary>
+        /// The type of leave associated with a schedule
+        /// </summary>
         public ScheduleType ScheduleType { get; set; }
     }
 }
