@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Moq;
 using NUnit.Framework;
@@ -47,17 +48,41 @@ namespace WebApiBackendTests
         }
 
         [Test]
-        public void TestAddUserToExistingPayment()
+        public async Task TestAddUserToExistingPaymentAsync()
         {
+            // Arrange
+            var paymentId = 1;
+            var userId = 4;
+
             // Act
-            
+            var response = await _paymentsController.AddUserToExistingPayment(paymentId, userId);
+
             // Assert
-            Assert.Pass();
+            Assert.IsNotNull(response);
         }
 
         [Test]
-        public void TestCreatePaymentForFlat()
+        public async Task TestCreatePaymentForFlatAsync()
         {
+            //// Arrange
+            //var flatId = 1;
+            //var payment = new PaymentDTO
+            //{
+            //    Amount = 99,
+            //    PaymentType = PaymentType.Other,
+            //    Frequency = Frequency.Weekly,
+            //    StartDate = new DateTime(2020, 04, 04),
+            //    EndDate = new DateTime(2020, 05, 05),
+            //    Fixed = false,
+            //    Description = "food",
+            //};
+            //var userIds = new List<int>{ 1, 2 };
+
+            //// Act
+            //var response = await _paymentsController.CreatePaymentForFlat(flatId, payment, userIds);
+
+            //// Assert
+            //Assert.IsInstanceOf<OkObjectResult>(response);
             Assert.Pass();
         }
 
@@ -89,13 +114,20 @@ namespace WebApiBackendTests
             var response = await _paymentsController.GetPaymentsForFlat(flatId);
 
             // Assert
-            Assert.IsNotNull(response);
+            Assert.IsInstanceOf<OkObjectResult>(response);
         }
 
         [Test]
-        public void TestGetAllPaymentsForUser()
+        public async Task TestGetAllPaymentsForUserAsync()
         {
-            Assert.Pass();
+            // Arrange
+            var userId = 1;
+
+            // Act
+            var response = await _paymentsController.GetAllPaymentForUser(userId);
+
+            // Assert
+            Assert.IsNotNull(response);
         }
     }
 }

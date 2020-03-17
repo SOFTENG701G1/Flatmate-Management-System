@@ -29,6 +29,23 @@ namespace WebApiBackendTests.Helper
                         Description = payment.Description,
                     };
                 });
+
+            _mockMapper.Setup(x => x.Map<Payment>(It.IsAny<PaymentDTO>()))
+                .Returns((PaymentDTO payment) =>
+                {
+                    return new Payment
+                    {
+                        Id = payment.Id,
+                        Amount = payment.Amount,
+                        Fixed = payment.Fixed,
+                        StartDate = payment.StartDate,
+                        EndDate = payment.EndDate,
+                        PaymentType = payment.PaymentType,
+                        Frequency = payment.Frequency,
+                        UserPayments = null,
+                        Description = payment.Description,
+                    };
+                });
         }
 
         public IMapper GetMapper()
