@@ -8,7 +8,7 @@ import {
   Route,
   Link
 } from "react-router-dom";
- 
+ import Members from './Components/Members';
 export default class App extends React.Component {
   render () {
     return (
@@ -58,6 +58,4 @@ function Dashboard() {
 function Payments() {
   return <h2>Payments page</h2>;
 }
-function Members() {
-  return <h2>Members page</h2>;
-}
+
