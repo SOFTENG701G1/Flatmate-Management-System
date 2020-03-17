@@ -9,14 +9,14 @@ namespace WebApiBackend.Helpers
 {
     public class DevelopmentDatabaseSetup
     {
-        User yin, teresa, bryan;
-        Payment payment1, payment2;
+        User _yin, _teresa, _bryan;
+        Payment _payment1, _payment2;
         // Payment[NAME]1 is for electricity
         // Payment[NAME]2 is for Rent due to many to many relationship
-        UserPayment userPaymentYin1, userPaymentYin2, userPaymentBryan1,
-            userPaymentBryan2, userPaymentTeresa1, userPaymentTeresa2;
-        Schedule schedule1;
-        Flat flat1;
+        UserPayment _userPaymentYin1, _userPaymentYin2, _userPaymentBryan1,
+            _userPaymentBryan2, _userPaymentTeresa1, _userPaymentTeresa2;
+        Schedule _schedule1;
+        Flat _flat1;
 
         private readonly FlatManagementContext _database;
 
@@ -24,7 +24,7 @@ namespace WebApiBackend.Helpers
         {
             var hasher = new PasswordHasher<User>();
 
-            yin = new User
+            _yin = new User
             {
                 UserName = "YinWang",
                 FirstName = "Yin",
@@ -35,9 +35,9 @@ namespace WebApiBackend.Helpers
                 MedicalInformation = "N/A",
                 BankAccount = "00-0000-0000000-000"
             };
-            yin.HashedPassword = hasher.HashPassword(yin, "password");
+            _yin.HashedPassword = hasher.HashPassword(_yin, "password");
 
-            teresa = new User
+            _teresa = new User
             {
                 UserName = "TreesAreGreen",
                 FirstName = "Teresa",
@@ -48,9 +48,9 @@ namespace WebApiBackend.Helpers
                 MedicalInformation = "Vegan, Gluten-Free, Lactose Intolerant",
                 BankAccount = "12-3456-1234567-123"
             };
-            teresa.HashedPassword = hasher.HashPassword(teresa, "password");
+            _teresa.HashedPassword = hasher.HashPassword(_teresa, "password");
 
-            bryan = new User
+            _bryan = new User
             {
                 UserName = "BeboBryan",
                 FirstName = "Bryan",
@@ -61,9 +61,9 @@ namespace WebApiBackend.Helpers
                 MedicalInformation = "N/A",
                 BankAccount = "98-7654-3211234-210"
             };
-            bryan.HashedPassword = hasher.HashPassword(bryan, "password");
+            _bryan.HashedPassword = hasher.HashPassword(_bryan, "password");
 
-            payment1 = new Payment
+            _payment1 = new Payment
             {
                 Id = 1,
                 PaymentType = PaymentType.Electricity,
@@ -75,7 +75,7 @@ namespace WebApiBackend.Helpers
                 Description = "electricity"
             };
 
-            payment2 = new Payment
+            _payment2 = new Payment
             {
                 Id = 2,
                 PaymentType = PaymentType.Rent,
@@ -87,62 +87,62 @@ namespace WebApiBackend.Helpers
                 Description = "rent"
             };
 
-            userPaymentBryan1 = new UserPayment
+            _userPaymentBryan1 = new UserPayment
             {
-                Payment = payment1,
-                User = bryan,
-                UserId = bryan.Id,
-                PaymentId = payment1.Id
+                Payment = _payment1,
+                User = _bryan,
+                UserId = _bryan.Id,
+                PaymentId = _payment1.Id
             };
 
-            userPaymentBryan2 = new UserPayment
+            _userPaymentBryan2 = new UserPayment
             {
-                Payment = payment2,
-                User = bryan,
-                UserId = bryan.Id,
-                PaymentId = payment2.Id
+                Payment = _payment2,
+                User = _bryan,
+                UserId = _bryan.Id,
+                PaymentId = _payment2.Id
             };
 
-            userPaymentYin1 = new UserPayment
+            _userPaymentYin1 = new UserPayment
             {
-                Payment = payment1,
-                User = yin,
-                UserId = yin.Id,
-                PaymentId = payment1.Id
+                Payment = _payment1,
+                User = _yin,
+                UserId = _yin.Id,
+                PaymentId = _payment1.Id
             };
 
-            userPaymentYin2 = new UserPayment
+            _userPaymentYin2 = new UserPayment
             {
-                Payment = payment2,
-                User = yin,
-                UserId = yin.Id,
-                PaymentId = payment2.Id
+                Payment = _payment2,
+                User = _yin,
+                UserId = _yin.Id,
+                PaymentId = _payment2.Id
             };
 
-            userPaymentTeresa1 = new UserPayment
+            _userPaymentTeresa1 = new UserPayment
             {
-                Payment = payment1,
-                User = teresa,
-                UserId = teresa.Id,
-                PaymentId = payment1.Id
+                Payment = _payment1,
+                User = _teresa,
+                UserId = _teresa.Id,
+                PaymentId = _payment1.Id
             };
 
-            userPaymentTeresa2 = new UserPayment
+            _userPaymentTeresa2 = new UserPayment
             {
-                Payment = payment2,
-                User = teresa,
-                UserId = teresa.Id,
-                PaymentId = payment2.Id
+                Payment = _payment2,
+                User = _teresa,
+                UserId = _teresa.Id,
+                PaymentId = _payment2.Id
             };
 
-            payment1.UserPayments = new List<UserPayment> { userPaymentBryan1, userPaymentTeresa1, userPaymentYin1 };
-            payment2.UserPayments = new List<UserPayment> { userPaymentBryan2, userPaymentTeresa2, userPaymentYin2 };
+            _payment1.UserPayments = new List<UserPayment> { _userPaymentBryan1, _userPaymentTeresa1, _userPaymentYin1 };
+            _payment2.UserPayments = new List<UserPayment> { _userPaymentBryan2, _userPaymentTeresa2, _userPaymentYin2 };
             
-            yin.UserPayments = new List<UserPayment> { userPaymentYin1, userPaymentYin2 };
-            bryan.UserPayments = new List<UserPayment> { userPaymentBryan1, userPaymentBryan2 };
-            teresa.UserPayments = new List<UserPayment> { userPaymentTeresa1, userPaymentTeresa2 };
+            _yin.UserPayments = new List<UserPayment> { _userPaymentYin1, _userPaymentYin2 };
+            _bryan.UserPayments = new List<UserPayment> { _userPaymentBryan1, _userPaymentBryan2 };
+            _teresa.UserPayments = new List<UserPayment> { _userPaymentTeresa1, _userPaymentTeresa2 };
 
-            schedule1 = new Schedule
+            _schedule1 = new Schedule
             {
                 UserName = "BeboBryan",
                 ScheduleType = ScheduleType.Away,
@@ -150,13 +150,13 @@ namespace WebApiBackend.Helpers
                 EndDate = new DateTime(2020, 05, 01)
             };
 
-            flat1 = new Flat
+            _flat1 = new Flat
             {
                 Id = 1,
                 Address = "50 Symonds Street",
-                Users = new List<User> { yin, teresa, bryan },
-                Schedules = new List<Schedule> { schedule1 },
-                Payments = new List<Payment> { payment1, payment2 }
+                Users = new List<User> { _yin, _teresa, _bryan },
+                Schedules = new List<Schedule> { _schedule1 },
+                Payments = new List<Payment> { _payment1, _payment2 }
             };
 
         }
@@ -171,19 +171,19 @@ namespace WebApiBackend.Helpers
             // This function could also be called in the unit tests if not called here
             InitialiseTestDataObjects();
 
-            _database.Add(yin);
-            _database.Add(teresa);
-            _database.Add(bryan);
-            _database.Add(payment1);
-            _database.Add(payment2);
-            _database.Add(userPaymentBryan1);
-            _database.Add(userPaymentBryan2);
-            _database.Add(userPaymentTeresa1);
-            _database.Add(userPaymentTeresa2);
-            _database.Add(userPaymentYin1);
-            _database.Add(userPaymentYin2);
-            _database.Add(schedule1);
-            _database.Add(flat1);
+            _database.Add(_yin);
+            _database.Add(_teresa);
+            _database.Add(_bryan);
+            _database.Add(_payment1);
+            _database.Add(_payment2);
+            _database.Add(_userPaymentBryan1);
+            _database.Add(_userPaymentBryan2);
+            _database.Add(_userPaymentTeresa1);
+            _database.Add(_userPaymentTeresa2);
+            _database.Add(_userPaymentYin1);
+            _database.Add(_userPaymentYin2);
+            _database.Add(_schedule1);
+            _database.Add(_flat1);
 
             _database.SaveChanges();
         }

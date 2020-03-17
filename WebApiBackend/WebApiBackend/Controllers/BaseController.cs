@@ -20,13 +20,13 @@ namespace WebApiBackend.Controllers
         where TEntity : class, IEntity
         where TRepository : IRepository<TEntity>
     {
-        private readonly TRepository repository;
-        private readonly IMapper mapper;
+        private readonly TRepository _repository;
+        private readonly IMapper _mapper;
 
         public BaseController(TRepository repository, IMapper mapper)
         {
-            this.repository = repository;
-            this.mapper = mapper;
+            this._repository = repository;
+            this._mapper = mapper;
         }
 
         // GET: api/[controller]
@@ -37,7 +37,7 @@ namespace WebApiBackend.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<TEntityDTO>>> Get()
         {
-            List<TEntityDTO> entityDTOs = mapper.Map<List<TEntity>, List<TEntityDTO>>(await repository.GetAll());
+            List<TEntityDTO> entityDTOs = _mapper.Map<List<TEntity>, List<TEntityDTO>>(await _repository.GetAll());
 
             return Ok(entityDTOs);
         }
@@ -51,14 +51,14 @@ namespace WebApiBackend.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<TEntityDTO>> Get(int id)
         {
-            var entity = await repository.Get(id);
+            var entity = await _repository.Get(id);
 
             if (entity == null)
             {
                 return NotFound();
             }
 
-            TEntityDTO entityDTO = mapper.Map<TEntity, TEntityDTO>(entity);
+            TEntityDTO entityDTO = _mapper.Map<TEntity, TEntityDTO>(entity);
 
             return Ok(entityDTO);
         }
@@ -80,8 +80,8 @@ namespace WebApiBackend.Controllers
                 return BadRequest();
             }
 
-            TEntity entity = mapper.Map<TEntityDTO, TEntity>(entityDTO);
-            await repository.Update(entity);
+            TEntity entity = _mapper.Map<TEntityDTO, TEntity>(entityDTO);
+            await _repository.Update(entity);
 
             return NoContent();
         }
@@ -97,8 +97,8 @@ namespace WebApiBackend.Controllers
         [HttpPost]
         public async Task<ActionResult<TEntityDTO>> Post(TEntityDTO entityDTO)
         {
-            TEntity entity = mapper.Map<TEntityDTO,TEntity>(entityDTO);
-            await repository.Add(entity);
+            TEntity entity = _mapper.Map<TEntityDTO,TEntity>(entityDTO);
+            await _repository.Add(entity);
 
             return CreatedAtAction("Get", new { id = entityDTO.Id }, entityDTO);
         }
@@ -112,12 +112,12 @@ namespace WebApiBackend.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult<TEntityDTO>> Delete(int id)
         {
-            var entity = await repository.Delete(id);
+            var entity = await _repository.Delete(id);
             if (entity == null)
             {
                 return NotFound();
             }
-            TEntityDTO entityDTO = mapper.Map<TEntity, TEntityDTO>(entity);
+            TEntityDTO entityDTO = _mapper.Map<TEntity, TEntityDTO>(entity);
 
 
             return entityDTO;
