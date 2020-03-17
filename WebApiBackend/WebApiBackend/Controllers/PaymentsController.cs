@@ -65,6 +65,7 @@ namespace WebApiBackend.Controllers
                 return NotFound();
             }
             List<PaymentDTO> paymentsDTOs = _mapper.Map<List<Payment>, List<PaymentDTO>>(payments);
+
             return Ok(paymentsDTOs);
         }
 
@@ -86,7 +87,37 @@ namespace WebApiBackend.Controllers
                 return NotFound();
             }
             List<PaymentDTO> paymentDTOs = _mapper.Map<List<Payment>, List<PaymentDTO>>(payments);
+
             return Ok(paymentDTOs);
+        }
+
+        /// <summary>
+        /// GET Method - Gets all users contributing to a payment
+        /// </summary>
+        /// <param name="paymentId">The id for the payment that you want all the contributors for</param>
+        /// <response code="200">All users retreived for payment</response>
+        /// <response code="401">Not an authorised user</response>
+        /// <response code="404">No payments found with given id</response>
+        /// <returns> The users associated with payment</returns>
+        [HttpGet("Users")]
+        public async Task<IActionResult> GetAllUsersForPayment([FromQuery] int paymentId)
+        {            
+            List<User> users = await _userRepository.GetAll();
+            List<UserPayment> userPayments = await _userPaymentsRepository.GetAll();
+
+            users = (from u in users
+                     join up in userPayments on u.Id equals up.UserId
+                     where up.PaymentId.Equals(paymentId)
+                     select u).ToList();
+
+            if(users.Count == 0)
+            {
+                return NotFound();
+            }
+
+            List<UserDTO> userDtos = _mapper.Map<List<User>, List<UserDTO>>(users);
+
+            return Ok(userDtos);
         }
 
         /// <summary>
