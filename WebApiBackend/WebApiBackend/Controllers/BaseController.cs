@@ -65,7 +65,7 @@ namespace WebApiBackend.Controllers
 
         // PUT: api/[controller]/5
         /// <summary>
-        /// FOR DEV TESTING
+        /// Update Object
         /// </summary>
         /// <param name="id"></param>
         /// <param name="entityDTO"></param>
