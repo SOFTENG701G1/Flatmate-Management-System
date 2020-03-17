@@ -70,26 +70,41 @@ export default class ResetPassword extends React.Component {
   }
 
   render() {
-    return (
-      <div className="login-backdrop">
-        { User.getUserState() ? <Redirect to="/app/"/> : '' }
-        <div className='login-container'>
-          <Link to="/home"><img src={BackArrow} alt="Go Back" className="back-arrow"/></Link>
-          <img src={Logo} alt="Logo" className="logo-image"/>
-          <h2>{this.state.isPasswordReset ? "Password has been reset" : "Reset your password"}</h2>
-          { this.state.isPasswordReset ? 
-            <Link to="/login"><input type='button' value='Login'/></Link>
-            : 
-            <form action="#" method="POST">
-              <p className="instructions-text">Please enter a new password.</p>
-              <input type='password' name='password' className="input-field" onChange={this.bindInput} placeholder='New password'/>
-              <input type='password' name='passwordRepeat' className="input-field" onChange={this.bindInput} placeholder='Retype new password'/>
-              <input type='submit' value='Reset password' onClick={this.resetPassword}/>
-              { this.state.error ? <div className='login-error'> { this.state.error } </div> : <div className="error-placeholder"/> }
-            </form>
-          }
+
+    if (this.props.validToken) {
+      return (
+        <div className="login-backdrop">
+          { User.getUserState() ? <Redirect to="/app/"/> : '' }
+          <div className='login-container'>
+            <Link to="/home"><img src={BackArrow} alt="Go Back" className="back-arrow"/></Link>
+            <img src={Logo} alt="Logo" className="logo-image"/>
+            <h2>{this.state.isPasswordReset ? "Password has been reset" : "Reset your password"}</h2>
+            { this.state.isPasswordReset ? 
+              <Link to="/login"><input type='button' value='Login'/></Link>
+              : 
+              <form action="#" method="POST">
+                <p className="instructions-text">Please enter a new password.</p>
+                <input type='password' name='password' className="input-field" onChange={this.bindInput} placeholder='New password'/>
+                <input type='password' name='passwordRepeat' className="input-field" onChange={this.bindInput} placeholder='Retype new password'/>
+                <input type='submit' value='Reset password' onClick={this.resetPassword}/>
+                { this.state.error ? <div className='login-error'> { this.state.error } </div> : <div className="error-placeholder"/> }
+              </form>
+            }
+          </div>
         </div>
-      </div>
-    );
+      );
+    } else {
+      return (
+        <div className="login-backdrop">
+          { User.getUserState() ? <Redirect to="/app/"/> : '' }
+          <div className='login-container'>
+            <Link to="/home"><img src={BackArrow} alt="Go Back" className="back-arrow"/></Link>
+            <img src={Logo} alt="Logo" className="logo-image"/>
+            <h2>Reset your password</h2>
+            <p className="instructions-text">The link has expired. Please request a new password recovery email.</p>
+          </div>
+        </div>
+      );
+    }
   }
 }

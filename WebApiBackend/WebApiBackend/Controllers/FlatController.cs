@@ -5,7 +5,6 @@ using System.Security.Claims;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using WebApiBackend.Dto;
 using WebApiBackend.Model;
 
@@ -13,9 +12,23 @@ namespace WebApiBackend.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class FlatController : ControllerBase
+    public class FlatController : Controller
     {
         private readonly FlatManagementContext _context;
+        private static readonly IMapper _MemberMapper;
+
+        //Create mapper using Automapper
+        static FlatController()
+        {
+            var mapperConfigure = new MapperConfiguration(
+                config =>
+                {
+                    config.CreateMap<User, DisplayMemberDTO>();
+                }
+
+            );
+            _MemberMapper = mapperConfigure.CreateMapper();
+        }
 
 
         public FlatController(FlatManagementContext context)
@@ -23,7 +36,19 @@ namespace WebApiBackend.Controllers
             _context = context;
         }
 
- 
+        [Authorize]
+        [HttpGet("display")]
+        public ActionResult<List<DisplayMemberDTO>> GetMembers()
+        {
+            var identity = (ClaimsIdentity)HttpContext.User.Identity;
+            int userID = Int16.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value);
+            var user = _context.User.Find(userID);
+            Flat flat = _context.Flat.Where(f => f.Id == user.FlatId).FirstOrDefault();
+            IQueryable members = _context.Entry(flat).Collection(f => f.Users).Query().OrderBy(u => u.FirstName);
+            return _MemberMapper.Map<List<DisplayMemberDTO>>(members);
+        }
+
+    
         //Delete:api/delete/{username}
         [Authorize]
         [HttpDelete("{deleteUserName}")]
@@ -51,9 +76,5 @@ namespace WebApiBackend.Controllers
 
             return Ok(deleteUser.UserName + " has been removed from the flat.");
         }
-
-
-       
     }
 }
-

@@ -12,6 +12,7 @@ using WebApiBackend.Controllers;
 using WebApiBackend.Dto;
 using WebApiBackend.Helpers;
 using WebApiBackend.Model;
+using Moq;
 using System.Security.Principal;
 using System.Security.Claims;
 
@@ -54,6 +55,26 @@ namespace WebApiBackendTests
         }
 
         /// <summary>
+        /// Ensure a user is able to view a list memeber in the flat. Ensure the reponse contains the expected members
+        /// </summary>
+        [Test]
+        public void TestGetMemberList()
+        {
+            
+
+            ActionResult<List<DisplayMemberDTO>> response = _flatController.GetMembers();
+
+            Assert.IsNotNull(response.Value);
+            Assert.That(response.Value.Count, Is.EqualTo(3));
+            Assert.That(response.Value.Select(m => m.UserName).ToList(), Is.EquivalentTo(new[] { "BeboBryan", "TreesAreGreen", "YinWang" }));
+            Assert.That(response.Value.Select(m => m.FirstName).ToList(), Is.EquivalentTo(new[] { "Bryan", "Teresa", "Yin" }));
+            Assert.That(response.Value.Select(m => m.LastName).ToList(), Is.EquivalentTo(new[] { "Ang", "Green", "Wang" }));
+            Assert.That(response.Value.Select(m => m.Email).ToList(), Is.EquivalentTo(new[] { "BryanAng@Gmail.com", "GreenTrees@Yahoo.com", "YinWang@qq.com" }));
+
+
+        }
+        
+        /// <summary>
         /// Ensure the response is a ok reuslt when the user is not removing him/herself, and the user is excluded from the flat's user list 
         /// </summary>
         [Test]
@@ -66,11 +87,9 @@ namespace WebApiBackendTests
             Assert.IsFalse(flat.FirstOrDefault().Users.Contains(deleteUser));
             Assert.That(response, Is.InstanceOf<OkObjectResult>());
         }
-
         /// <summary>
         /// Ensure the response is a RedirectToActionResult when the user is removing him/herself, and the user is excluded from the flat's user list
         /// </summary>
-
         [Test]
         public void GetMember_RirectToCreateFlatPage_WhenUserRemoveOneselfFromFlat()
         {
