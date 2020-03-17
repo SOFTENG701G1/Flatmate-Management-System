@@ -8,11 +8,21 @@ import "./ViewPayment.css";
 
 /*
     This class renders the View Payments page.
+
+/*
+    This class renders the View Payments page.
     Dummy data is currently used
 */
 
 export default class ViewPayment extends Component {
 
+    constructor(props) {
+        super(props);
+    }
+
+    render() {
+        const { showView, onCloseView, onEdit } = this.props
+        return (
     constructor(props) {
         super(props);
     }
@@ -31,6 +41,22 @@ export default class ViewPayment extends Component {
                         <Modal.Title>
                             <h1 class="modal-title w-100 text-center"> RENT</h1>
                         </Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        <table className="InputTable">
+                            <tr className="RowOne">
+                                <td className="RowOneColOne" colSpan="2">
+                                    <form>
+                                        <label className="AmountLabel"> Amount: </label>
+                                        <label className="Amount"> $240 </label>
+                                    </form>
+                                </td>
+                                <td className="RowOneColTwo">
+                                    <form>
+                                        <label className="StartDateLabel"> Start Date: </label>
+                                        <label className="StartDate"> 09/03/2020 </label>
+                                    </form>
+                                </td>
                     </Modal.Header>
                     <Modal.Body>
                         <table className="InputTable">
@@ -104,9 +130,6 @@ export default class ViewPayment extends Component {
                     </Modal.Body>
                     <Modal.Footer>
                         <span className="DeleteButton">
-                            <Button className="DeleteButton" variant="secondary" onClick={onCloseView}>
-                                <img src={Delete} alt="delete" className="delete-image" />
-                            </Button>
                         </span>
                         <span className="EditButton">
                             <Button className="EditButton" variant="secondary" onClick={onEdit}>

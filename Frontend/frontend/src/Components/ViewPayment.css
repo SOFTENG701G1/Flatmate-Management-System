@@ -88,6 +88,27 @@ button.PaidButton {
 span.CrossButton {
   float: left;
   position: absolute;
+  float: right;
+  position: absolute;
+  bottom: 0px;
+  right: 0px;
+  margin:15px;
+}
+
+button.PaidButton {
+  position: relative;
+  float: right;
+  height: 30px;
+  width: 70px;
+  background-color: #1F5673;
+  color: #EEEEEE;
+  border-style: none;
+  border-radius:5px;
+}
+
+span.CrossButton {
+  float: left;
+  position: absolute;
   top: 0px;
   left: 0px;
   margin:15px;
@@ -236,6 +257,4 @@ label.Description{
   width: 300px;
   margin-top: 15px;
   margin-bottom: 20px; 
-  display: inline-block;
-  color: #EEEEEE;
 } 
