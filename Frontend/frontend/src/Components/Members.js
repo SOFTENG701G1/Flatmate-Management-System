@@ -11,7 +11,9 @@ export default class Members extends React.Component {
         items: [],
         isLoaded: false,
       }
+      this.getMember();
     }
+
     async getMember(){
         const memberResult = await APIRequest.componentDidMount()
         const json = await memberResult.json();

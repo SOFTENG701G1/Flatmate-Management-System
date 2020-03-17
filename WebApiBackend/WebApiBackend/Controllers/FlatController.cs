@@ -4,7 +4,6 @@ using System.Security.Claims;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using WebApiBackend.Dto;
 using WebApiBackend.Model;
 
@@ -12,7 +11,7 @@ namespace WebApiBackend.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class FlatController : ControllerBase
+    public class FlatController : Controller
     {
         private readonly FlatManagementContext _context;
         private static readonly IMapper _MemberMapper;
