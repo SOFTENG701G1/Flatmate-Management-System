@@ -4,10 +4,11 @@ using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
+using WebApiBackend.Interfaces;
 
 namespace WebApiBackend.Model
 {
-    public class User
+    public class User : IEntity
     {
         [Key]
         public int Id { get; set; }
