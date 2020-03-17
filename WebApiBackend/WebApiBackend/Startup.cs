@@ -19,6 +19,8 @@ using Microsoft.Extensions.Logging;
 using WebApiBackend.Helpers;
 using WebApiBackend.Model;
 using Microsoft.OpenApi.Models;
+using WebApiBackend.EF;
+using AutoMapper;
 
 namespace WebApiBackend
 {
@@ -75,7 +77,12 @@ namespace WebApiBackend
             });
 
             services.AddControllers();
-
+            services.AddScoped<PaymentsRepository>();
+            services.AddScoped<UserPaymentsRepository>();
+            services.AddScoped<UserRepository>();
+            services.AddScoped<FlatRepository>();
+            services.AddAutoMapper(typeof(Startup));
+      
             //swagger
             services.AddSwaggerGen(c =>
             {
