@@ -7,15 +7,6 @@ import User from '../Util/User';
 import UserDetails from './UserDetails'
 
 export default class Navigation extends React.Component {
-  state = { show: false };
-
-  showModal = () => {
-    this.setState({ show: true });
-  };
-
-  hideModal = () => {
-    this.setState({ show: false });
-  };
 
   render() {
     return <nav className="menu">
@@ -50,7 +41,6 @@ export default class Navigation extends React.Component {
           </li>
         </ul>
       </div>
-      <UserDetails show={this.state.show} handleClose={this.hideModal}/>
     </nav>
   }
 }

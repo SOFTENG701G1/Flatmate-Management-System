@@ -15,21 +15,21 @@ export default class Members extends React.Component {
         return (
             <div class="modal" className={showHideClassName}>
               <section className="modal-main">
-                <input id="closeButton" type="image" src= {cross} onClick={this.props.handleClose} />
+                <input id="closeButton" type="image" src= {cross} onClick={this.props.member.handleClose} />
                 <img src={profile} />
-                <h2 className="UserInformation" id="Name">Name Here</h2>
+                <h2 className="UserInformation" id="Name">{this.props.firstName} {this.props.member.lastName}</h2>
                 <p className="InfoHeading">Username</p>
-                <p className="UserInformation">Username Here</p>
+                <p className="UserInformation">{this.props.member.userName}</p>
                 <p className="InfoHeading">Date of Birth</p>
-                <p className="UserInformation">Username Here</p>
+                <p className="UserInformation">{this.props.member.dateOfBirth}</p>
                 <p className="InfoHeading">Phone</p>
-                <p className="UserInformation">Username Here</p>
+                <p className="UserInformation">{this.props.member.phoneNumber}</p>
                 <p className="InfoHeading">Email</p>
-                <p className="UserInformation">Username Here</p>
+                <p className="UserInformation">{this.props.member.email}</p>
                 <p className="InfoHeading">Account Number</p>
-                <p className="UserInformation">Username Here</p>
+                <p className="UserInformation">{this.props.member.bankAccount}</p>
                 <p className="InfoHeading">Medical Conditions</p>
-                <p className="UserInformation">Username Here</p>
+                <p className="UserInformation">{this.props.member.medicalInformation}</p>
                 { this.props.isUser ? <div>
                     <input id="editButton" type="image" src= {edit} onClick={this.props.handleClose} />
                     <input id="deleteButton" type="image" src= {cancel} onClick={this.props.handleClose} /> </div>: ""}
