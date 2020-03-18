@@ -16,7 +16,6 @@
     background-color: #0C0F13;
     border-radius: 8px;
     border: 2px solid #1F5673;
-    z-index: -10;
     position: fixed;
     padding-bottom: 15px;
 }

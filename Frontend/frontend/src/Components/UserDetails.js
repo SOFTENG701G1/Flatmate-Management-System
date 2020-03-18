@@ -15,7 +15,7 @@ export default class Members extends React.Component {
         return (
             <div class="modal" className={showHideClassName}>
               <section className="modal-main">
-                <input id="closeButton" type="image" src= {cross} onClick={this.props.member.handleClose} />
+                <input id="closeButton" type="image" src= {cross} onClick={this.props.handleClose} />
                 <img src={profile} />
                 <h2 className="UserInformation" id="Name">{this.props.firstName} {this.props.member.lastName}</h2>
                 <p className="InfoHeading">Username</p>
