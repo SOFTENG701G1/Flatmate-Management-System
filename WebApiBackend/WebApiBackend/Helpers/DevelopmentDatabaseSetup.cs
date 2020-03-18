@@ -29,7 +29,7 @@ namespace WebApiBackend.Helpers
                 LastName = "Wang",
                 DateOfBirth = new DateTime(1994, 12, 23),
                 PhoneNumber = "0279284492",
-                Email = "jungchia.hsieh@gmail.com",
+                Email = "YinWang@qq.com",
                 MedicalInformation = "N/A",
                 BankAccount = "00-0000-0000000-000",
                 ResetToken = "",
