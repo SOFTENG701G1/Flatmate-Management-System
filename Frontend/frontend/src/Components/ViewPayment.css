@@ -42,26 +42,31 @@ h1 {
   line-height: 1px !important;
 }
 
-span.CancelButton {
-  float: right;
+span.DeleteButton {
   position: absolute;
   bottom: 0px;
-  left: 0px;
+  left: 170px;
   margin:15px;
 }
 
-button.CancelButton {
-  position: relative;
-  float: right;
-  height: 30px;
-  width: 100px;
-  background-color: #1E1F26;
-  color: #EEEEEE;
+button.DeleteButton {
+  background-color: #0C0F13;
   border-style: none;
-  border-radius:5px;
 }
 
-span.SaveButton {
+span.EditButton {
+  position: absolute;
+  bottom: 0px;
+  left: 120px;
+  margin:15px;
+}
+
+button.EditButton {
+  background-color: #0C0F13;
+  border-style: none;
+}
+
+span.PaidButton {
   float: right;
   position: absolute;
   bottom: 0px;
@@ -69,7 +74,7 @@ span.SaveButton {
   margin:15px;
 }
 
-button.SaveButton {
+button.PaidButton {
   position: relative;
   float: right;
   height: 30px;
@@ -101,15 +106,27 @@ img.cross-image{
   height: 10px;
 }
 
+img.delete-image{
+  width: 25px;  
+  height: 25px;
+}
+
+img.edit-image{
+  width: 25px;  
+  height: 25px;
+}
+
 label.AmountLabel{
   font-size: 12px;
 }
 
-input.AmountInput{
-  width: 100px;
-  height: 20px;
-  margin-right: 300px;
-  margin-bottom: 15px;
+label.Amount{
+  font-size: 12px;
+  width: 300px;
+  margin-top: 15px;
+  margin-bottom: 20px; 
+  display: inline-block;
+  color: #EEEEEE;
 }
 
 
@@ -118,22 +135,27 @@ label.StartDateLabel{
   float: right;
 }
 
-input.StartDateInput{
-  float: right;
-  width: 100px;
-  height: 20px;
-  margin-bottom: 15px;
+label.StartDate{
+  text-align: right;
+  width: 100%;
+  font-size: 12px;
+  margin-top: 15px;
+  margin-bottom: 20px; 
+  display: inline-block;
+  color: #EEEEEE;
 }
 
 label.PaidToLabel{
   font-size: 12px;
 }
 
-input.PaidToInput{
-  width: 150px;
-  height: 20px;
-  margin-right: 100px;
-  margin-bottom: 15px;
+label.PaidTo{
+  font-size: 12px;
+  width: 300px;
+  margin-top: 15px;
+  margin-bottom: 20px; 
+  display: inline-block;
+  color: #EEEEEE;
 }
 
 label.EndDateLabel{
@@ -141,22 +163,27 @@ label.EndDateLabel{
   float: right;
 }
 
-input.EndDateInput{
-  float: right;
-  width: 100px;
-  height: 20px;
-  margin-bottom: 15px;
+label.EndDate{
+  text-align: right;
+  width: 100%;
+  font-size: 12px;
+  margin-top: 15px;
+  margin-bottom: 20px; 
+  display: inline-block;
+  color: #EEEEEE;
 }
 
 label.AccountLabel{
   font-size: 12px;
 }
 
-input.AccountInput{
-  width: 150px;
-  height: 20px;
-  margin-right: 100px;
-  margin-bottom: 15px;
+label.Account{
+  font-size: 12px;
+  width: 300px;
+  margin-top: 15px;
+  margin-bottom: 20px; 
+  display: inline-block;
+  color: #EEEEEE;
 }
 
 label.FrequencyLabel{
@@ -164,36 +191,51 @@ label.FrequencyLabel{
   float: right;
 }
 
-input.FrequencyInput{
-  float: right;
-  width: 100px;
-  height: 20px;
-  margin-bottom: 15px;
+label.Frequency{
+  text-align: right;
+  width: 100%;
+  font-size: 12px;
+  margin-top: 15px;
+  margin-bottom: 20px; 
+  display: inline-block;
+  color: #EEEEEE;
 }
 
 label.ContributorsPendingLabel{
   font-size: 12px;
 }
 
-input.ContributorsPendingInput{
-  height: 20px;
-  margin-bottom: 15px;
+label.ContributorsPending{
+  font-size: 12px;
+  width: 300px;
+  margin-top: 15px;
+  margin-bottom: 20px; 
+  display: inline-block;
+  color: #EEEEEE;
 }
 
 label.ContributorsPaidLabel{
   font-size: 12px;
 }
 
-input.ContributorsPaidInput{
-  height: 20px;
-  margin-bottom: 15px;
+label.ContributorsPaid{
+  font-size: 12px;
+  width: 300px;
+  margin-top: 15px;
+  margin-bottom: 20px; 
+  display: inline-block;
+  color: #EEEEEE;
 }
 
 label.DescriptionLabel{
   font-size: 12px;
 }
 
-input.DescriptionInput{
-  height: 20px;
-  margin-bottom: 15px;
+label.Description{
+  font-size: 12px;
+  width: 300px;
+  margin-top: 15px;
+  margin-bottom: 20px; 
+  display: inline-block;
+  color: #EEEEEE;
 } 

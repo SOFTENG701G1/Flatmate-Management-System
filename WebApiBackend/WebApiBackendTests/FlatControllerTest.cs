@@ -59,18 +59,14 @@ namespace WebApiBackendTests
         [Test]
         public void TestGetMemberList()
         {
-            
-
             ActionResult<List<DisplayMemberDTO>> response = _flatController.GetMembers();
 
             Assert.IsNotNull(response.Value);
-            Assert.That(response.Value.Count, Is.EqualTo(3));
-            Assert.That(response.Value.Select(m => m.UserName).ToList(), Is.EquivalentTo(new[] { "BeboBryan", "TreesAreGreen", "YinWang" }));
-            Assert.That(response.Value.Select(m => m.FirstName).ToList(), Is.EquivalentTo(new[] { "Bryan", "Teresa", "Yin" }));
-            Assert.That(response.Value.Select(m => m.LastName).ToList(), Is.EquivalentTo(new[] { "Ang", "Green", "Wang" }));
-            Assert.That(response.Value.Select(m => m.Email).ToList(), Is.EquivalentTo(new[] { "BryanAng@Gmail.com", "GreenTrees@Yahoo.com", "YinWang@qq.com" }));
-
-
+            Assert.That(response.Value.Count, Is.EqualTo(4));
+            Assert.That(response.Value.Select(m => m.UserName).ToList(), Is.EquivalentTo(new[] { "BeboBryan", "TreesAreGreen", "YinWang", "TonOfClay" }));
+            Assert.That(response.Value.Select(m => m.FirstName).ToList(), Is.EquivalentTo(new[] { "Bryan", "Teresa", "Yin", "Clay" }));
+            Assert.That(response.Value.Select(m => m.LastName).ToList(), Is.EquivalentTo(new[] { "Ang", "Green", "Wang", "Ton" }));
+            Assert.That(response.Value.Select(m => m.Email).ToList(), Is.EquivalentTo(new[] { "BryanAng@Gmail.com", "GreenTrees@Yahoo.com", "YinWang@qq.com", "ClayTon@Gmail.com" }));
         }
         
         /// <summary>
