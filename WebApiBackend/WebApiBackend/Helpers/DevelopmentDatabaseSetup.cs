@@ -7,7 +7,7 @@ namespace WebApiBackend.Helpers
 {
     public class DevelopmentDatabaseSetup
     {
-        User _yin, _teresa, _bryan, _clay;
+        User _yin, _teresa, _bryan, _clay, _test1, _test2;
         Payment _payment1, _payment2;
         // Payment[NAME]1 is for electricity
         // Payment[NAME]2 is for Rent due to many to many relationship
@@ -15,6 +15,7 @@ namespace WebApiBackend.Helpers
             _userPaymentBryan2, _userPaymentTeresa1, _userPaymentTeresa2;
         Schedule _schedule1;
         Flat _flat1;
+        Flat _flat2;
 
         private readonly FlatManagementContext _database;
 
@@ -24,6 +25,7 @@ namespace WebApiBackend.Helpers
 
             _yin = new User
             {
+                Id = 1,
                 UserName = "YinWang",
                 FirstName = "Yin",
                 LastName = "Wang",
@@ -37,6 +39,7 @@ namespace WebApiBackend.Helpers
 
             _teresa = new User
             {
+                Id = 2,
                 UserName = "TreesAreGreen",
                 FirstName = "Teresa",
                 LastName = "Green",
@@ -50,6 +53,7 @@ namespace WebApiBackend.Helpers
 
             _bryan = new User
             {
+                Id = 3,
                 UserName = "BeboBryan",
                 FirstName = "Bryan",
                 LastName = "Ang",
@@ -74,7 +78,29 @@ namespace WebApiBackend.Helpers
                 BankAccount = "11-5723-2835024-110"
             };
             _clay.HashedPassword = hasher.HashPassword(_clay, "password");
+			
+			
+            _test1 = new User
+            {
+                Id = 998,
+                UserName = "TestUser1",
+                FirstName = "Test",
+                LastName = "Test",
+                DateOfBirth = new DateTime(1984, 02, 09),
+                FlatId = 2
+            };
+            _test1.HashedPassword = hasher.HashPassword(_test1, "password");
 
+            _test2 = new User
+            {
+                Id = 999,
+                UserName = "TestUser2",
+                FirstName = "Test",
+                LastName = "Test",
+                DateOfBirth = new DateTime(1984, 02, 09),
+            };
+            _test2.HashedPassword = hasher.HashPassword(_test2, "password");
+			
             _payment1 = new Payment
             {
                 Id = 1,
@@ -171,6 +197,15 @@ namespace WebApiBackend.Helpers
                 Payments = new List<Payment> { _payment1, _payment2 }
             };
 
+            _flat2 = new Flat
+            {
+                Id = 2,
+                Address = "51",
+                Users = new List<User> { _test1 },
+                Schedules = new List<Schedule> { _schedule1 },
+                Payments = new List<Payment> { _payment1, _payment2 }
+            };
+
         }
 
         public DevelopmentDatabaseSetup(FlatManagementContext database)
@@ -197,6 +232,9 @@ namespace WebApiBackend.Helpers
             _database.Add(_userPaymentYin2);
             _database.Add(_schedule1);
             _database.Add(_flat1);
+            _database.Add(_flat2);
+            _database.Add(_test1);
+            _database.Add(_test2);
 
             _database.SaveChanges();
         }

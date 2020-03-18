@@ -70,5 +70,56 @@ namespace WebApiBackendTests
             Assert.That(response.Value.Select(m => m.Email).ToList(), Is.EquivalentTo(new[] { "BryanAng@Gmail.com", "GreenTrees@Yahoo.com", "YinWang@qq.com", "ClayTon@Gmail.com" }));
         }
 
+        [Test]
+
+        public void TestFailedAddUserToFlatUserAlreadyInFlat()
+        {
+            FlatController ctl = new FlatController( _context);
+
+            ActionResult<AddUserToFlatDto> response = ctl.AddUserToFlat(1, 1);
+            Assert.AreEqual(response.Value.ResultCode, 4);
+        }
+
+        [Test]
+      
+        public void TestFailedAddUserToFlatUserNotExist()
+        {
+            FlatController ctl = new FlatController( _context);
+
+            ActionResult<AddUserToFlatDto> response = ctl.AddUserToFlat(1, 100);
+            Assert.AreEqual(response.Value.ResultCode, 2);
+        }
+
+        [Test]
+      
+        public void TestFailedAddUserToFlatFlatNotExist()
+        {
+            FlatController ctl = new FlatController( _context);
+
+            ActionResult<AddUserToFlatDto> response = ctl.AddUserToFlat(10, 1);
+            Assert.AreEqual(response.Value.ResultCode, 3);
+        }
+
+        [Test]
+     
+        public void TestFailedAddUserToFlatUserInOtherFlat()
+        {
+            FlatController ctl = new FlatController( _context);
+
+
+            ActionResult<AddUserToFlatDto> response = ctl.AddUserToFlat(1, 998);
+            Assert.AreEqual(response.Value.ResultCode, 5);
+        }
+
+        [Test]
+        
+        public void TestCorrectAddUserToFlat()
+        {
+            FlatController ctl = new FlatController( _context);
+
+            ActionResult<AddUserToFlatDto> response = ctl.AddUserToFlat(2, 999);
+            Assert.AreEqual(response.Value.ResultCode, 1);
+        }
+
     }
 }
