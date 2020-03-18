@@ -91,7 +91,7 @@ namespace WebApiBackend.Controllers
         }
 
         /// <summary>
-        /// POST Method - Update the give user's password.
+        /// POST Method - Update the given user's password.
         /// </summary>
         /// <param name="login">The E-mail and the newly requested password.</param>
         /// <returns>An error if the account/E-mail doesn't exists or
@@ -364,6 +364,7 @@ namespace WebApiBackend.Controllers
             MailMessage mailMessage = new MailMessage("se701uoa2020@gmail.com", destination);
             
             // Further detilas could be added so the content of the E-mail is more informative
+            // Currently it's hard coding the full URL prior to the query string due to techinical difficulties
             mailMessage.Body = "http://localhost:3000/login/reset-password?email=" + destination + "&token=" + resetToken;
             mailMessage.Subject = "Reset your password";
 
