@@ -98,21 +98,52 @@ namespace WebApiBackendTests
         }
 
         [Test]
-        public void TestDeletePaymentForFlat()
+        public async Task TestDeletePaymentForFlatAsync()
         {
-            Assert.Pass();
+            // Arrange
+            var paymentId = 2;
+
+            // Act
+            var response = await _paymentsController.DeletePaymentForFlat(paymentId);
+
+            // Assert
+            Assert.IsInstanceOf<OkObjectResult>(response);
         }
 
         [Test]
-        public void TestDeleteUserFromPayment()
+        public async Task TestDeleteUserFromPaymentAsync()
         {
-            Assert.Pass();
+            // Arrange
+            var paymentId = 1;
+            var userId = 1;
+
+            // Act
+            var response = await _paymentsController.DeleteUserFromPayment(paymentId, userId);
+
+            // Assert
+            Assert.IsNotNull(response);
         }
 
         [Test]
-        public void TestEditPayment()
+        public async Task TestEditPaymentAsync()
         {
-            Assert.Pass();
+            // Arrange
+            var payment = new PaymentDTO
+            {
+                Amount = 120,
+                PaymentType = PaymentType.Electricity,
+                Frequency = Frequency.Monthly,
+                StartDate = new DateTime(2020, 04, 04),
+                EndDate = new DateTime(2020, 05, 05),
+                Fixed = false,
+                Description = "electricity",
+            };
+
+            // Act
+            var response = await _paymentsController.Put(1, payment);
+
+            // Assert
+            Assert.IsNotNull(response);
         }
 
         [Test]
