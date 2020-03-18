@@ -25,7 +25,7 @@ export default class NewFlat extends React.Component {
       <div>
         <h2 class="title">You are not currently part of a flat</h2>
         <p class="subheading">Press the "Create Flat" Button to create a new flat</p>
-        <button class="HomeButton" onClick={this.handleClick}>Create Flat</button>
+        <button className="HomeButton" onClick={this.handleClick}>Create Flat</button>
       </div>
     );
   }

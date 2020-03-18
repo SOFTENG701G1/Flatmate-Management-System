@@ -1,13 +1,10 @@
 .MembersPage {
     position: absolute;
-    top: 100px;
-    left: 25%;
     background-color: transparent;
-    border: 5px;
     border-color: aliceblue;
-    border-radius: 10px;
-    border-style: none;
-    max-width: 100%;
+    max-width: 78%;
+    min-width: 60%;
+    padding-left: 8%;
 }
 
 .MembersTable {
@@ -36,7 +33,7 @@ h2 h4 {
     color: white;
     padding: 15px 30px;
     text-align: center;
-    display: inline-block;
+    display: inline-flex;
     font-size: 16px;
     border-radius: 8px;
     position:relative;
@@ -74,8 +71,6 @@ h2 h4 {
   margin: 20px;
   font-family: Roboto, sans-serif;
 }
-
-.fullName{
 
 .userProfile {
     padding-top: 10%;

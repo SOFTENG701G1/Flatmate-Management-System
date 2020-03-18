@@ -18,8 +18,8 @@ export default class MemberTile extends React.Component {
             <div className="MemberProfile">
                 <img className="userProfile" src={UserImage} />
                             <p> {person.firstName} {person.lastName} {isUser ? "(ME)" : ''}</p>
-                            <p className="info"> Date of Birth: {person.email} </p>
-                            <p className="info"> Phone Number: {person.userName}</p>
+                            <p className="info"> Date of Birth: {person.dateOfBirth} </p>
+                            <p className="info"> Phone Number: {person.phoneNumber}</p>
             </div>
         );
     }

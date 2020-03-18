@@ -17,15 +17,16 @@ body {
     font-weight: bold;
 }
 
-button {
+.HomeButton {
+    position: relative;
     background-color: #1F5673;
     border-radius: 8px;
     border-color: #1F5673;
     border-width: 5px;
     font-size: 18px;
-    margin-top: 10%;
+    padding: 5%;
     width: 40%;
-    height: 40%;
+    height: 100%;
     border-style: solid;
     cursor: pointer;
 }
