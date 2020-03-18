@@ -1,14 +1,13 @@
 import React from 'react';
 import './App.css';
-import Dashboard from './Components/Dashboard';
 import Chores from './Components/Chores';
 import Payments from './Components/Payments';
-
 import {
   BrowserRouter as Router,
   Switch,
   Route
 } from "react-router-dom";
+import Dashboard from './Components/Dashboard';
 import Navigation from './Components/Navigation';
 import Login from './Views/Login';
 import Register from './Views/Register';
@@ -18,6 +17,7 @@ import HomePage from './Views/HomePage';
 import RequireLogin from './Components/RequireLogin';
 import ForgotPassword from './Views/ForgotPassword';
 import ResetPassword from './Views/ResetPassword';
+import MembersPage from './Components/Members';
 
 export default class App extends React.Component {
   render() {
@@ -62,10 +62,10 @@ export default class App extends React.Component {
                   <Payments />
                 </Route>
                 <Route path="/app/members">
-                  <Members />
+                  <MembersPage/>
                 </Route>
                 <Route path="/app/">
-                  <Home />
+                  <Home/>
                 </Route>
               </Switch>
             </Route>
@@ -75,11 +75,8 @@ export default class App extends React.Component {
     );
   }
 }
-/*Router is linked to functions for the time being*/
+
+/* Router is linked to functions for the time being */
 function Home() {
   return <div class='section-header'>Flat Management System</div>;
-}
-
-function Members() {
-  return <div class='section-header'>Members page</div>;
 }
