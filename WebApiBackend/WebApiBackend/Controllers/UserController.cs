@@ -15,7 +15,6 @@ using System.Security.Policy;
 using System.Net.Mail;
 using System.Security.Cryptography;
 using System.Web;
-//using System.Web.Mvc;
 
 namespace WebApiBackend.Controllers
 {
@@ -54,43 +53,28 @@ namespace WebApiBackend.Controllers
             {
                 return new ForbidResult();
             }
-            return new LoggedInDto(user, CreateToken(user.UserName));
+            return new LoggedInDto(user, CreateToken(user.Id));
         }
+    
 
         [HttpPost("resetTokenCheck")]
-        public ActionResult<ResetConfirmedDTO> CheckResetToken(ResetPasswordDTO resetPassword)
+        public ActionResult CheckResetToken(ResetPasswordDTO resetPassword)
         {
-            if (string.IsNullOrEmpty(resetPassword.Email) && string.IsNullOrEmpty(resetPassword.ResetToken))
+            if (!string.IsNullOrEmpty(resetPassword.Email) && !string.IsNullOrEmpty(resetPassword.ResetToken))
             {
-                return new OkResult();
-            }
-
-            // Email and Token always come in pairs. If one is present while the other is missing, that means someone is sending false input
-            if (string.IsNullOrEmpty(resetPassword.Email) && !string.IsNullOrEmpty(resetPassword.ResetToken))
-            {
-                return new BadRequestResult();
-            }
-
-            if (!string.IsNullOrEmpty(resetPassword.Email) && string.IsNullOrEmpty(resetPassword.ResetToken))
-            {
-                return new BadRequestResult();
-            }
-
-            // Find if the user exists in the DB
-            var findUser = _database.User.FirstOrDefault(u => u.Email.ToLower() == resetPassword.Email.ToLower());
-            if (findUser != null)
-            {
-                // If so, check if it has been used and if it has expired and have a token assigned
-                if (findUser.ResetToken == resetPassword.ResetToken && findUser.HaveReset == false)
+                // Find if the user exists in the DB
+                var findUser = _database.User.FirstOrDefault(u => u.Email.ToLower() == resetPassword.Email.ToLower());
+                if (findUser != null)
                 {
-                    if (!CheckExpired(resetPassword.ResetToken))
-                    { 
-                        findUser.HaveReset = true;
-                        _database.SaveChanges();
-                        return new ResetConfirmedDTO
+                    // If so, check if it has been used and if it has expired and have a token assigned
+                    if (findUser.ResetToken == resetPassword.ResetToken && findUser.HaveReset == false)
+                    {
+                        if (!CheckExpired(resetPassword.ResetToken))
                         {
-                            Email = resetPassword.Email
-                        };
+                            findUser.HaveReset = true;
+                            _database.SaveChanges();
+                            return new OkResult();
+                        }
                     }
                 }
             }
@@ -100,7 +84,7 @@ namespace WebApiBackend.Controllers
         [HttpPost("resetPassword")]
         public ActionResult ResetPassWord(LoginDto login)
         {
-            User user = _database.User.FirstOrDefault(u => u.UserName.ToLower() == login.UserName.ToLower());
+            User user = _database.User.FirstOrDefault(u => u.Email.ToLower() == login.UserName.ToLower());
 
             if (user == null)
             {
@@ -110,9 +94,7 @@ namespace WebApiBackend.Controllers
             PasswordHasher<User> hasher = new PasswordHasher<User>();
             var hashedPassword = hasher.HashPassword(user, login.Password);
             user.HashedPassword = hashedPassword;
-            _database.Add(user);
             _database.SaveChanges();
-
             return new OkResult();
         }
 
@@ -149,9 +131,7 @@ namespace WebApiBackend.Controllers
                 {
                     // TODO Get the email by querying username and set email_tmp to the response
                     var findUser = _database.User.FirstOrDefault(u => u.UserName.ToLower() == user_tmp.ToLower());
-                    findUser.Email = email_tmp;
-                    _database.SaveChanges();
-
+                    email_tmp = findUser.Email;
                 }
                 else
                 {
@@ -197,9 +177,6 @@ namespace WebApiBackend.Controllers
 
         }
 
-
-            return new LoggedInDto(user, CreateToken(user.Id));
-        }
 
         /// <summary>
         /// POST Method - Checks if an account with the specified username or email exists
@@ -276,8 +253,6 @@ namespace WebApiBackend.Controllers
             return false;
         }
             
-
-        private string CreateToken(string username)
         /// <summary>
         /// Creates a JWT token for users with the specified UserID
         /// </summary>

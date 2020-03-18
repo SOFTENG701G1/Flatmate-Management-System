@@ -20,6 +20,20 @@ export default class APIRequest {
         return res;
     }
 
+    static async resetPassword(email, password){
+        let res = await fetch(apiBaseUrl + "api/user/resetPassword",
+        {
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            method: "POST",
+            body: JSON.stringify({username: email, password: password})
+        });
+        
+        return res;
+    }
+
     static async forgotPassword(userOrEmail){
         let res = await fetch(apiBaseUrl + "api/user/forgotPassword",
         {
@@ -34,15 +48,15 @@ export default class APIRequest {
         return res;
     }
 
-    static async checkResetToken(email, resetToken){
-        let res = await fetch(apiBaseUrl + "api/user/resetTokenCheck",
+    static checkResetToken(email, resetToken){
+        let res = fetch(apiBaseUrl + "api/user/resetTokenCheck",
         {
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             },
             method: "POST",
-            body: JSON.stringify({ Emaol: email, ResetToken: resetToken })
+            body: JSON.stringify({ Email: email, ResetToken: resetToken })
         });
 
         return res;
