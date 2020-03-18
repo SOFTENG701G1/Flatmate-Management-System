@@ -42,17 +42,14 @@ export default class ResetPassword extends React.Component {
       return;
     }
 
-    // TODO: Remove this line once API requests are set up
-    // this.setState({ isPasswordReset: true });
-
-    // TODO: Remove once API requests are set up
+    // Retreieve the account that needs reset from the URL (query string)
+    // Potential security risk to be addressed, user may be able to change URL to change another account's password
     var values = queryString.parse(this.props.location.search)
     let resetPasswordResult = await APIRequest.resetPassword(values.email, this.state.password);
-    
+
     if (resetPasswordResult.ok) {
       this.setState({ isPasswordReset: true });
     } else {
-      // TODO: Change switch statements to display correct errors
       switch (resetPasswordResult.status) {
         case 404:
           this.setState({ error: "Username does not exist." });
@@ -77,16 +74,17 @@ export default class ResetPassword extends React.Component {
   
   // Parse the query string and check if the inputs are valid before render
   componentDidMount() {
-    // Base 64 string 
+    
+    // The "+" sign has a semantic meaning in the query string. It is used to represent a space
+    // So to needs to be re-added to reflect the original token
     var values = queryString.parse(this.props.location.search)
     values.token = values.token.split(' ').join('+');
     
-    // Cannot use await outside of async function
+    // Cannot use async for coponentDidMount method, so the API is setted up this way
     let resetTokenCheckdResult = APIRequest.checkResetToken(values.email, values.token)
     resetTokenCheckdResult.then(
       (result) => {
-        // var tempProps = JSON.parse(JSON.stringify(this.props));
-        console.log(result)
+        // The API return status determins the validity of the reset token and given E-mail
         if (result.ok){
           this.setState({
             LoadValidated: true
@@ -97,12 +95,6 @@ export default class ResetPassword extends React.Component {
             LoadInvalidated: true
           });
         }
-        // Object.preventExtensions(tempProps);
-        // Current proble - how to pass the validation result (bool) to render
-        // console.log(this.props.validToken);
-        // this.setState({
-          // isLoaded: true,
-        // });
       },
       // Note: it's important to handle errors here
       // instead of a catch() block so that we don't swallow
@@ -115,14 +107,13 @@ export default class ResetPassword extends React.Component {
       })
   }
 
-
   render() {
-    
-    // const { error, isLoaded, LoadInvalidated, LoadValidated, } = this.state;
+
+    // Only render fully when the token validation API has finished
     if (!this.state.LoadValidated && ! this.state.LoadInvalidated) {
       return <div>Loading...</div>;
     } else {
-      console.log("rendering start1")
+      // If the token validation API has approve the information, then allow user to reset password for the given user
       if (this.state.LoadValidated) {
         return (
           <div className="login-backdrop">
@@ -146,6 +137,7 @@ export default class ResetPassword extends React.Component {
           </div>
         );
       } else {
+        // This is an error page when the given E-mail or reset token is invalid
         return (
           <div className="login-backdrop">
             { User.getUserState() ? <Redirect to="/app/"/> : '' }

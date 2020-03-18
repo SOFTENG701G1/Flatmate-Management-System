@@ -55,8 +55,16 @@ namespace WebApiBackend.Controllers
             }
             return new LoggedInDto(user, CreateToken(user.Id));
         }
-    
 
+        /// <summary>
+        /// POST Method - Confirm if the given reset password token for a user is valid.
+        /// </summary>
+        /// <param name="resetPassword">A ResetPaddwordDTO object with user E-mail and reset password token to be validated</param>
+        /// <returns>An error if the token
+        /// has expirese (lifespan over 1 hours,
+        /// does not match with the given user,
+        /// user cannot be found in the DB,
+        /// else, return ok</returns>
         [HttpPost("resetTokenCheck")]
         public ActionResult CheckResetToken(ResetPasswordDTO resetPassword)
         {
@@ -66,12 +74,13 @@ namespace WebApiBackend.Controllers
                 var findUser = _database.User.FirstOrDefault(u => u.Email.ToLower() == resetPassword.Email.ToLower());
                 if (findUser != null)
                 {
-                    // If so, check if it has been used and if it has expired and have a token assigned
-                    if (findUser.ResetToken == resetPassword.ResetToken && findUser.HaveReset == false)
+                    // Check if the token has been used and if it has expired and have a token assigned
+                    if (findUser.ResetToken == resetPassword.ResetToken)
                     {
                         if (!CheckExpired(resetPassword.ResetToken))
                         {
-                            findUser.HaveReset = true;
+                            // Clear the reset token in DB so it can only be used once
+                            findUser.ResetToken = "";
                             _database.SaveChanges();
                             return new OkResult();
                         }
@@ -80,7 +89,13 @@ namespace WebApiBackend.Controllers
             }
             return new BadRequestResult();
         }
-        
+
+        /// <summary>
+        /// POST Method - Update the give user's password.
+        /// </summary>
+        /// <param name="login">The E-mail and the newly requested password.</param>
+        /// <returns>An error if the account/E-mail doesn't exists or
+        /// if E-mail not allowed to change password, else an ok message</returns>
         [HttpPost("resetPassword")]
         public ActionResult ResetPassWord(LoginDto login)
         {
@@ -91,13 +106,25 @@ namespace WebApiBackend.Controllers
                 return new NotFoundResult();
             }
 
+            // If the account did not have a valid password change request, then reject the action.
+            if (!user.CanReset)
+            {
+                return new BadRequestResult();
+            }
+
             PasswordHasher<User> hasher = new PasswordHasher<User>();
             var hashedPassword = hasher.HashPassword(user, login.Password);
             user.HashedPassword = hashedPassword;
+            user.CanReset = false;
             _database.SaveChanges();
             return new OkResult();
         }
 
+        /// <summary>
+        /// POST Method - Send reset password link to user's E-mail.
+        /// </summary>
+        /// <param name="forgotPass">The username or email that is requesting for password reset.</param>
+        /// <returns>The targeted E-mail address and base 64 string token</returns>
         [HttpPost("forgotPassword")]
         public ActionResult<ForgotPassResponseDTO> ForgotPassword(ForgotPassRequestDTO forgotPass)
         {
@@ -108,9 +135,7 @@ namespace WebApiBackend.Controllers
                 return new NotFoundResult();
             }
 
-            // Check if user input their username or password
-            // using Regex to check if it's email, 
-            // if email, Email = u.userOrEmail
+            // Check if user input their username or E-mail, and convert username to equivalent E-mail if inputted
             string email_tmp = "";
             string user_tmp;
             Regex regex = new Regex(@"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$");
@@ -129,7 +154,7 @@ namespace WebApiBackend.Controllers
                 // Check if user exists in the DB, if not then it's a bad request
                 if (_database.User.FirstOrDefault(u => u.UserName.ToLower() == user_tmp.ToLower()) != null)
                 {
-                    // TODO Get the email by querying username and set email_tmp to the response
+                    // Get the email by querying username and set email_tmp to the response
                     var findUser = _database.User.FirstOrDefault(u => u.UserName.ToLower() == user_tmp.ToLower());
                     email_tmp = findUser.Email;
                 }
@@ -142,30 +167,15 @@ namespace WebApiBackend.Controllers
             // Generate token
             string token_tmp = GenResetToke();
 
-            // Combine to make a link with the email
-            MailMessage mailMessage = new MailMessage("se701uoa2020@gmail.com", email_tmp);
-            mailMessage.Body = "http://localhost:3000/login/reset-password?email=" + email_tmp + "&token=" + token_tmp;
-            mailMessage.Subject = "Reset your password";
+            // Send an E-mail to user with a reset password link
+            SendResetEmail(email_tmp, token_tmp);
 
-            // Specify the SMTP server name and post number speciic to gmail
-            SmtpClient smtpClient = new SmtpClient("smtp.gmail.com", 587);
-            smtpClient.UseDefaultCredentials = false;
-            smtpClient.Credentials = new System.Net.NetworkCredential()
-            {
-                UserName = "se701uoa2020@gmail.com",
-                Password = "flatmate2020!"
-            };
-            
-            // Gmail works on SSL, so set this property needs to be true
-            smtpClient.EnableSsl = true;
-            smtpClient.Send(mailMessage);
-
-            // Store the token into DB and toggle the token check
+            // Store the token into DB and allow this user to reset password
             var userReset = _database.User.FirstOrDefault(u => u.Email == email_tmp);
             if (userReset != null)
             {
                 userReset.ResetToken = token_tmp;
-                userReset.HaveReset = false;
+                userReset.CanReset = true;
                 _database.SaveChanges();
             }
 
@@ -174,9 +184,7 @@ namespace WebApiBackend.Controllers
                 Email = email_tmp,
                 ResetToken = token_tmp
             };
-
         }
-
 
         /// <summary>
         /// POST Method - Checks if an account with the specified username or email exists
@@ -232,6 +240,10 @@ namespace WebApiBackend.Controllers
             }
         }
 
+        /// <summary>
+        /// Generate a base 64 string token that's generated based on time of creation
+        /// </summary>
+        /// <returns>A base 64 string token</returns>
         private string GenResetToke()
         {
             // Generate token that contains a timestamp
@@ -241,6 +253,11 @@ namespace WebApiBackend.Controllers
             return token;
         }
 
+        /// <summary>
+        /// Check if the given token has expired (lifetime over 1 hour)
+        /// </summary>
+        /// <param name="token">A base 64 string token that's generated based on time of creation</param>
+        /// <returns>A bool indicating if a toke has expired</returns>
         private Boolean CheckExpired(string token)
         {
             byte[] data = Convert.FromBase64String(token);
@@ -325,7 +342,7 @@ namespace WebApiBackend.Controllers
                 MedicalInformation = medicalInformation,
                 BankAccount = bankAccount,
                 ResetToken = "",
-                HaveReset = true,
+                CanReset = false,
             };
 
             PasswordHasher<User> hasher = new PasswordHasher<User>();
@@ -335,6 +352,33 @@ namespace WebApiBackend.Controllers
             _database.SaveChanges();
 
             return true;
+        }
+
+        /// <summary>
+        /// Send an E-mail to detination with a link for user to reset password.
+        /// </summary>
+        /// <param name="destination"></param>
+        /// <param name="resetToken"></param>
+        private void SendResetEmail(string destination, string resetToken)
+        {
+            MailMessage mailMessage = new MailMessage("se701uoa2020@gmail.com", destination);
+            
+            // Further detilas could be added so the content of the E-mail is more informative
+            mailMessage.Body = "http://localhost:3000/login/reset-password?email=" + destination + "&token=" + resetToken;
+            mailMessage.Subject = "Reset your password";
+
+            // Specify the SMTP server name and post number speciic to gmail
+            SmtpClient smtpClient = new SmtpClient("smtp.gmail.com", 587);
+            smtpClient.UseDefaultCredentials = false;
+            smtpClient.Credentials = new System.Net.NetworkCredential()
+            {
+                UserName = "se701uoa2020@gmail.com",
+                Password = "flatmate2020!"
+            };
+
+            // Gmail works on SSL, so set this property needs to be true
+            smtpClient.EnableSsl = true;
+            smtpClient.Send(mailMessage);
         }
     }
 }

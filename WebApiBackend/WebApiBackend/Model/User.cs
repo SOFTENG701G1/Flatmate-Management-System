@@ -65,7 +65,15 @@ namespace WebApiBackend.Model
         /// Flat id associated with an user
         /// </summary>
         public int? FlatId { get; set; }
+
+        /// <summary>
+        /// Reset password token of a user
+        /// </summary>
         public string ResetToken { get; set; }
-        public Boolean HaveReset { get; set; }
+
+        /// <summary>
+        /// Rest password state of a user
+        /// </summary>
+        public Boolean CanReset { get; set; }
     }
 }

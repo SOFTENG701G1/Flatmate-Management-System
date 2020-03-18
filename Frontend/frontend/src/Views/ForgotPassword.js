@@ -28,10 +28,7 @@ export default class ForgotPassword extends React.Component {
       return;
     }
 
-    // TODO: Remove this line once API requests are set up
-    // this.setState({ isEmailSent: true });
-    
-    // TODO: Uncomment this once API request is complete
+    // Call the API to send a reset password E-mail to the given account E-mail address
     let sendInstructionsResult = await APIRequest.forgotPassword(this.state.loginIdentifier);
 
     if (sendInstructionsResult.ok) {

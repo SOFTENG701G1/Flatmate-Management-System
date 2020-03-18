@@ -20,6 +20,7 @@ export default class APIRequest {
         return res;
     }
 
+    // Reset password with the given E-mail and password. It is not using username because the reset link was accessed via user's E-mail
     static async resetPassword(email, password){
         let res = await fetch(apiBaseUrl + "api/user/resetPassword",
         {
@@ -34,6 +35,7 @@ export default class APIRequest {
         return res;
     }
 
+    // Validate if user is in the system and send an E-mail for resetting password
     static async forgotPassword(userOrEmail){
         let res = await fetch(apiBaseUrl + "api/user/forgotPassword",
         {
@@ -48,6 +50,8 @@ export default class APIRequest {
         return res;
     }
 
+    // Check if the reset token given was created less than 1 hour ago and if it's valid
+    // This needs to be executed prior to page rendering, so an async method is used
     static checkResetToken(email, resetToken){
         let res = fetch(apiBaseUrl + "api/user/resetTokenCheck",
         {

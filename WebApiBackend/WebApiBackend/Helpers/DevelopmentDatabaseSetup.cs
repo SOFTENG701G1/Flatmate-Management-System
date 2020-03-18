@@ -33,7 +33,7 @@ namespace WebApiBackend.Helpers
                 MedicalInformation = "N/A",
                 BankAccount = "00-0000-0000000-000",
                 ResetToken = "",
-                HaveReset = true
+                CanReset = false
             };
             _yin.HashedPassword = hasher.HashPassword(_yin, "password");
 
@@ -48,7 +48,7 @@ namespace WebApiBackend.Helpers
                 MedicalInformation = "Vegan, Gluten-Free, Lactose Intolerant",
                 BankAccount = "12-3456-1234567-123",
                 ResetToken = "",
-                HaveReset = true
+                CanReset = false
             };
             _teresa.HashedPassword = hasher.HashPassword(_teresa, "password");
 
@@ -63,7 +63,7 @@ namespace WebApiBackend.Helpers
                 MedicalInformation = "N/A",
                 BankAccount = "98-7654-3211234-210",
                 ResetToken = "",
-                HaveReset = true
+                CanReset = false
             };
             _bryan.HashedPassword = hasher.HashPassword(_bryan, "password");
 
