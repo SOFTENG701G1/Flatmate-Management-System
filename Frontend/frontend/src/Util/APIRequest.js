@@ -60,4 +60,90 @@ export default class APIRequest {
 
         return res;
     }
+
+    static async obtainUserPayments(){
+        let authString = await APIRequest.getAuthString();
+        let res = await fetch(apiBaseUrl + "api/Payments/User", {
+            headers:{
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization':  authString
+            },
+            method: "GET",
+        }).then(
+            data => {
+                if(data.ok) return data.json()
+            }
+        )
+
+        return res;
+    }
+
+    static async obtainPaymentContributors(paymentId){
+        let authString = await APIRequest.getAuthString();
+        let res = await fetch(apiBaseUrl + `api/Payments/Users?paymentId=${paymentId}`, {
+            headers:{
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization':  authString
+            },
+            method: "GET",
+        }).then(
+            data => {
+                if(data.ok) return data.json()
+            }
+        )
+
+        return res;
+    }
+
+
+    static async componentDidMount(){
+        let authString = await APIRequest.getAuthString();
+        const res = await fetch(apiBaseUrl + "api/flat/display",{
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization':  authString
+            },
+            method: "GET",
+        })
+        return res;
+    }
+
+    //Retrieves the list of flat memebrs in the current users flat
+    static async getFlatMembers(){
+        let authString = await APIRequest.getAuthString();
+        let res = await fetch(apiBaseUrl + "api/flat/getmembers",
+        {
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': authString
+            },
+            method: "GET",
+            //mode: "no-cors",
+
+        });
+
+        return res
+    }
+
+    //Gets the server to create a new flat for the user.
+    static async createNewFlat(){
+        let authString = await APIRequest.getAuthString();
+        let res = await fetch(apiBaseUrl + "api/flat/createFlat",
+        {
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': authString
+            },
+            method: "POST",
+            //body: JSON.stringify({ address: address })
+        });
+        
+
+        return res
+    }
 }

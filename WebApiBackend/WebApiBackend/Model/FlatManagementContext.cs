@@ -1,8 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace WebApiBackend.Model
 {
@@ -26,8 +23,6 @@ namespace WebApiBackend.Model
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Schedule>(entity => {
-                entity.HasKey(e => new { e.UserName, e.StartDate, e.EndDate, e.ScheduleType });
-
                 entity.Property(e => e.ScheduleType)
                     .HasConversion(
                         e => e.ToString(),
@@ -35,6 +30,9 @@ namespace WebApiBackend.Model
             });
 
             modelBuilder.Entity<User>(entity => {
+                entity.HasIndex(e => e.UserName)
+                    .IsUnique();
+
                 entity.HasIndex(e => e.Email)
                     .IsUnique();
 
@@ -59,7 +57,7 @@ namespace WebApiBackend.Model
             });
 
             modelBuilder.Entity<UserPayment>(e => {
-                e.HasKey(e => new { e.PaymentId, e.UserName });
+                e.HasKey(e => new { e.PaymentId, e.UserId });
 
                 e.HasOne(e => e.Payment)
                     .WithMany(e => e.UserPayments)
@@ -67,7 +65,7 @@ namespace WebApiBackend.Model
 
                 e.HasOne(e => e.User)
                     .WithMany(e => e.UserPayments)
-                    .HasForeignKey(e => e.UserName);
+                    .HasForeignKey(e => e.UserId);
             });
         }
     }

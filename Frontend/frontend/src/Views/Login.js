@@ -36,10 +36,10 @@ export default class Login extends React.Component {
     } else {
       switch (loginResult.status) {
         case 404:
-          this.setState({ error: "Username does not exist."});
+          this.setState({ error: "Invalid username, email or password."});
           break;
         case 403:
-          this.setState({ error: "Invalid password."});
+          this.setState({ error: "Invalid username, email or password."});
           break;
         default:
           this.setState({ error: "Unknown error (check your internet)."});
@@ -72,9 +72,8 @@ export default class Login extends React.Component {
             { this.state.error ? <div className='login-error'> { this.state.error } </div> : <div className="error-placeholder"/> }
             <div className="other-actions">
               <p className="other-actions-text">Not a memeber? <Link to="/register" className="other-actions-link">Sign up!</Link></p>
-              <Link className="other-actions-link">Forgot your password?</Link>
+              <Link to="/login/forgot-password" className="other-actions-link">Forgot your password?</Link>
             </div>
-            
           </form>
         </div>
       </div>
