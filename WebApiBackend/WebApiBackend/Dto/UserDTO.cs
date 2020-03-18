@@ -15,5 +15,17 @@ namespace WebApiBackend.Dto
         public string MedicalInformation { get; set; }
         public string BankAccount { get; set; }
         public string HashedPassword { get; set; }
+
+        public UserDTO(Model.User user)
+        {
+            UserName = user.UserName;
+            FirstName = user.FirstName;
+            LastName = user.LastName;
+            DateOfBirth = user.DateOfBirth;
+            PhoneNumber = user.PhoneNumber;
+            Email = user.Email;
+            MedicalInformation = user.MedicalInformation;
+            BankAccount = user.BankAccount;
+        }
     }
 }
