@@ -1,10 +1,13 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Moq;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
+using System.Security.Claims;
+using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
 using WebApiBackend.Controllers;
@@ -44,7 +47,16 @@ namespace WebApiBackendTests
             _mapperHelper = new MapperHelper();
             var mockMapper = _mapperHelper.GetMapper();
 
-            _paymentsController = new PaymentsController(_paymentsRepository, _userPaymentsRepository, _flatRepository, _userRepository, mockMapper);
+            DefaultHttpContext httpContext = new DefaultHttpContext();
+            GenericIdentity MyIdentity = new GenericIdentity("User");
+            ClaimsIdentity objClaim = new ClaimsIdentity(new List<Claim> { new Claim(ClaimTypes.NameIdentifier, "1") });
+
+            _paymentsController = new PaymentsController(_paymentsRepository, _userPaymentsRepository, _flatRepository, _userRepository, mockMapper)
+            {
+                ControllerContext = new ControllerContext()
+            };
+            _paymentsController.ControllerContext.HttpContext = httpContext;
+            httpContext.User = new ClaimsPrincipal(objClaim);
         }
 
         [Test]
@@ -121,10 +133,9 @@ namespace WebApiBackendTests
         public async Task TestGetAllPaymentsForUserAsync()
         {
             // Arrange
-            var userId = 1;
 
             // Act
-            var response = await _paymentsController.GetAllPaymentForUser(userId);
+            var response = await _paymentsController.GetAllPaymentsForUser();
 
             // Assert
             Assert.IsNotNull(response);
