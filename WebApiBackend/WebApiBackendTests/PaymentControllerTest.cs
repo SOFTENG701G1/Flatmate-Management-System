@@ -91,7 +91,7 @@ namespace WebApiBackendTests
             var userIds = new List<int> { 1, 2 };
 
             // Act
-            var response = await _paymentsController.CreatePaymentForFlat(flatId, payment, userIds);
+            var response = await _paymentsController.CreatePaymentForFlat(payment, userIds);
 
             // Assert
             Assert.IsInstanceOf<OkObjectResult>(response);
@@ -153,7 +153,7 @@ namespace WebApiBackendTests
             var flatId = 1;
 
             // Act
-            var response = await _paymentsController.GetPaymentsForFlat(flatId);
+            var response = await _paymentsController.GetPaymentsForFlat();
 
             // Assert
             Assert.IsInstanceOf<OkObjectResult>(response);
