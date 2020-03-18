@@ -24,6 +24,7 @@ namespace WebApiBackend.Controllers
                 config =>
                 {
                     config.CreateMap<User, DisplayMemberDTO>();
+                    config.CreateMap<User, UserDTO>();
                 }
 
             );
@@ -61,19 +62,22 @@ namespace WebApiBackend.Controllers
 
             //the user who is operated
             User finduser = _context.User.Where(u => u.UserName == userName).FirstOrDefault();
-            
+
+            UserDTO ret = new UserDTO();
+            ret = _MemberMapper.Map<User,UserDTO>(finduser);
+
             //user not exist
             if (finduser == null)
-                return new AddUserToFlatDto(finduser, 2);
+                return new AddUserToFlatDto(ret, 2);
 
 
             //user already in this flat 
             if (flat.Users.Contains(finduser))
-                return new AddUserToFlatDto(finduser, 4);
+                return new AddUserToFlatDto(ret, 4);
 
             //user has already in other flat  
             if (finduser.FlatId != null)
-                return new AddUserToFlatDto(finduser, 5);
+                return new AddUserToFlatDto(ret, 5);
 
             flat.Users.Add(finduser);
             finduser.FlatId = flat.Id;
@@ -82,7 +86,7 @@ namespace WebApiBackend.Controllers
             _context.User.Update(finduser);
             _context.SaveChanges();
 
-            return new AddUserToFlatDto(finduser, 1);
+            return new AddUserToFlatDto(ret, 1);
 
         }
 

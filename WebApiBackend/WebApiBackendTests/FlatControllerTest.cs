@@ -82,7 +82,6 @@ namespace WebApiBackendTests
       
         public void TestFailedAddUserToFlatUserNotExist()
         {
-
             ActionResult<AddUserToFlatDto> response = _flatController.AddUserToFlat("Bazinga");
             Assert.AreEqual(response.Value.ResultCode, 2);
         }
@@ -100,10 +99,9 @@ namespace WebApiBackendTests
         
         public void TestCorrectAddUserToFlat()
         {
-            //FlatController ctl = new FlatController( _context);
-
             ActionResult<AddUserToFlatDto> response = _flatController.AddUserToFlat("TestUser2");
             Assert.AreEqual(response.Value.ResultCode, 1);
+            Assert.AreEqual(response.Value.AddedUser.UserName, "TestUser2");
         }
 
     }

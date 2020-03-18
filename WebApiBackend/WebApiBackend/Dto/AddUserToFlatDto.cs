@@ -8,8 +8,7 @@ namespace WebApiBackend.Dto
 {
     public class AddUserToFlatDto
     {
-        public User AddedUser { get; set; }
- 
+        public UserDTO AddedUser { get; set; }
 
         /// <summary>
         /// 0  Default/Nothing
@@ -21,7 +20,7 @@ namespace WebApiBackend.Dto
         /// </summary>
         public int ResultCode { get; set; }
         
-        public AddUserToFlatDto(User user, int resultcode = 0)
+        public AddUserToFlatDto(UserDTO user, int resultcode = 0)
         {
             AddedUser = user;
             ResultCode = resultcode;
