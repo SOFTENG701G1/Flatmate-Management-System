@@ -48,46 +48,41 @@ namespace WebApiBackend.Controllers
             return _MemberMapper.Map<List<DisplayMemberDTO>>(members);
         }
 
-        [HttpGet("AddUserToFlat/{FlatId}/{userId}")]
         [Authorize]
-        public ActionResult<AddUserToFlatDto> AddUserToFlat(int FlatId, int userId)
+        [HttpGet("AddUserToFlat/{userName}")]    
+        public ActionResult<AddUserToFlatDto> AddUserToFlat( string userName)
         {
+            var identity = (ClaimsIdentity)HttpContext.User.Identity;
+            int userID = Int16.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value);
+            
+            //the operating user and his flat
+            var user = _context.User.Find(userID);
+            Flat flat = _context.Flat.Where(f => f.Id == user.FlatId).FirstOrDefault();
 
-            User finduser = _context.User.Find(userId);
-
+            //the user who is operated
+            User finduser = _context.User.Where(u => u.UserName == userName).FirstOrDefault();
+            
             //user not exist
             if (finduser == null)
-                return new AddUserToFlatDto(FlatId,
-                    userId,
-                    2);
+                return new AddUserToFlatDto(finduser, 2);
 
-            Flat findflat = _context.Flat.Find(FlatId);
-
-            //wrong flat id
-            if (findflat == null)
-                return new AddUserToFlatDto(FlatId,
-                    userId,
-                    3);
 
             //user already in this flat 
-            if (findflat.Users.Contains(finduser))
-                return new AddUserToFlatDto(
-                    FlatId,
-                    userId,
-                    4);
+            if (flat.Users.Contains(finduser))
+                return new AddUserToFlatDto(finduser, 4);
 
             //user has already in other flat  
             if (finduser.FlatId != null)
-                return new AddUserToFlatDto(
-                    FlatId,
-                    userId,
-                    5);
+                return new AddUserToFlatDto(finduser, 5);
 
-            findflat.Users.Add(finduser);
-            _context.Flat.Update(findflat);
+            flat.Users.Add(finduser);
+            finduser.FlatId = flat.Id;
+
+            _context.Flat.Update(flat);
+            _context.User.Update(finduser);
             _context.SaveChanges();
 
-            return new AddUserToFlatDto(FlatId, userId, 1);
+            return new AddUserToFlatDto(finduser, 1);
 
         }
 

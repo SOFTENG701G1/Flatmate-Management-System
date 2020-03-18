@@ -74,9 +74,7 @@ namespace WebApiBackendTests
 
         public void TestFailedAddUserToFlatUserAlreadyInFlat()
         {
-            FlatController ctl = new FlatController( _context);
-
-            ActionResult<AddUserToFlatDto> response = ctl.AddUserToFlat(1, 1);
+            ActionResult<AddUserToFlatDto> response = _flatController.AddUserToFlat("YinWang");
             Assert.AreEqual(response.Value.ResultCode, 4);
         }
 
@@ -84,30 +82,17 @@ namespace WebApiBackendTests
       
         public void TestFailedAddUserToFlatUserNotExist()
         {
-            FlatController ctl = new FlatController( _context);
 
-            ActionResult<AddUserToFlatDto> response = ctl.AddUserToFlat(1, 100);
+            ActionResult<AddUserToFlatDto> response = _flatController.AddUserToFlat("Bazinga");
             Assert.AreEqual(response.Value.ResultCode, 2);
         }
 
-        [Test]
-      
-        public void TestFailedAddUserToFlatFlatNotExist()
-        {
-            FlatController ctl = new FlatController( _context);
-
-            ActionResult<AddUserToFlatDto> response = ctl.AddUserToFlat(10, 1);
-            Assert.AreEqual(response.Value.ResultCode, 3);
-        }
 
         [Test]
      
         public void TestFailedAddUserToFlatUserInOtherFlat()
         {
-            FlatController ctl = new FlatController( _context);
-
-
-            ActionResult<AddUserToFlatDto> response = ctl.AddUserToFlat(1, 998);
+            ActionResult<AddUserToFlatDto> response = _flatController.AddUserToFlat("TestUser1");
             Assert.AreEqual(response.Value.ResultCode, 5);
         }
 
@@ -115,9 +100,9 @@ namespace WebApiBackendTests
         
         public void TestCorrectAddUserToFlat()
         {
-            FlatController ctl = new FlatController( _context);
+            //FlatController ctl = new FlatController( _context);
 
-            ActionResult<AddUserToFlatDto> response = ctl.AddUserToFlat(2, 999);
+            ActionResult<AddUserToFlatDto> response = _flatController.AddUserToFlat("TestUser2");
             Assert.AreEqual(response.Value.ResultCode, 1);
         }
 
