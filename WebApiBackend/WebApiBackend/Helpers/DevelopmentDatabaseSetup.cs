@@ -196,7 +196,7 @@ namespace WebApiBackend.Helpers
             _database.Add(_userPaymentYin1);
             _database.Add(_userPaymentYin2);
             _database.Add(_schedule1);
-            //_database.Add(_flat1);
+            _database.Add(_flat1);
 
             _database.SaveChanges();
         }
