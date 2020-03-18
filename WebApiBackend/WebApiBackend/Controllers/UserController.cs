@@ -21,7 +21,7 @@ namespace WebApiBackend.Controllers
 
     [Route("api/[controller]")]
     [ApiController]
-    public class UserController
+    public class UserController : Controller
     {
         private readonly AppSettings _appSettings;
         private readonly FlatManagementContext _database;
