@@ -7,7 +7,7 @@ namespace WebApiBackend.Helpers
 {
     public class DevelopmentDatabaseSetup
     {
-        User _yin, _teresa, _bryan, _clay;
+        User _yin, _teresa, _bryan, _clay, _george, _michael;
         Payment _payment1, _payment2;
         // Payment[NAME]1 is for electricity
         // Payment[NAME]2 is for Rent due to many to many relationship
@@ -74,6 +74,34 @@ namespace WebApiBackend.Helpers
                 BankAccount = "11-5723-2835024-110"
             };
             _clay.HashedPassword = hasher.HashPassword(_clay, "password");
+
+            _george = new User
+            {
+                Id = 5,
+                UserName = "MannyOnTheMap",
+                FirstName = "George",
+                LastName = "Forman",
+                DateOfBirth = new DateTime(1985, 06, 16),
+                PhoneNumber = "021049475",
+                Email = "ClayTony@Gmail.com",
+                MedicalInformation = "N/A",
+                BankAccount = "11-5723-2835024-110"
+            };
+            _george.HashedPassword = hasher.HashPassword(_george, "password");
+
+            _michael = new User
+            {
+                Id = 6,
+                UserName = "TheRealMJ",
+                FirstName = "Michael",
+                LastName = "Jackson",
+                DateOfBirth = new DateTime(1985, 06, 16),
+                PhoneNumber = "106849475",
+                Email = "Teehee@Gmail.com",
+                MedicalInformation = "N/A",
+                BankAccount = "11-5723-2835024-110"
+            };
+            _michael.HashedPassword = hasher.HashPassword(_michael, "password");
 
             _payment1 = new Payment
             {
@@ -166,7 +194,7 @@ namespace WebApiBackend.Helpers
             {
                 Id = 1,
                 Address = "50 Symonds Street",
-                Users = new List<User> { _yin, _teresa, _bryan, _clay },
+                Users = new List<User> { _yin, _teresa, _bryan, _clay, _george, _michael },
                 Schedules = new List<Schedule> { _schedule1 },
                 Payments = new List<Payment> { _payment1, _payment2 }
             };

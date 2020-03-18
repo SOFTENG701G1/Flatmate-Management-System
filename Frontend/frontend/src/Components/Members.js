@@ -4,78 +4,54 @@ import APIRequest from '../Util/APIRequest';
 import '../App.css';
 import './Members.css';
 import AddMember from './AddMember';
+import MemberTile from './MemberTile';
 
 export default class MembersPage extends React.Component {
-    constructor (props) {
-      super(props);
-  
+    constructor(props) {
+        super(props);
 
-      this.state = {
-        items: [],
-        isLoaded: false,
-      }
-      this.getMember();
+
+        this.state = {
+            items: [],
+            isLoaded: false,
+        }
+        this.getMember();
+        this.setFlatState = this.setFlatState.bind(this);
     }
-    /* Function used to fetch JSON data from the API */ 
-    async getMember(){
-        const memberResult = await APIRequest.componentDidMount()
+    /* Function used to fetch JSON data from the API */
+    async getMember() {
+        const memberResult = await APIRequest.componentDidMount();
         const json = await memberResult.json();
         this.setState({
-                    isLoaded: true,
-                    items: json
-                })
-        
-    }
-    render() {
-        var {isLoaded, items} = this.state;
+            isLoaded: true,
+            items: json
+        })
 
-        if (!isLoaded){
+    }
+
+    setFlatState(json) {
+        this.setState({
+            items: json
+        })
+    }
+
+    render() {
+        var { isLoaded, items } = this.state;
+
+        if (!isLoaded) {
             return (<div>Loading...</div>);
         }
-        else{
+        else
             return (
-            <div className = "MembersPage">
-              <div>
-                <div className='section-header'>
-                  Members page
-                </div>
-                <AddMember/>
-                <h4 className = 'currentMember'>Current Members</h4>
-                </div>  
-                <td className = "MembersCells">
-                    <table class="MembersModule">
-                        <td>
-                            <div className = "user_profile"> </div>
-                            <p> Name: {items[2].firstName} {items[2].lastName} </p>
-                            <p> Email: {items[2].email} </p>
-                            <p> Username: {items[2].userName}</p>
-                        </td>
-                    </table>
-                </td>
-                <td className = "MembersCells">
-                    <table class="MembersModule">
-                        <td>
-                            <div className = "user_profile"> </div>
-                            <p> Name: {items[1].firstName} {items[1].lastName} </p> 
-                            <p> Email: {items[1].email} </p>
-                            <p> Username: {items[1].userName}</p>
-                        </td>
-                    </table>
-                </td>
-
-                <td className = "MembersCells">
-                    <table class="MembersModule">
-                        <td>
-                            <div className = "user_profile"> </div>
-                            <p> Name: {items[0].firstName} {items[0].lastName} </p> 
-                            <p> Email: {items[0].email} </p>
-                            <p> Username: {items[0].userName}</p>
-                        </td>
-                    </table>
-                </td>
-
-                
-            </div>);
-        }
+                <div className="MembersPage">
+                    <div>
+                        <div className='section-header'>Members page</div>
+                        <AddMember />
+                        <h4 className='currentMember'>Current Members</h4>
+                        {this.state.items.map(function (flatMember, i) {
+                            return <MemberTile key={i} flatMember={flatMember} />
+                        })}
+                    </div>
+                </div>);
     }
 }
