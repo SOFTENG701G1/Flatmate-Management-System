@@ -32,7 +32,7 @@ export default class Payments extends Component {
             method: "GET",
             mode: "cors",
             headers:{
-                Authorization: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiIxIiwibmJmIjoxNTg0NDM3NDI5LCJleHAiOjE1ODUwNDIyMjksImlhdCI6MTU4NDQzNzQyOX0.qY9J-yHJPv8EeK6NSlGe3AEOD7VzT9wP5EGTWMvUhwg"
+                Authorization: "Bearer"
             }
         }).then(
             response => {
@@ -54,7 +54,7 @@ export default class Payments extends Component {
                         method: "GET",
                         mode: "cors",
                         headers:{
-                            Authorization: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiIxIiwibmJmIjoxNTg0NDM3NDI5LCJleHAiOjE1ODUwNDIyMjksImlhdCI6MTU4NDQzNzQyOX0.qY9J-yHJPv8EeK6NSlGe3AEOD7VzT9wP5EGTWMvUhwg"
+                            Authorization: "Bearer"
                         }
                     }).then(
                         response => {
