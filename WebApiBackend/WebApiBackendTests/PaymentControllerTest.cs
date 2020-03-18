@@ -45,13 +45,13 @@ namespace WebApiBackendTests
             _userRepository = new UserRepository(_context);
 
             _mapperHelper = new MapperHelper();
-            var mockMapper = _mapperHelper.GetMapper();
+            var mapper = _mapperHelper.GetMapper();
 
             DefaultHttpContext httpContext = new DefaultHttpContext();
             GenericIdentity MyIdentity = new GenericIdentity("User");
             ClaimsIdentity objClaim = new ClaimsIdentity(new List<Claim> { new Claim(ClaimTypes.NameIdentifier, "1") });
 
-            _paymentsController = new PaymentsController(_paymentsRepository, _userPaymentsRepository, _flatRepository, _userRepository, mockMapper)
+            _paymentsController = new PaymentsController(_paymentsRepository, _userPaymentsRepository, _flatRepository, _userRepository, mapper)
             {
                 ControllerContext = new ControllerContext()
             };
@@ -76,26 +76,25 @@ namespace WebApiBackendTests
         [Test]
         public async Task TestCreatePaymentForFlatAsync()
         {
-            //// Arrange
-            //var flatId = 1;
-            //var payment = new PaymentDTO
-            //{
-            //    Amount = 99,
-            //    PaymentType = PaymentType.Other,
-            //    Frequency = Frequency.Weekly,
-            //    StartDate = new DateTime(2020, 04, 04),
-            //    EndDate = new DateTime(2020, 05, 05),
-            //    Fixed = false,
-            //    Description = "food",
-            //};
-            //var userIds = new List<int>{ 1, 2 };
+            // Arrange
+            var flatId = 1;
+            var payment = new PaymentDTO
+            {
+                Amount = 99,
+                PaymentType = PaymentType.Other,
+                Frequency = Frequency.Weekly,
+                StartDate = new DateTime(2020, 04, 04),
+                EndDate = new DateTime(2020, 05, 05),
+                Fixed = false,
+                Description = "food",
+            };
+            var userIds = new List<int> { 1, 2 };
 
-            //// Act
-            //var response = await _paymentsController.CreatePaymentForFlat(flatId, payment, userIds);
+            // Act
+            var response = await _paymentsController.CreatePaymentForFlat(flatId, payment, userIds);
 
-            //// Assert
-            //Assert.IsInstanceOf<OkObjectResult>(response);
-            Assert.Pass();
+            // Assert
+            Assert.IsInstanceOf<OkObjectResult>(response);
         }
 
         [Test]
