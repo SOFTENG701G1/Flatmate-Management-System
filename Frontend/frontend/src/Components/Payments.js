@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import NewPayment from "./NewPayment"
 import ViewPayment from "./ViewPayment"
 import "./Payments.css"
+import APIRequest from "../Util/APIRequest";
 
 /*
     This class renders the Payments page.
@@ -26,60 +27,28 @@ export default class Payments extends Component {
         }
     }
 
-    componentDidMount(){
+    async componentDidMount(){
         // Obtain payments associated with the logged in user.
-        fetch(process.env.REACT_APP_BACKEND_API + "api/Payments/User", {
-            method: "GET",
-            mode: "cors",
-            headers:{
-                Authorization: "Bearer"
-            }
-        }).then(
-            response => {
-                if(response.ok) return response.json()
-            }
-        ).then(
-            APIResult => {
-                // Add user Payments to state.
+        await APIRequest.obtainUserPayments().then(
+            data => {
                 this.setState({
-                    Payments: APIResult
-                });
+                    Payments: data
+                })
             }
-        ).then(() => {
-            // Ensure that all payments are obtained before attempting to get contributors.
-            this.state.Payments.forEach(
-                Payment => {
-                    const RequestURL = `${process.env.REACT_APP_BACKEND_API}api/Payments/Users?paymentId=${Payment["id"]}`;
-                    fetch(RequestURL, {
-                        method: "GET",
-                        mode: "cors",
-                        headers:{
-                            Authorization: "Bearer"
-                        }
-                    }).then(
-                        response => {
-                            if(response.ok) return response.json()
-                        }
-                    ).then(
-                        UsersAPIResult => {
-                            // We need to show only the userName of the contributors.
-                            let user_list = [];
-                            for(let i = 0; i < UsersAPIResult.length; i++) 
-                                user_list.push(UsersAPIResult[i]["userName"]);
-                            this.addUserPayment(user_list);
-                        }
-                    )
+        )
+            
+        for(let i = 0; i < this.state.Payments.length; i++){
+            await APIRequest.obtainPaymentContributors(this.state.Payments[i]["id"]).then(
+                UsersJSON => {
+                    const list_user = []
+                    for(let j = 0; j < UsersJSON.length; j++){
+                        list_user.push(UsersJSON[j]["userName"]);
+                    }
+                    this.addUserPayment(list_user)
                 }
             )
-        })
-    }
-
-    addPayment = (Payment) => {
-        let Payments = this.state.Payments;
-        Payments.push(Payment);
-        this.setState({
-            Payments: Payments
-        })
+            
+        }
     }
 
     addUserPayment = (Users) => {
