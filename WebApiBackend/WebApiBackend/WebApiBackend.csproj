@@ -13,18 +13,6 @@
     <PackageReference Include="Microsoft.AspNet.Mvc" Version="5.2.7" />
     <PackageReference Include="Microsoft.AspNet.Mvc.Abstractions" Version="6.0.0-rc1-final" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.0.0" />
-    <Compile Remove="Migrations\20200310032350_InitialMigration.cs" />
-    <Compile Remove="Migrations\20200310032350_InitialMigration.Designer.cs" />
-    <Compile Remove="Migrations\20200310035804_PropertyFixMigration.cs" />
-    <Compile Remove="Migrations\20200310035804_PropertyFixMigration.Designer.cs" />
-    <Compile Remove="Migrations\20200310042937_InitialMigration.cs" />
-    <Compile Remove="Migrations\20200310042937_InitialMigration.Designer.cs" />
-    <Compile Remove="Migrations\20200310042957_InitialMigration.cs" />
-    <Compile Remove="Migrations\20200310042957_InitialMigration.Designer.cs" />
-    <Compile Remove="Migrations\20200310044947_add-migration ManyToManyMigration.cs" />
-    <Compile Remove="Migrations\20200310044947_add-migration ManyToManyMigration.Designer.cs" />
-    <Compile Remove="Migrations\20200310045018_ManyToManyMigration.cs" />
-    <Compile Remove="Migrations\20200310045018_ManyToManyMigration.Designer.cs" />
     <PackageReference Include="AutoMapper" Version="9.0.0" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="7.0.0" />
   </ItemGroup>
