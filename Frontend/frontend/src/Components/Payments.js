@@ -13,9 +13,8 @@ export default class Payments extends Component {
         this.state = {
             showView: false,
             show: false,
-            // Currently are dummy data
-            Payments: [],
-            ContributionPayments: [],
+            payments: [],
+            contributionPayments: [],
             currentPayment: {  
                 PaymentType: "",
                 Amount: 0,
@@ -32,30 +31,30 @@ export default class Payments extends Component {
         await APIRequest.obtainUserPayments().then(
             data => {
                 this.setState({
-                    Payments: data
+                    payments: data
                 })
             }
         )
             
-        for(let i = 0; i < this.state.Payments.length; i++){
-            await APIRequest.obtainPaymentContributors(this.state.Payments[i]["id"]).then(
-                UsersJSON => {
-                    const list_user = []
-                    for(let j = 0; j < UsersJSON.length; j++){
-                        list_user.push(UsersJSON[j]["userName"]);
+        for(let i = 0; i < this.state.payments.length; i++){
+            await APIRequest.obtainPaymentContributors(this.state.payments[i]["id"]).then(
+                usersJSON => {
+                    const listUser = []
+                    for(let j = 0; j < usersJSON.length; j++){
+                        listUser.push(usersJSON[j]["userName"]);
                     }
-                    this.addUserPayment(list_user)
+                    this.addUserPayment(listUser)
                 }
             )
             
         }
     }
 
-    addUserPayment = (Users) => {
-        let ContributionPayments = this.state.ContributionPayments;
-        ContributionPayments.push(Users);
+    addUserPayment = (users) => {
+        let contributionPayments = this.state.contributionPayments;
+        contributionPayments.push(users);
         this.setState({
-            ContributionPayments: ContributionPayments
+            contributionPayments: contributionPayments
         })
     }
 
@@ -100,24 +99,24 @@ export default class Payments extends Component {
     }
 
     render() {
-        const FixedPaymentsHtml = [];
-        const VariablePaymentsHtml = [];
-        const Payments = this.state.Payments;
-        const ContributorsPayments = this.state.ContributionPayments;
-        for(let i = 0; i < this.state.Payments.length; i++){
-            const PaymentData = Payments[i];
-            const Contributors = ContributorsPayments[i];
-            if(PaymentData["fixed"]) FixedPaymentsHtml.push(
+        const fixedPaymentsHtml = [];
+        const variablePaymentsHtml = [];
+        const payments = this.state.payments;
+        const contributorsPayments = this.state.contributionPayments;
+        for(let i = 0; i < this.state.payments.length; i++){
+            const paymentData = payments[i];
+            const contributors = contributorsPayments[i];
+            if(paymentData["fixed"]) fixedPaymentsHtml.push(
                 <PaymentModule 
-                    Payment={PaymentData} 
-                    Contributors={Contributors}
+                    payment={paymentData} 
+                    contributors={contributors}
                     onTableClick={this._handleTableClick}
                 />
             )
-            else VariablePaymentsHtml.push(
+            else variablePaymentsHtml.push(
                 <PaymentModule 
-                    Payment={PaymentData}  
-                    Contributors={Contributors}
+                    payment={paymentData}  
+                    contributors={contributors}
                     onTableClick={this._handleTableClick}
                 />
             )
@@ -157,10 +156,10 @@ export default class Payments extends Component {
                     </tr>
                     <tr>
                         <td>
-                            {FixedPaymentsHtml}
+                            {fixedPaymentsHtml}
                         </td>
                         <td>
-                            {VariablePaymentsHtml}
+                            {variablePaymentsHtml}
                         </td>
                         <ViewPayment 
                             onCloseView={this._handleCloseView} 
@@ -183,49 +182,49 @@ export default class Payments extends Component {
 */
 function PaymentModule(props) {
     // Map enums stored in backend to list.
-    const PaymentTypeEnumList = ["Rent", "Electricity", "Water", "Internet", "Groceries", "Other"];
-    const FrequencyEnumList = ["OneOff", "Weekly", "Fortnightly", "Monthly"];
+    const paymentTypeEnumList = ["Rent", "Electricity", "Water", "Internet", "Groceries", "Other"];
+    const frequencyEnumList = ["OneOff", "Weekly", "Fortnightly", "Monthly"];
 
-    const PaymentType = PaymentTypeEnumList[props.Payment["paymentType"]];
-    const Amount = props.Payment["amount"];
-    const StartDate = props.Payment.startDate.slice(0, 10).split("-").join("/");
-    const EndDate = props.Payment.endDate.slice(0, 10).split("-").join("/");
-    const Frequency = FrequencyEnumList[props.Payment["frequency"]];
+    const paymentType = paymentTypeEnumList[props.payment["paymentType"]];
+    const amount = props.payment["amount"];
+    const startDate = props.payment.startDate.slice(0, 10).split("-").join("/");
+    const endDate = props.payment.endDate.slice(0, 10).split("-").join("/");
+    const frequency = frequencyEnumList[props.payment["frequency"]];
 
     //Ensure that Payments Page is rendered even when the list does not exist.
-    const Contributors = !props.Contributors ? ["Loading..."]: props.Contributors; 
-    const ContributorsToString = Contributors.join(", ");
+    const contributors = !props.contributors ? ["Loading..."]: props.contributors; 
+    const contributorsToString = contributors.join(", ");
     return (
         <div className="PaymentModule">
             <table className="PaymentModule">
                 <tr>
                     <td className="PaymentModuleDataLeft">
                         <h6 className="PaymentModuleHeader">
-                            <b>{PaymentType}</b>
+                            <b>{paymentType}</b>
                         </h6>
                     </td>
                     <td className="PaymentModuleDataRight">
                         <h6 className="PaymentModuleHeader">
-                            <b>{StartDate}-{EndDate}</b>
+                            <b>{startDate}-{endDate}</b>
                         </h6>
                     </td>
                 </tr>
                 <tr>
                     <td className="PaymentModuleDataLeft">
                         <h6 className="PaymentModuleData">
-                            Amount: ${Amount}
+                            Amount: ${amount}
                         </h6>
                     </td>
                     <td className="PaymentModuleDataRight">
                         <h6 className="PaymentModuleData">
-                            Frequency: {Frequency}
+                            Frequency: {frequency}
                         </h6>
                     </td>
                 </tr>
                 <tr>
                     <td colSpan="2" className="PaymentModuleDataLeft">
                         <h6 className="PaymentModuleData">
-                            Contributors: {ContributorsToString}
+                            Contributors: {contributorsToString}
                         </h6>
                     </td>
                 </tr>
