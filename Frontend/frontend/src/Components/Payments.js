@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import NewPayment from "./NewPayment"
 import ViewPayment from "./ViewPayment"
 import "./Payments.css"
+import APIRequest from "../Util/APIRequest";
 
 /*
     This class renders the Payments page.
@@ -12,37 +13,8 @@ export default class Payments extends Component {
         this.state = {
             showView: false,
             show: false,
-            // Currently are dummy data
-            FixedPayments: [{
-                PaymentType: "Rent",
-                Amount: 240,
-                StartDate: "15/03",
-                EndDate: "15/12",
-                Frequency: "Monthly",
-                Contributors: ["Misty", "Brock"]
-            }, {
-                PaymentType: "WiFi",
-                Amount: 100,
-                StartDate: "15/03",
-                EndDate: "15/12",
-                Frequency: "Monthly",
-                Contributors: ["Misty", "Brock", "Samuel"]
-            }],
-            VariablePayments: [{
-                PaymentType: "Water",
-                Amount: 140,
-                StartDate: "15/03",
-                EndDate: "15/12",
-                Frequency: "Monthly",
-                Contributors: ["Misty", "Brock"]
-            }, {
-                PaymentType: "Electricity",
-                Amount: 100,
-                StartDate: "15/03",
-                EndDate: "15/12",
-                Frequency: "Monthly",
-                Contributors: ["Misty", "Brock", "Samuel"]
-            }],
+            payments: [],
+            contributionPayments: [],
             currentPayment: {  
                 PaymentType: "",
                 Amount: 0,
@@ -52,6 +24,38 @@ export default class Payments extends Component {
                 Contributors: ["", ""]
             }
         }
+    }
+
+    async componentDidMount(){
+        // Obtain payments associated with the logged in user.
+        await APIRequest.obtainUserPayments().then(
+            data => {
+                this.setState({
+                    payments: data
+                })
+            }
+        )
+            
+        for(let i = 0; i < this.state.payments.length; i++){
+            await APIRequest.obtainPaymentContributors(this.state.payments[i]["id"]).then(
+                usersJSON => {
+                    const listUser = []
+                    for(let j = 0; j < usersJSON.length; j++){
+                        listUser.push(usersJSON[j]["userName"]);
+                    }
+                    this.addUserPayment(listUser)
+                }
+            )
+            
+        }
+    }
+
+    addUserPayment = (users) => {
+        let contributionPayments = this.state.contributionPayments;
+        contributionPayments.push(users);
+        this.setState({
+            contributionPayments: contributionPayments
+        })
     }
 
     //Methods for opening new payment component
@@ -95,23 +99,29 @@ export default class Payments extends Component {
     }
 
     render() {
-        const FixedPaymentsHtml = [];
-        const VariablePaymentsHtml = []
-        this.state.FixedPayments.forEach(
-            PaymentData => {
-                FixedPaymentsHtml.push(
-                    <PaymentModule Payment={PaymentData} onTableClick={this._handleTableClick}/>
-                )
-            }
-        )
-
-        this.state.VariablePayments.forEach(
-            PaymentData => {
-                VariablePaymentsHtml.push(
-                    <PaymentModule Payment={PaymentData} onTableClick={this._handleTableClick}/>
-                )
-            }
-        )
+        const fixedPaymentsHtml = [];
+        const variablePaymentsHtml = [];
+        const payments = this.state.payments;
+        const contributorsPayments = this.state.contributionPayments;
+        for(let i = 0; i < this.state.payments.length; i++){
+            const paymentData = payments[i];
+            const contributors = contributorsPayments[i];
+            if(paymentData["fixed"]) fixedPaymentsHtml.push(
+                <PaymentModule 
+                    payment={paymentData} 
+                    contributors={contributors}
+                    onTableClick={this._handleTableClick}
+                />
+            )
+            else variablePaymentsHtml.push(
+                <PaymentModule 
+                    payment={paymentData}  
+                    contributors={contributors}
+                    onTableClick={this._handleTableClick}
+                />
+            )
+            
+        }
 
         return (
             <div className="PaymentPage">
@@ -126,7 +136,10 @@ export default class Payments extends Component {
                                     Add new
                                 </button>
                             </span>
-                            <NewPayment onClose={this._handleClose} show={this.state.show} />
+                            <NewPayment 
+                                onClose={this._handleClose} 
+                                show={this.state.show} 
+                            />
                         </td>
                     </tr>
                     <tr>
@@ -143,12 +156,17 @@ export default class Payments extends Component {
                     </tr>
                     <tr>
                         <td>
-                            {FixedPaymentsHtml}
+                            {fixedPaymentsHtml}
                         </td>
                         <td>
-                            {VariablePaymentsHtml}
+                            {variablePaymentsHtml}
                         </td>
-                        <ViewPayment onCloseView={this._handleCloseView} showView={this.state.showView} onEdit={this._handleEdit} payment={this.state.currentPayment}/>
+                        <ViewPayment 
+                            onCloseView={this._handleCloseView} 
+                            showView={this.state.showView} 
+                            onEdit={this._handleEdit} 
+                            payment={this.state.currentPayment}
+                        />
                     </tr>
                 </table>
             </div>
@@ -156,58 +174,57 @@ export default class Payments extends Component {
     }
 }
 
+
 /*
-    This function JSX element takes in the JSON list which is of the form:
-    {
-        PaymentType: String,
-        Amount: Decimal(10,2),
-        StartDate: DateTime String,
-        EndDate: DateTime String,
-        Frequency: String,
-        Contributors: String[]
-    }
+    This function JSX element takes in the input:
+    - Payment: The list obtained from the backend(GET api/Payments/User)
+    - UserPayment: List of usernames as contributors.
 */
 function PaymentModule(props) {
-    const Payment = props.Payment
-    const PaymentType = props.Payment.PaymentType;
-    const Amount = props.Payment.Amount;
-    const StartDate = props.Payment.StartDate;
-    const EndDate = props.Payment.EndDate;
-    const Frequency = props.Payment.Frequency;
-    const Contributors = props.Payment.Contributors;
-    const ContributorsToString = Contributors.join(", ");
-    const OnTableClick = props.onTableClick
+    // Map enums stored in backend to list.
+    const paymentTypeEnumList = ["Rent", "Electricity", "Water", "Internet", "Groceries", "Other"];
+    const frequencyEnumList = ["OneOff", "Weekly", "Fortnightly", "Monthly"];
+
+    const paymentType = paymentTypeEnumList[props.payment["paymentType"]];
+    const amount = props.payment["amount"];
+    const startDate = props.payment.startDate.slice(0, 10).split("-").join("/");
+    const endDate = props.payment.endDate.slice(0, 10).split("-").join("/");
+    const frequency = frequencyEnumList[props.payment["frequency"]];
+
+    //Ensure that Payments Page is rendered even when the list does not exist.
+    const contributors = !props.contributors ? ["Loading..."]: props.contributors; 
+    const contributorsToString = contributors.join(", ");
     return (
         <div className="PaymentModule">
-            <table className="PaymentModule" onClick={() => OnTableClick(Payment)}>
+            <table className="PaymentModule">
                 <tr>
                     <td className="PaymentModuleDataLeft">
                         <h6 className="PaymentModuleHeader">
-                            <b>{PaymentType}</b>
+                            <b>{paymentType}</b>
                         </h6>
                     </td>
                     <td className="PaymentModuleDataRight">
                         <h6 className="PaymentModuleHeader">
-                            <b>{StartDate}-{EndDate}</b>
+                            <b>{startDate}-{endDate}</b>
                         </h6>
                     </td>
                 </tr>
                 <tr>
                     <td className="PaymentModuleDataLeft">
                         <h6 className="PaymentModuleData">
-                            Amount: ${Amount}
+                            Amount: ${amount}
                         </h6>
                     </td>
                     <td className="PaymentModuleDataRight">
                         <h6 className="PaymentModuleData">
-                            Frequency: {Frequency}
+                            Frequency: {frequency}
                         </h6>
                     </td>
                 </tr>
                 <tr>
                     <td colSpan="2" className="PaymentModuleDataLeft">
                         <h6 className="PaymentModuleData">
-                            Contributors: {ContributorsToString}
+                            Contributors: {contributorsToString}
                         </h6>
                     </td>
                 </tr>

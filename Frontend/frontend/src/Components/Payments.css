@@ -1,6 +1,7 @@
 .PaymentPage {
     position: absolute;
     top: 0px;
+    left: 260px;
     right: 20px;
     background-color: transparent;
     border: 5px;

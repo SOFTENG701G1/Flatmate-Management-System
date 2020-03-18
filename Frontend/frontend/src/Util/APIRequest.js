@@ -61,6 +61,43 @@ export default class APIRequest {
         return res;
     }
 
+    static async obtainUserPayments(){
+        let authString = await APIRequest.getAuthString();
+        let res = await fetch(apiBaseUrl + "api/Payments/User", {
+            headers:{
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization':  authString
+            },
+            method: "GET",
+        }).then(
+            data => {
+                if(data.ok) return data.json()
+            }
+        )
+
+        return res;
+    }
+
+    static async obtainPaymentContributors(paymentId){
+        let authString = await APIRequest.getAuthString();
+        let res = await fetch(apiBaseUrl + `api/Payments/Users?paymentId=${paymentId}`, {
+            headers:{
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization':  authString
+            },
+            method: "GET",
+        }).then(
+            data => {
+                if(data.ok) return data.json()
+            }
+        )
+
+        return res;
+    }
+
+
     static async componentDidMount(){
         let authString = await APIRequest.getAuthString();
         const res = await fetch(apiBaseUrl + "api/flat/display",{
