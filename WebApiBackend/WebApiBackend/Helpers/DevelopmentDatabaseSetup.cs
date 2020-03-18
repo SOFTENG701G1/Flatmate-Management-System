@@ -7,7 +7,7 @@ namespace WebApiBackend.Helpers
 {
     public class DevelopmentDatabaseSetup
     {
-        User _yin, _teresa, _bryan;
+        User _yin, _teresa, _bryan, _clay;
         Payment _payment1, _payment2;
         // Payment[NAME]1 is for electricity
         // Payment[NAME]2 is for Rent due to many to many relationship
@@ -66,6 +66,20 @@ namespace WebApiBackend.Helpers
                 CanReset = false
             };
             _bryan.HashedPassword = hasher.HashPassword(_bryan, "password");
+
+            _clay = new User
+            {
+                Id = 4,
+                UserName = "TonOfClay",
+                FirstName = "Clay",
+                LastName = "Ton",
+                DateOfBirth = new DateTime(1985, 06, 16),
+                PhoneNumber = "02106849475",
+                Email = "ClayTon@Gmail.com",
+                MedicalInformation = "N/A",
+                BankAccount = "11-5723-2835024-110"
+            };
+            _clay.HashedPassword = hasher.HashPassword(_clay, "password");
 
             _payment1 = new Payment
             {
@@ -158,7 +172,7 @@ namespace WebApiBackend.Helpers
             {
                 Id = 1,
                 Address = "50 Symonds Street",
-                Users = new List<User> { _yin, _teresa, _bryan },
+                Users = new List<User> { _yin, _teresa, _bryan, _clay },
                 Schedules = new List<Schedule> { _schedule1 },
                 Payments = new List<Payment> { _payment1, _payment2 }
             };
@@ -178,6 +192,7 @@ namespace WebApiBackend.Helpers
             _database.Add(_yin);
             _database.Add(_teresa);
             _database.Add(_bryan);
+            _database.Add(_clay);
             _database.Add(_payment1);
             _database.Add(_payment2);
             _database.Add(_userPaymentBryan1);
