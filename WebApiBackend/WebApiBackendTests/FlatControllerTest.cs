@@ -70,5 +70,39 @@ namespace WebApiBackendTests
             Assert.That(response.Value.Select(m => m.Email).ToList(), Is.EquivalentTo(new[] { "BryanAng@Gmail.com", "GreenTrees@Yahoo.com", "YinWang@qq.com", "ClayTon@Gmail.com" }));
         }
 
+        [Test]
+
+        public void TestFailedAddUserToFlatUserAlreadyInFlat()
+        {
+            ActionResult<AddUserToFlatDto> response = _flatController.AddUserToFlat("YinWang");
+            Assert.AreEqual(response.Value.ResultCode, 4);
+        }
+
+        [Test]
+      
+        public void TestFailedAddUserToFlatUserNotExist()
+        {
+            ActionResult<AddUserToFlatDto> response = _flatController.AddUserToFlat("Bazinga");
+            Assert.AreEqual(response.Value.ResultCode, 2);
+        }
+
+
+        [Test]
+     
+        public void TestFailedAddUserToFlatUserInOtherFlat()
+        {
+            ActionResult<AddUserToFlatDto> response = _flatController.AddUserToFlat("TestUser1");
+            Assert.AreEqual(response.Value.ResultCode, 5);
+        }
+
+        [Test]
+        
+        public void TestCorrectAddUserToFlat()
+        {
+            ActionResult<AddUserToFlatDto> response = _flatController.AddUserToFlat("TestUser2");
+            Assert.AreEqual(response.Value.ResultCode, 1);
+            Assert.AreEqual(response.Value.AddedUser.UserName, "TestUser2");
+        }
+
     }
 }
