@@ -16,7 +16,6 @@ import SplashScreen from './Views/SplashScreen';
 import HomePage from './Views/HomePage';
 import RequireLogin from './Components/RequireLogin';
 import APIRequest from './Util/APIRequest';
-import NewFlat from './Components/NewFlat';
 import MembersPage from './Components/Members';
 import ForgotPassword from './Views/ForgotPassword';
 import ResetPassword from './Views/ResetPassword';
@@ -62,9 +61,6 @@ export default class App extends React.Component {
                 </Route>
                 <Route path="/app/members">
                   <MembersPage/>
-                </Route>
-                <Route path="/app/newFlat">
-                  <NewFlat />
                 </Route>
                 <Route path="/app/">
                   <Home/>
