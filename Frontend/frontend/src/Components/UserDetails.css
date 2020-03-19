@@ -1,0 +1,65 @@
+.display-block {
+    display: block;
+}
+  
+.display-none {
+    display: none;
+}
+
+#modal{
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width:20%;
+    height: auto;
+    text-align: left;
+    background-color: #0C0F13;
+    border-radius: 8px;
+    border: 2px solid #1F5673;
+    position: fixed;
+    padding-bottom: 15px;
+}
+
+
+#Name{
+    font-size: 20px;
+    text-align: center;
+    padding-top: 10px;
+    padding-left: 0px;
+}
+
+.UserInformation {
+    color: #EEEEEE;
+    font-size: 13px;
+    margin: 0px;
+    padding-bottom: 15px;
+}
+
+.InfoHeading{
+    color: #656E79;
+    font-size: 12px;
+    padding-bottom: 0px;
+}
+
+.UserInformation, .InfoHeading{
+    font-family: 'Roboto', sans-serif;
+    text-align: left;
+    line-height: 5px;
+    padding-left: 35px;
+}
+
+  
+input.userDetailsButton{
+    margin-left: 10px;
+    width: 10%;
+    height: 10%;
+    background-color: #0C0F13;
+}
+
+.userDetailsImage {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 60px;
+    height: 60px;
+}
