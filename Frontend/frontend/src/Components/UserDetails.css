@@ -6,7 +6,7 @@
     display: none;
 }
 
-.modal{
+#modal{
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
@@ -50,9 +50,9 @@
 
   
 input.userDetailsButton{
-    padding-left: 10px;
-    width: 7%;
-    height: 7%;
+    margin-left: 10px;
+    width: 10%;
+    height: 10%;
     background-color: #0C0F13;
 }
 

@@ -14,9 +14,9 @@ export default class Members extends React.Component {
     render(){
         const showHideClassName = this.props.show ? "modal display-block" : "modal display-none";
         return (
-            <div class="modal" className={showHideClassName}>
+            <div id="modal" className={showHideClassName}>
               <section className="modal-main">
-                <input className="userDetailsButton" type="image" src= {cross} onClick={this.props.handleClose} />
+                <input className="userDetailsButton" type="image" src={cross} onClick={this.props.handleClose} />
                 <img className="userDetailsImage" src={profile} />
                 <h2 className="UserInformation" id="Name">{this.props.member.firstName} {this.props.member.lastName}</h2>
                 <p className="InfoHeading">Username</p>
