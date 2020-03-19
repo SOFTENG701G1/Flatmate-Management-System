@@ -2,9 +2,8 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
 using NUnit.Framework;
-using System;
+using System.Net;
 using System.Collections.Generic;
 using System.Linq;
 using WebApiBackend;
@@ -12,8 +11,6 @@ using WebApiBackend.Controllers;
 using WebApiBackend.Dto;
 using WebApiBackend.Helpers;
 using WebApiBackend.Model;
-using Moq;
-using System.Security.Principal;
 using System.Security.Claims;
 
 namespace WebApiBackendTests
@@ -45,33 +42,18 @@ namespace WebApiBackendTests
 
             //Creates a new httpContext and adds a user identity to it, imitating being already logged in.
             DefaultHttpContext httpContext = new DefaultHttpContext();
-            GenericIdentity MyIdentity = new GenericIdentity("YinWang");
             ClaimsIdentity objClaim = new ClaimsIdentity(new List<Claim> { new Claim(ClaimTypes.NameIdentifier, "1") });
-            _flatController.ControllerContext = new ControllerContext();
-            _flatController.ControllerContext.HttpContext = httpContext;
             httpContext.User = new ClaimsPrincipal(objClaim);
 
+            _flatController.ControllerContext = new ControllerContext();
+            _flatController.ControllerContext.HttpContext = httpContext;
+            
+
 
         }
 
-        /// <summary>
-        /// Ensure a user is able to view a list memeber in the flat. Ensure the reponse contains the expected members
-        /// </summary>
-        [Test]
-        public void TestGetMemberList()
-        {
-            ActionResult<List<DisplayMemberDTO>> response = _flatController.GetMembers();
-
-            Assert.IsNotNull(response.Value);
-            Assert.That(response.Value.Count, Is.EqualTo(4));
-            Assert.That(response.Value.Select(m => m.UserName).ToList(), Is.EquivalentTo(new[] { "BeboBryan", "TreesAreGreen", "YinWang", "TonOfClay" }));
-            Assert.That(response.Value.Select(m => m.FirstName).ToList(), Is.EquivalentTo(new[] { "Bryan", "Teresa", "Yin", "Clay" }));
-            Assert.That(response.Value.Select(m => m.LastName).ToList(), Is.EquivalentTo(new[] { "Ang", "Green", "Wang", "Ton" }));
-            Assert.That(response.Value.Select(m => m.Email).ToList(), Is.EquivalentTo(new[] { "BryanAng@Gmail.com", "GreenTrees@Yahoo.com", "YinWang@qq.com", "ClayTon@Gmail.com" }));
-        }
 
         [Test]
-
         public void TestFailedAddUserToFlatUserAlreadyInFlat()
         {
             ActionResult<AddUserToFlatDto> response = _flatController.AddUserToFlat("YinWang");
@@ -79,7 +61,6 @@ namespace WebApiBackendTests
         }
 
         [Test]
-      
         public void TestFailedAddUserToFlatUserNotExist()
         {
             ActionResult<AddUserToFlatDto> response = _flatController.AddUserToFlat("Bazinga");
@@ -88,7 +69,6 @@ namespace WebApiBackendTests
 
 
         [Test]
-     
         public void TestFailedAddUserToFlatUserInOtherFlat()
         {
             ActionResult<AddUserToFlatDto> response = _flatController.AddUserToFlat("TestUser1");
@@ -96,12 +76,66 @@ namespace WebApiBackendTests
         }
 
         [Test]
-        
         public void TestCorrectAddUserToFlat()
         {
             ActionResult<AddUserToFlatDto> response = _flatController.AddUserToFlat("TestUser2");
             Assert.AreEqual(response.Value.ResultCode, 1);
             Assert.AreEqual(response.Value.AddedUser.UserName, "TestUser2");
+        }
+
+        //Test that in a normal flat, all members are returned, including the person themself
+        [Test]
+        public void GetFlatMembersFromNonEmptyFlat()
+        {
+            ActionResult<FlatDTO> response = _flatController.GetFlatMembers();
+            Assert.IsInstanceOf<FlatDTO>(response.Value);
+            Assert.AreEqual(response.Value.FlatMembers.Count == 4, true);
+        }
+
+        [Test]
+        public void GetFlatMembersFromSoloFlat()
+        {
+            //Set the user of the context to be user with id 998, who is in a flat of their own.
+            ClaimsIdentity objClaim = new ClaimsIdentity(new List<Claim> { new Claim(ClaimTypes.NameIdentifier, "998") });
+            _flatController.HttpContext.User = new ClaimsPrincipal(objClaim);
+
+            ActionResult<FlatDTO> response = _flatController.GetFlatMembers();
+            Assert.IsInstanceOf<FlatDTO>(response.Value);
+            Assert.AreEqual(response.Value.FlatMembers.Count == 1, true);
+        }
+
+        [Test]
+        public void GetFlatMembersFromPersonNotInFlat()
+        {
+            //Set the user of the context to be user with id 999, who is not in a flat.
+            ClaimsIdentity objClaim = new ClaimsIdentity(new List<Claim> { new Claim(ClaimTypes.NameIdentifier, "999") });
+            _flatController.HttpContext.User = new ClaimsPrincipal(objClaim);
+
+            //Should still return a flat DTO, but contain no inputs in the FlatMembers Array.
+            ActionResult<FlatDTO> response = _flatController.GetFlatMembers();
+            Assert.IsInstanceOf<FlatDTO>(response.Value);
+            Assert.AreEqual(response.Value.FlatMembers.Count == 0, true);
+        }
+
+        [Test]
+        public void AttemptCreatingFlatWhileAlreadyInFlat()
+        {
+
+            ActionResult<FlatDTO> response = _flatController.createFlat();
+            Assert.That(response.Result, Is.InstanceOf<ForbidResult>());
+        }
+
+        [Test]
+        public void TestCreatingFlatWhileNotInFlat()
+        {
+            //Set the user of the context to be user with id 999, who is not in a flat.
+            ClaimsIdentity objClaim = new ClaimsIdentity(new List<Claim> { new Claim(ClaimTypes.NameIdentifier, "999") });
+            _flatController.HttpContext.User = new ClaimsPrincipal(objClaim);
+
+            //Should return a flat DTO, Cotaining just the user.
+            ActionResult<FlatDTO> response = _flatController.createFlat();
+            Assert.IsInstanceOf<FlatDTO>(response.Value);
+            Assert.AreEqual(response.Value.FlatMembers.Count == 1, true);
         }
 
     }
