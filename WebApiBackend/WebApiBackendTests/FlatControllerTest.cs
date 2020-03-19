@@ -53,34 +53,19 @@ namespace WebApiBackendTests
 
         }
 
-        /// <summary>
-        /// Ensure a user is able to view a list memeber in the flat. Ensure the reponse contains the expected members
-        /// </summary>
-        [Test]
-        public void TestGetMemberList()
-        {
-            ActionResult<List<DisplayMemberDTO>> response = _flatController.GetMembers();
-
-            Assert.IsNotNull(response.Value);
-            Assert.That(response.Value.Count, Is.EqualTo(4));
-            Assert.That(response.Value.Select(m => m.UserName).ToList(), Is.EquivalentTo(new[] { "BeboBryan", "TreesAreGreen", "YinWang", "TonOfClay" }));
-            Assert.That(response.Value.Select(m => m.FirstName).ToList(), Is.EquivalentTo(new[] { "Bryan", "Teresa", "Yin", "Clay" }));
-            Assert.That(response.Value.Select(m => m.LastName).ToList(), Is.EquivalentTo(new[] { "Ang", "Green", "Wang", "Ton" }));
-            Assert.That(response.Value.Select(m => m.Email).ToList(), Is.EquivalentTo(new[] { "BryanAng@Gmail.com", "GreenTrees@Yahoo.com", "YinWang@qq.com", "ClayTon@Gmail.com" }));
-        }
         
         /// <summary>
         /// Ensure the response is a ok reuslt when the user is not removing him/herself, and the user is excluded from the flat's user list 
         /// </summary>
         [Test]
-        public void GetMember_ReturnOK_WhenUserNotRemovingOneself()
+        public void GetMember_Return202_WhenUserNotRemovingOneself()
         {
             User user = _context.User.Find(1);
             User deleteUser = _context.User.Where(u => u.UserName == "BeboBryan").FirstOrDefault();
             IQueryable<Flat> flat = _context.Flat.Where(f => f.Id == user.FlatId);
-            ActionResult response = _flatController.RemoveMember("BeboBryan");
+            ActionResult<FlatDTO> response = _flatController.RemoveMember("BeboBryan");
             Assert.IsFalse(flat.FirstOrDefault().Users.Contains(deleteUser));
-            Assert.That(response, Is.InstanceOf<OkObjectResult>());
+            Assert.That(response.Value, Is.TypeOf<FlatDTO>());
         }
         /// <summary>
         /// Ensure the response is a RedirectToActionResult when the user is removing him/herself, and the user is excluded from the flat's user list
@@ -91,9 +76,9 @@ namespace WebApiBackendTests
             User user = _context.User.Find(1);
             Flat flat = _context.Flat.First(u=>u.Id==user.FlatId);
             int flatId = flat.Id;
-            ActionResult response = _flatController.RemoveMember("YinWang");
+            ActionResult<FlatDTO> response = _flatController.RemoveMember("YinWang");
             Assert.IsFalse(flat.Users.Contains(user));
-            Assert.That(response, Is.InstanceOf<RedirectToActionResult>());
+
         }
 
         /// <summary>
@@ -103,8 +88,7 @@ namespace WebApiBackendTests
         public void GetMember_RirectToCreateFlatPageandRemoveFlat_WhenTheLastUserRemovedFromFlat()
         {
             IQueryable<Flat> flat = _context.Flat.Where(f => f.Id == _context.User.Find(1).FlatId);
-            ActionResult response = _flatController.RemoveMember("YinWang");
-            Assert.That(response, Is.InstanceOf<RedirectToActionResult>());
+            ActionResult<FlatDTO> response = _flatController.RemoveMember("YinWang");
             Assert.IsEmpty(flat);
 
         }
