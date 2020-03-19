@@ -28,7 +28,7 @@ export default class MemberTile extends React.Component {
         return (
             <temp>
                 <div className="MemberProfile" onClick={this.showModal}>
-                    <img className="userProfile" src={UserImage} />
+                    <img alt="user-profile" className="userProfile" src={UserImage} />
                     <p className="name"> {person.firstName} {person.lastName} {isUser ? "(ME)" : ''}</p>
                     <p className="info"> Date of Birth: {person.dateOfBirth} </p>
                     <p className="info"> Phone Number: {person.phoneNumber}</p>

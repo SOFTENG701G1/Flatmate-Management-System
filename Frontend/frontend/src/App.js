@@ -15,7 +15,6 @@ import Logout from './Views/Logout';
 import SplashScreen from './Views/SplashScreen';
 import HomePage from './Views/HomePage';
 import RequireLogin from './Components/RequireLogin';
-import APIRequest from './Util/APIRequest';
 import MembersPage from './Components/Members';
 import ForgotPassword from './Views/ForgotPassword';
 import ResetPassword from './Views/ResetPassword';

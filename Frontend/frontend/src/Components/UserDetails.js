@@ -6,18 +6,13 @@ import cancel from '../images/delete.png';
 import profile from '../images/user-profile.png';
 
 export default class Members extends React.Component {
-    constructor(props) {
-        super(props);
-
-    }
-
     render(){
         const showHideClassName = this.props.show ? "modal display-block" : "modal display-none";
         return (
             <div id="modal" className={showHideClassName}>
               <section className="modal-main">
-                <input className="userDetailsButton" type="image" src={cross} onClick={this.props.handleClose} />
-                <img className="userDetailsImage" src={profile} />
+                <input className="userDetailsButton" type="image" alt="close-button" src={cross} onClick={this.props.handleClose} />
+                <img alt="user-profile" className="userDetailsImage" src={profile} />
                 <h2 className="UserInformation" id="Name">{this.props.member.firstName} {this.props.member.lastName}</h2>
                 <p className="InfoHeading">Username</p>
                 <p className="UserInformation">{this.props.member.userName}</p>
@@ -32,8 +27,8 @@ export default class Members extends React.Component {
                 <p className="InfoHeading">Medical Conditions</p>
                 <p className="UserInformation">{this.props.member.medicalInformation}</p>
                 { this.props.isUser ? <div>
-                    <input className="userDetailsButton" type="image" src= {edit} onClick={this.props.handleClose} />
-                    <input className="userDetailsButton" type="image" src= {cancel} onClick={this.props.handleClose} /> </div>: ""}
+                    <input className="userDetailsButton" alt="edit-button" type="image" src= {edit} onClick={this.props.handleClose} />
+                    <input className="userDetailsButton" alt="cancel-button" type="image" src= {cancel} onClick={this.props.handleClose} /> </div>: ""}
               </section>
             </div>
           );

@@ -1,4 +1,4 @@
-import React, {Component, Text} from 'react';
+import React, {Component} from 'react';
 import '../App.css';
 import Checkbox from '@material-ui/core/Checkbox';
 import Container from 'react-bootstrap/Container';
