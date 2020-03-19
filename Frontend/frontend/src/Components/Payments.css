@@ -94,6 +94,7 @@ h6.PaymentModuleData {
 td {
     border-style: none;
     min-width: 25%;
+    padding: 10px;
 }
 
 h2 h4 {

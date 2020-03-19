@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import APIRequest from "../Util/APIRequest";
 import PaymentModule from "./PaymentModule";
-import "./Payments.css";
+
 
 export default class DashboardPayments extends Component {
     constructor() {
@@ -12,9 +12,11 @@ export default class DashboardPayments extends Component {
             contributionPayments: []
         };
     }
+
     async componentDidMount() {
         // Obtain payments associated with the logged in user.
         await APIRequest.obtainUserPayments().then(data => {
+            data = data.sort((a, b) => a.startDate.localeCompare(b.startDate)).splice(0, Math.min(4, data.length));
             this.setState({
                 payments: data
             });
@@ -41,8 +43,7 @@ export default class DashboardPayments extends Component {
         });
     };
 
-
-    render() {
+    render () {
         const paymentComponenets = [];
         const payments = this.state.payments;
         const contributorsPayments = this.state.contributionPayments;
@@ -53,22 +54,16 @@ export default class DashboardPayments extends Component {
                 <PaymentModule
                     payment={paymentData}
                     contributors={contributors}
-                    onTableClick={() => {}}
+                    onTableClick={() => { }}
                 />
             );
         }
 
         return (
-            <table className="PaymentTable">
-                <tr>
-                    <td>
-                        <h4 className="Subtitle">Upcoming Payments</h4>
-                    </td>
-                </tr>
-                <tr>
-                    <td>{paymentComponenets}</td>
-                </tr>
-            </table>
+            <div>
+                <p><b>Upcoming Payments</b></p>
+                {paymentComponenets}
+            </div>
         );
     }
 }

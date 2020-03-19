@@ -45,7 +45,7 @@ export default class PaymentModule extends Component {
                         <td className="PaymentModuleDataRight">
                             <h6 className="PaymentModuleHeader">
                                 <b>
-                                    {startDate}-{endDate}
+                                    {startDate} - {endDate}
                                 </b>
                             </h6>
                         </td>
