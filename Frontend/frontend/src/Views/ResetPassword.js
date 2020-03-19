@@ -78,7 +78,10 @@ export default class ResetPassword extends React.Component {
     // The "+" sign has a semantic meaning in the query string. It is used to represent a space
     // So to needs to be re-added to reflect the original token
     var values = queryString.parse(this.props.location.search)
-    values.token = values.token.split(' ').join('+');
+    if (typeof values.token !== 'undefined')
+    {
+      values.token = values.token.split(' ').join('+');
+    }
     
     // Cannot use async for coponentDidMount method, so the API is setted up this way
     let resetTokenCheckdResult = APIRequest.checkResetToken(values.email, values.token)
