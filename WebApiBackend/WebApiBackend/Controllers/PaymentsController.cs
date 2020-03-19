@@ -68,15 +68,22 @@ namespace WebApiBackend.Controllers
 
         /// <summary>
         /// GET Method - Gets all payments for a specific flat
-        /// </summary>
-        /// <param name="flatId">The Id of the flat you want payments for</param>        
+        /// </summary>       
         /// <response code="200">All payments are retrieved for flat</response>
         /// <response code="401">Not an authorised user</response>
         /// <response code="404">No payments found for user</response>
         /// <returns> The payments that are associated with the flat</returns>
-        [HttpGet("Flat/{flatId}")]
-        public async Task<IActionResult> GetPaymentsForFlat(int flatId)
+        [HttpGet("Flat")]
+        public async Task<IActionResult> GetPaymentsForFlat()
         {
+            ClaimsIdentity identity = HttpContext.User.Identity as ClaimsIdentity;
+
+            int userID = Int16.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value);
+
+            var user = await _userRepository.Get(userID);
+
+            int? flatId = user.FlatId;
+
             List<Payment> payments = await GetAllPaymentsFromFlatId(flatId);
 
             if (payments == null)
@@ -121,22 +128,29 @@ namespace WebApiBackend.Controllers
         /// POST Method - Creates a new payment for the flat by taking in a list of users
         /// that are meant to be in the list
         /// </summary>
-        /// <param name="flatId">The Id of the flat you want to add a payment for</param>
         /// <param name="paymentDTO">The payment you want to be created</param>
         /// <param name="userIds">List of user id's to associate with the payment</param>
         /// <response code="200">Payment created</response>
         /// <response code="401">Not an authorised user</response>
         /// <returns> The created payment is returned </returns>        
-        [HttpPost("Flat/{flatId}")]
-        public async Task<IActionResult> CreatePaymentForFlat(int flatId, [FromBody] PaymentDTO paymentDTO, [FromHeader] List<int> userIds)
+        [HttpPost("Flat")]
+        public async Task<IActionResult> CreatePaymentForFlat([FromBody] PaymentDTO paymentDTO, [FromHeader] List<int> userIds)
         {
+            ClaimsIdentity identity = HttpContext.User.Identity as ClaimsIdentity;
+
+            int userID = Int16.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value);
+
+            var usr = await _userRepository.Get(userID);
+
+            int? flatId = usr.FlatId;
+
             Payment payment = _mapper.Map<PaymentDTO, Payment>(paymentDTO);
 
             await _paymentsRepository.Add(payment);
 
             List<Payment> payments = await GetAllPaymentsFromFlatId(flatId);
 
-            Flat flat = await _flatRepository.Get(flatId);
+            Flat flat = await _flatRepository.Get(flatId.Value);
 
             payments.Add(payment);
 
@@ -216,7 +230,7 @@ namespace WebApiBackend.Controllers
         /// </summary>
         /// <param name="flatId"></param>
         /// <returns>List of payments</returns>
-        private async Task<List<Payment>> GetAllPaymentsFromFlatId(int flatId)
+        private async Task<List<Payment>> GetAllPaymentsFromFlatId(int? flatId)
         {
             List<Payment> payments = await _paymentsRepository.GetAll();
             List<UserPayment> userPayments = await _userPaymentsRepository.GetAll();
