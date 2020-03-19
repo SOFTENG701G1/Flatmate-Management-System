@@ -33,7 +33,9 @@ namespace WebApiBackend.Helpers
                 PhoneNumber = "0279284492",
                 Email = "YinWang@qq.com",
                 MedicalInformation = "N/A",
-                BankAccount = "00-0000-0000000-000"
+                BankAccount = "00-0000-0000000-000",
+                ResetToken = "",
+                CanReset = false
             };
             _yin.HashedPassword = hasher.HashPassword(_yin, "password");
 
@@ -47,7 +49,9 @@ namespace WebApiBackend.Helpers
                 PhoneNumber = "0228937228",
                 Email = "GreenTrees@Yahoo.com",
                 MedicalInformation = "Vegan, Gluten-Free, Lactose Intolerant",
-                BankAccount = "12-3456-1234567-123"
+                BankAccount = "12-3456-1234567-123",
+                ResetToken = "",
+                CanReset = false
             };
             _teresa.HashedPassword = hasher.HashPassword(_teresa, "password");
 
@@ -61,7 +65,9 @@ namespace WebApiBackend.Helpers
                 PhoneNumber = "02243926392",
                 Email = "BryanAng@Gmail.com",
                 MedicalInformation = "N/A",
-                BankAccount = "98-7654-3211234-210"
+                BankAccount = "98-7654-3211234-210",
+                ResetToken = "",
+                CanReset = false
             };
             _bryan.HashedPassword = hasher.HashPassword(_bryan, "password");
 
