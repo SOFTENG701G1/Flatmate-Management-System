@@ -67,9 +67,8 @@ h2 h4 {
   align-items: center;
   display: inline-block;
   font-size: 16px;
-  align-items: left;
   margin: 20px;
-  font-family: Roboto, sans-serif;
+  font-family: 'Roboto', sans-serif;
 }
 
 .userProfile {

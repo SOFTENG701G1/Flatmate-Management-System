@@ -54,8 +54,44 @@ namespace WebApiBackendTests
         }
 
         
-        /// <summary>
-        /// Ensure the response is a ok reuslt when the user is not removing him/herself, and the user is excluded from the flat's user list 
+     
+        [Test]
+
+        public void TestFailedAddUserToFlatUserAlreadyInFlat()
+        {
+            ActionResult<AddUserToFlatDto> response = _flatController.AddUserToFlat("YinWang");
+            Assert.AreEqual(response.Value.ResultCode, 4);
+        }
+
+        [Test]
+      
+        public void TestFailedAddUserToFlatUserNotExist()
+        {
+            ActionResult<AddUserToFlatDto> response = _flatController.AddUserToFlat("Bazinga");
+            Assert.AreEqual(response.Value.ResultCode, 2);
+        }
+
+
+        [Test]
+     
+        public void TestFailedAddUserToFlatUserInOtherFlat()
+        {
+            ActionResult<AddUserToFlatDto> response = _flatController.AddUserToFlat("TestUser1");
+            Assert.AreEqual(response.Value.ResultCode, 5);
+        }
+
+        [Test]
+        
+        public void TestCorrectAddUserToFlat()
+        {
+            ActionResult<AddUserToFlatDto> response = _flatController.AddUserToFlat("TestUser2");
+            Assert.AreEqual(response.Value.ResultCode, 1);
+            Assert.AreEqual(response.Value.AddedUser.UserName, "TestUser2");
+        }
+
+
+         /// <summary>
+        /// Ensure the user is excluded from the flat and return the new flat member list after removal
         /// </summary>
         [Test]
         public void GetMember_Return202_WhenUserNotRemovingOneself()
@@ -67,8 +103,10 @@ namespace WebApiBackendTests
             Assert.IsFalse(flat.FirstOrDefault().Users.Contains(deleteUser));
             Assert.That(response.Value, Is.TypeOf<FlatDTO>());
         }
+        
+        
         /// <summary>
-        /// Ensure the response is a RedirectToActionResult when the user is removing him/herself, and the user is excluded from the flat's user list
+        /// Ensure a user is excluded from the flat's user list
         /// </summary>
         [Test]
         public void GetMember_RirectToCreateFlatPage_WhenUserRemoveOneselfFromFlat()
@@ -81,8 +119,9 @@ namespace WebApiBackendTests
 
         }
 
+
         /// <summary>
-        /// Ensure the Flat is removed when the last user left the flat, and be redirect to action
+        /// Ensure the Flat is removed when the last user left the flat
         /// </summary>
         [Test]
         public void GetMember_RirectToCreateFlatPageandRemoveFlat_WhenTheLastUserRemovedFromFlat()
