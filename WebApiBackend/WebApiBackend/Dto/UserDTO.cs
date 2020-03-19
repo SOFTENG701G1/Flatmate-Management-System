@@ -27,5 +27,10 @@ namespace WebApiBackend.Dto
             MedicalInformation = user.MedicalInformation;
             BankAccount = user.BankAccount;
         }
+
+        public UserDTO()
+        {
+
+        }
     }
 }
