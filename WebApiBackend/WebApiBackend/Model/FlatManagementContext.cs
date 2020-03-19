@@ -76,7 +76,7 @@ namespace WebApiBackend.Model
             {
                 e.HasMany(e => e.Payments)
                 .WithOne()
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.SetNull);
 
                 e.HasMany(e => e.Schedules)
                 .WithOne()
@@ -89,6 +89,6 @@ namespace WebApiBackend.Model
 
 
 
-        }
+            }
     }
 }
