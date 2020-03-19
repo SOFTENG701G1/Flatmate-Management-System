@@ -12,10 +12,6 @@ import { paymentTypeEnumList, frequencyEnumList } from "./Payments"
 */
 export default class ViewPayment extends Component {
 
-    constructor(props) {
-        super(props);
-    }
-
     render() {
         const { showView, onCloseView, onEdit, payment } = this.props
         const contributors = !this.props.contributors
