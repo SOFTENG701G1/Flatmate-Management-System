@@ -31,6 +31,7 @@ export default class Payments extends Component {
     async componentDidMount() {
         // Obtain payments associated with the logged in user.
         await APIRequest.obtainUserPayments().then(data => {
+            if(!data) data = [];
             this.setState({
                 payments: data
             });
@@ -40,6 +41,7 @@ export default class Payments extends Component {
             await APIRequest.obtainPaymentContributors(
                 this.state.payments[i]["id"]
             ).then(usersJSON => {
+                if(!usersJSON) usersJSON = [];
                 const listUser = [];
                 for (let j = 0; j < usersJSON.length; j++) {
                     listUser.push(usersJSON[j]["userName"]);
@@ -105,7 +107,7 @@ export default class Payments extends Component {
         const variablePaymentsHtml = [];
         const payments = this.state.payments;
         const contributorsPayments = this.state.contributionPayments;
-        for (let i = 0; i < this.state.payments.length; i++) {
+        for (let i = 0; i < payments.length; i++) {
             const paymentData = payments[i];
             const contributors = contributorsPayments[i];
             if (paymentData["fixed"])
