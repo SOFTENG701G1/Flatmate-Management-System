@@ -56,6 +56,9 @@ namespace WebApiBackendTests
             httpContext.User = new ClaimsPrincipal(objClaim);
         }
 
+        /// <summary>
+        /// Ensures that a user can be added to a payment
+        /// </summary>
         [Test]
         public async Task TestAddUserToExistingPaymentAsync()
         {
@@ -70,6 +73,9 @@ namespace WebApiBackendTests
             Assert.IsNotNull(response);
         }
 
+        /// <summary>
+        /// Ensures that a payment can be created for a flat
+        /// </summary>
         [Test]
         public async Task TestCreatePaymentForFlatAsync()
         {
@@ -93,6 +99,9 @@ namespace WebApiBackendTests
             Assert.IsInstanceOf<OkObjectResult>(response);
         }
 
+        /// <summary>
+        /// Ensures that a payment for a flat can be deleted
+        /// </summary>
         [Test]
         public async Task TestDeletePaymentForFlatAsync()
         {
@@ -106,6 +115,9 @@ namespace WebApiBackendTests
             Assert.IsInstanceOf<OkObjectResult>(response);
         }
 
+        /// <summary>
+        /// Ensures that a user can be removed from a payment
+        /// </summary>
         [Test]
         public async Task TestDeleteUserFromPaymentAsync()
         {
@@ -120,6 +132,9 @@ namespace WebApiBackendTests
             Assert.IsNotNull(response);
         }
 
+        /// <summary>
+        /// Ensures that payment details can be edited
+        /// </summary>
         [Test]
         public async Task TestEditPaymentAsync()
         {
@@ -142,6 +157,9 @@ namespace WebApiBackendTests
             Assert.IsNotNull(response);
         }
 
+        /// <summary>
+        /// Checks that a flat can view all their payments
+        /// </summary>
         [Test]
         public async Task TestGetPaymentsForFlatAsync()
         {
@@ -154,6 +172,9 @@ namespace WebApiBackendTests
             Assert.IsInstanceOf<OkObjectResult>(response);
         }
 
+        /// <summary>
+        /// Checks that a user can view all their payments
+        /// </summary>
         [Test]
         public async Task TestGetAllPaymentsForUserAsync()
         {

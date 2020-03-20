@@ -37,7 +37,7 @@ namespace WebApiBackendTests
         }
 
         /// <summary>
-        /// Ensure a user is able to view a list memeber in the flat. Ensure the reponse contains the expected members
+        /// Ensure a user is able to view a list member in the flat. Ensure the response contains the expected members
         /// </summary>
         [Test]
         public void TestGetMemberList()
@@ -60,8 +60,11 @@ namespace WebApiBackendTests
             Assert.That(response.Value.Select(m => m.Email).ToList(), Is.EquivalentTo(emails));
         }
 
+        /// <summary>
+        /// Ensures that a user already in the flat can't be added again
+        /// </summary>
         [Test]
-        public void TestFailedAddUserToFlatUserAlreadyInFlat()
+        public void TestAddExistingUserInFlat()
         {
             // Arrange
             var username = "YinWang";
@@ -73,8 +76,11 @@ namespace WebApiBackendTests
             Assert.AreEqual(response.Value.ResultCode, 4);
         }
 
+        /// <summary>
+        /// Ensures that a non-existent user can't be added to a flat
+        /// </summary>
         [Test]
-        public void TestFailedAddUserToFlatUserNotExist()
+        public void TestAddNonExistentUserToFlat()
         {
             // Arrange
             var username = "Bazinga";
@@ -86,9 +92,11 @@ namespace WebApiBackendTests
             Assert.AreEqual(response.Value.ResultCode, 2);
         }
 
-
+        /// <summary>
+        /// Ensures that a user that already has a flat can't be added to another flat
+        /// </summary>
         [Test]
-        public void TestFailedAddUserToFlatUserInOtherFlat()
+        public void TestAddUserWithFlatToAnotherFlat()
         {
             // Arrange
             var username = "TestUser1";
@@ -100,8 +108,11 @@ namespace WebApiBackendTests
             Assert.AreEqual(response.Value.ResultCode, 5);
         }
 
+        /// <summary>
+        /// Ensures that a user can be added to a flat
+        /// </summary>
         [Test]
-        public void TestCorrectAddUserToFlat()
+        public void TestAddUserToFlat()
         {
             // Arrange
             var username = "TestUser2";
