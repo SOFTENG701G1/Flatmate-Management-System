@@ -77,7 +77,6 @@ namespace WebApiBackendTests
         public async Task TestCreatePaymentForFlatAsync()
         {
             // Arrange
-            var flatId = 1;
             var payment = new PaymentDTO
             {
                 Amount = 99,
@@ -149,9 +148,6 @@ namespace WebApiBackendTests
         [Test]
         public async Task TestGetPaymentsForFlatAsync()
         {
-            // Arrange
-            var flatId = 1;
-
             // Act
             var response = await _paymentsController.GetPaymentsForFlat();
 
@@ -162,8 +158,6 @@ namespace WebApiBackendTests
         [Test]
         public async Task TestGetAllPaymentsForUserAsync()
         {
-            // Arrange
-
             // Act
             var response = await _paymentsController.GetAllPaymentsForUser();
 
