@@ -1,19 +1,8 @@
-﻿using Microsoft.AspNetCore;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
+﻿using Microsoft.AspNetCore.Mvc;
 using NUnit.Framework;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using WebApiBackend;
 using WebApiBackend.Controllers;
-using WebApiBackend.Dto;
-using WebApiBackend.Helpers;
 using WebApiBackend.Model;
-using Moq;
-using System.Security.Principal;
 using System.Security.Claims;
 using WebApiBackendTests.Helper;
 
@@ -53,49 +42,76 @@ namespace WebApiBackendTests
         [Test]
         public void TestGetMemberList()
         {
-            ActionResult<List<DisplayMemberDTO>> response = _flatController.GetMembers();
+            // Arrange
+            var usernames = new[] { "BeboBryan", "TreesAreGreen", "YinWang", "TonOfClay" };
+            var firstNames = new[] { "Bryan", "Teresa", "Yin", "Clay" };
+            var lastNames = new[] { "Ang", "Green", "Wang", "Ton" };
+            var emails = new[] { "BryanAng@Gmail.com", "GreenTrees@Yahoo.com", "YinWang@qq.com", "ClayTon@Gmail.com" };
 
+            // Act
+            var response = _flatController.GetMembers();
+
+            // Assert
             Assert.IsNotNull(response.Value);
             Assert.That(response.Value.Count, Is.EqualTo(4));
-            Assert.That(response.Value.Select(m => m.UserName).ToList(), Is.EquivalentTo(new[] { "BeboBryan", "TreesAreGreen", "YinWang", "TonOfClay" }));
-            Assert.That(response.Value.Select(m => m.FirstName).ToList(), Is.EquivalentTo(new[] { "Bryan", "Teresa", "Yin", "Clay" }));
-            Assert.That(response.Value.Select(m => m.LastName).ToList(), Is.EquivalentTo(new[] { "Ang", "Green", "Wang", "Ton" }));
-            Assert.That(response.Value.Select(m => m.Email).ToList(), Is.EquivalentTo(new[] { "BryanAng@Gmail.com", "GreenTrees@Yahoo.com", "YinWang@qq.com", "ClayTon@Gmail.com" }));
+            Assert.That(response.Value.Select(m => m.UserName).ToList(), Is.EquivalentTo(usernames));
+            Assert.That(response.Value.Select(m => m.FirstName).ToList(), Is.EquivalentTo(firstNames));
+            Assert.That(response.Value.Select(m => m.LastName).ToList(), Is.EquivalentTo(lastNames));
+            Assert.That(response.Value.Select(m => m.Email).ToList(), Is.EquivalentTo(emails));
         }
 
         [Test]
-
         public void TestFailedAddUserToFlatUserAlreadyInFlat()
         {
-            ActionResult<AddUserToFlatDto> response = _flatController.AddUserToFlat("YinWang");
+            // Arrange
+            var username = "YinWang";
+
+            // Act
+            var response = _flatController.AddUserToFlat(username);
+
+            // Assert
             Assert.AreEqual(response.Value.ResultCode, 4);
         }
 
         [Test]
-      
         public void TestFailedAddUserToFlatUserNotExist()
         {
-            ActionResult<AddUserToFlatDto> response = _flatController.AddUserToFlat("Bazinga");
+            // Arrange
+            var username = "Bazinga";
+
+            // Act
+            var response = _flatController.AddUserToFlat(username);
+
+            // Assert
             Assert.AreEqual(response.Value.ResultCode, 2);
         }
 
 
         [Test]
-     
         public void TestFailedAddUserToFlatUserInOtherFlat()
         {
-            ActionResult<AddUserToFlatDto> response = _flatController.AddUserToFlat("TestUser1");
+            // Arrange
+            var username = "TestUser1";
+
+            // Act
+            var response = _flatController.AddUserToFlat(username);
+
+            // Assert
             Assert.AreEqual(response.Value.ResultCode, 5);
         }
 
         [Test]
-        
         public void TestCorrectAddUserToFlat()
         {
-            ActionResult<AddUserToFlatDto> response = _flatController.AddUserToFlat("TestUser2");
-            Assert.AreEqual(response.Value.ResultCode, 1);
-            Assert.AreEqual(response.Value.AddedUser.UserName, "TestUser2");
-        }
+            // Arrange
+            var username = "TestUser2";
 
+            // Act
+            var response = _flatController.AddUserToFlat(username);
+
+            // Assert
+            Assert.AreEqual(response.Value.ResultCode, 1);
+            Assert.AreEqual(response.Value.AddedUser.UserName, username);
+        }
     }
 }
