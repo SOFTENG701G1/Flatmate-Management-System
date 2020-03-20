@@ -1,108 +1,128 @@
-﻿using Microsoft.AspNetCore;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
+﻿using Microsoft.AspNetCore.Mvc;
 using NUnit.Framework;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using WebApiBackend;
 using WebApiBackend.Controllers;
-using WebApiBackend.Dto;
-using WebApiBackend.Helpers;
 using WebApiBackend.Model;
-using Moq;
-using System.Security.Principal;
 using System.Security.Claims;
+using WebApiBackendTests.Helper;
 
 namespace WebApiBackendTests
 {
     class FlatTest
     {
-        ServiceDependencyResolver _serviceProvider;
+        private DatabaseSetUpHelper _dbSetUpHelper;
         private FlatManagementContext _context;
+        private HttpContextHelper _httpContextHelper;
+
         private FlatController _flatController;
 
         [SetUp]
         public void Setup()
         {
-            // Builds webhost and gets service providers from web host
-            var webHost = WebHost.CreateDefaultBuilder()
-                .UseStartup<Startup>()
-                .Build();
-            _serviceProvider = new ServiceDependencyResolver(webHost);
+            _dbSetUpHelper = new DatabaseSetUpHelper();
+            _context = _dbSetUpHelper.GetContext();
+            _httpContextHelper = new HttpContextHelper();
 
-            // Resets database to inital state so all tests are isolated and repeatable
-            _context = new FlatManagementContext();
-            _context.Database.EnsureDeleted();
-            _context.Database.EnsureCreated();
+            var httpContext = _httpContextHelper.GetHttpContext();
+            var objClaim = _httpContextHelper.GetClaimsIdentity();
 
-            var testDataGenerator = new DevelopmentDatabaseSetup(_context);
-            testDataGenerator.SetupDevelopmentDataSet();
-
-            _flatController = new FlatController(_context);
-
-            //Creates a new httpContext and adds a user identity to it, imitating being already logged in.
-            DefaultHttpContext httpContext = new DefaultHttpContext();
-            GenericIdentity MyIdentity = new GenericIdentity("YinWang");
-            ClaimsIdentity objClaim = new ClaimsIdentity(new List<Claim> { new Claim(ClaimTypes.NameIdentifier, "1") });
-            _flatController.ControllerContext = new ControllerContext();
-            _flatController.ControllerContext.HttpContext = httpContext;
+            _flatController = new FlatController(_context)
+            {
+                ControllerContext = new ControllerContext
+                {
+                    HttpContext = httpContext
+                }
+            };
             httpContext.User = new ClaimsPrincipal(objClaim);
-
-
         }
 
         /// <summary>
-        /// Ensure a user is able to view a list memeber in the flat. Ensure the reponse contains the expected members
+        /// Ensure a user is able to view a list member in the flat. Ensure the response contains the expected members
         /// </summary>
         [Test]
         public void TestGetMemberList()
         {
-            ActionResult<List<DisplayMemberDTO>> response = _flatController.GetMembers();
+            // Arrange
+            var usernames = new[] { "BeboBryan", "TreesAreGreen", "YinWang", "TonOfClay" };
+            var firstNames = new[] { "Bryan", "Teresa", "Yin", "Clay" };
+            var lastNames = new[] { "Ang", "Green", "Wang", "Ton" };
+            var emails = new[] { "BryanAng@Gmail.com", "GreenTrees@Yahoo.com", "YinWang@qq.com", "ClayTon@Gmail.com" };
 
+            // Act
+            var response = _flatController.GetMembers();
+
+            // Assert
             Assert.IsNotNull(response.Value);
             Assert.That(response.Value.Count, Is.EqualTo(4));
-            Assert.That(response.Value.Select(m => m.UserName).ToList(), Is.EquivalentTo(new[] { "BeboBryan", "TreesAreGreen", "YinWang", "TonOfClay" }));
-            Assert.That(response.Value.Select(m => m.FirstName).ToList(), Is.EquivalentTo(new[] { "Bryan", "Teresa", "Yin", "Clay" }));
-            Assert.That(response.Value.Select(m => m.LastName).ToList(), Is.EquivalentTo(new[] { "Ang", "Green", "Wang", "Ton" }));
-            Assert.That(response.Value.Select(m => m.Email).ToList(), Is.EquivalentTo(new[] { "BryanAng@Gmail.com", "GreenTrees@Yahoo.com", "YinWang@qq.com", "ClayTon@Gmail.com" }));
+            Assert.That(response.Value.Select(m => m.UserName).ToList(), Is.EquivalentTo(usernames));
+            Assert.That(response.Value.Select(m => m.FirstName).ToList(), Is.EquivalentTo(firstNames));
+            Assert.That(response.Value.Select(m => m.LastName).ToList(), Is.EquivalentTo(lastNames));
+            Assert.That(response.Value.Select(m => m.Email).ToList(), Is.EquivalentTo(emails));
         }
 
+        /// <summary>
+        /// Ensures that a user already in the flat can't be added again
+        /// </summary>
         [Test]
-
-        public void TestFailedAddUserToFlatUserAlreadyInFlat()
+        public void TestAddExistingUserInFlat()
         {
-            ActionResult<AddUserToFlatDto> response = _flatController.AddUserToFlat("YinWang");
+            // Arrange
+            var username = "YinWang";
+
+            // Act
+            var response = _flatController.AddUserToFlat(username);
+
+            // Assert
             Assert.AreEqual(response.Value.ResultCode, 4);
         }
 
+        /// <summary>
+        /// Ensures that a non-existent user can't be added to a flat
+        /// </summary>
         [Test]
-      
-        public void TestFailedAddUserToFlatUserNotExist()
+        public void TestAddNonExistentUserToFlat()
         {
-            ActionResult<AddUserToFlatDto> response = _flatController.AddUserToFlat("Bazinga");
+            // Arrange
+            var username = "Bazinga";
+
+            // Act
+            var response = _flatController.AddUserToFlat(username);
+
+            // Assert
             Assert.AreEqual(response.Value.ResultCode, 2);
         }
 
-
+        /// <summary>
+        /// Ensures that a user that already has a flat can't be added to another flat
+        /// </summary>
         [Test]
-     
-        public void TestFailedAddUserToFlatUserInOtherFlat()
+        public void TestAddUserWithFlatToAnotherFlat()
         {
-            ActionResult<AddUserToFlatDto> response = _flatController.AddUserToFlat("TestUser1");
+            // Arrange
+            var username = "TestUser1";
+
+            // Act
+            var response = _flatController.AddUserToFlat(username);
+
+            // Assert
             Assert.AreEqual(response.Value.ResultCode, 5);
         }
 
+        /// <summary>
+        /// Ensures that a user can be added to a flat
+        /// </summary>
         [Test]
-        
-        public void TestCorrectAddUserToFlat()
+        public void TestAddUserToFlat()
         {
-            ActionResult<AddUserToFlatDto> response = _flatController.AddUserToFlat("TestUser2");
-            Assert.AreEqual(response.Value.ResultCode, 1);
-            Assert.AreEqual(response.Value.AddedUser.UserName, "TestUser2");
-        }
+            // Arrange
+            var username = "TestUser2";
 
+            // Act
+            var response = _flatController.AddUserToFlat(username);
+
+            // Assert
+            Assert.AreEqual(response.Value.ResultCode, 1);
+            Assert.AreEqual(response.Value.AddedUser.UserName, username);
+        }
     }
 }
