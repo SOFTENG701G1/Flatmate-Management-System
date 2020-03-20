@@ -19,6 +19,7 @@ namespace WebApiBackendTests
         private DatabaseSetUpHelper _dbSetUpHelper;
         private FlatManagementContext _context;
         private MapperHelper _mapperHelper;
+        private HttpContextHelper _httpContextHelper;
 
         private PaymentsRepository _paymentsRepository;
         private UserPaymentsRepository _userPaymentsRepository;
@@ -32,6 +33,7 @@ namespace WebApiBackendTests
         {
             _dbSetUpHelper = new DatabaseSetUpHelper();
             _context = _dbSetUpHelper.GetContext();
+            _httpContextHelper = new HttpContextHelper();
 
             _paymentsRepository = new PaymentsRepository(_context);
             _userPaymentsRepository = new UserPaymentsRepository(_context);
@@ -40,16 +42,17 @@ namespace WebApiBackendTests
 
             _mapperHelper = new MapperHelper();
             var mapper = _mapperHelper.GetMapper();
-
-            DefaultHttpContext httpContext = new DefaultHttpContext();
-            GenericIdentity MyIdentity = new GenericIdentity("User");
-            ClaimsIdentity objClaim = new ClaimsIdentity(new List<Claim> { new Claim(ClaimTypes.NameIdentifier, "1") });
+            
+            var httpContext = _httpContextHelper.GetHttpContext();
+            var objClaim = _httpContextHelper.GetClaimsIdentity();
 
             _paymentsController = new PaymentsController(_paymentsRepository, _userPaymentsRepository, _flatRepository, _userRepository, mapper)
             {
-                ControllerContext = new ControllerContext()
+                ControllerContext = new ControllerContext
+                {
+                    HttpContext = httpContext
+                }
             };
-            _paymentsController.ControllerContext.HttpContext = httpContext;
             httpContext.User = new ClaimsPrincipal(objClaim);
         }
 

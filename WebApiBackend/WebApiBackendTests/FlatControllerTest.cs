@@ -15,43 +15,36 @@ using WebApiBackend.Model;
 using Moq;
 using System.Security.Principal;
 using System.Security.Claims;
+using WebApiBackendTests.Helper;
 
 namespace WebApiBackendTests
 {
     class FlatTest
     {
-        ServiceDependencyResolver _serviceProvider;
+        private DatabaseSetUpHelper _dbSetUpHelper;
         private FlatManagementContext _context;
+        private HttpContextHelper _httpContextHelper;
+
         private FlatController _flatController;
 
         [SetUp]
         public void Setup()
         {
-            // Builds webhost and gets service providers from web host
-            var webHost = WebHost.CreateDefaultBuilder()
-                .UseStartup<Startup>()
-                .Build();
-            _serviceProvider = new ServiceDependencyResolver(webHost);
+            _dbSetUpHelper = new DatabaseSetUpHelper();
+            _context = _dbSetUpHelper.GetContext();
+            _httpContextHelper = new HttpContextHelper();
 
-            // Resets database to inital state so all tests are isolated and repeatable
-            _context = new FlatManagementContext();
-            _context.Database.EnsureDeleted();
-            _context.Database.EnsureCreated();
+            var httpContext = _httpContextHelper.GetHttpContext();
+            var objClaim = _httpContextHelper.GetClaimsIdentity();
 
-            var testDataGenerator = new DevelopmentDatabaseSetup(_context);
-            testDataGenerator.SetupDevelopmentDataSet();
-
-            _flatController = new FlatController(_context);
-
-            //Creates a new httpContext and adds a user identity to it, imitating being already logged in.
-            DefaultHttpContext httpContext = new DefaultHttpContext();
-            GenericIdentity MyIdentity = new GenericIdentity("YinWang");
-            ClaimsIdentity objClaim = new ClaimsIdentity(new List<Claim> { new Claim(ClaimTypes.NameIdentifier, "1") });
-            _flatController.ControllerContext = new ControllerContext();
-            _flatController.ControllerContext.HttpContext = httpContext;
+            _flatController = new FlatController(_context)
+            {
+                ControllerContext = new ControllerContext
+                {
+                    HttpContext = httpContext
+                }
+            };
             httpContext.User = new ClaimsPrincipal(objClaim);
-
-
         }
 
         /// <summary>
