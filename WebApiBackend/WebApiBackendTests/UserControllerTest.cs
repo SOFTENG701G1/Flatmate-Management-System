@@ -16,12 +16,16 @@ namespace WebApiBackendTests
         private ServiceDependencyResolver _serviceProvider;
         private FlatManagementContext _context;
 
+        private UserController _userController;
+
         [SetUp]
         public void Setup()
         {
             _dbSetUpHelper = new DatabaseSetUpHelper();
             _serviceProvider = _dbSetUpHelper.GetServiceDependencyResolver();
             _context = _dbSetUpHelper.GetContext();
+
+            _userController = new UserController(_serviceProvider.GetService<IOptions<AppSettings>>(), _context);
         }
 
         /// <summary>
@@ -30,12 +34,13 @@ namespace WebApiBackendTests
         [Test]
         public void TestSuccessfulLogin()
         {
-            UserController userController = new UserController(_serviceProvider.GetService<IOptions<AppSettings>>(), _context);
-            ActionResult<LoggedInDto> response = userController.Login(new LoginDto
-            {
-                UserName = "BeboBryan",
-                Password = "password"
-            });
+            ActionResult<LoggedInDto> response = _userController.Login(
+                new LoginDto
+                {
+                    UserName = "BeboBryan",
+                    Password = "password"
+                }
+            );
 
             Assert.IsNotNull(response.Value);
             Assert.IsFalse(string.IsNullOrEmpty(response.Value.UserName));
@@ -48,12 +53,12 @@ namespace WebApiBackendTests
         [Test]
         public void TestIncorrectUsernameLogin()
         {
-            UserController userController = new UserController(_serviceProvider.GetService<IOptions<AppSettings>>(), _context);
-            ActionResult<LoggedInDto> response = userController.Login(new LoginDto
-            {
-                UserName = "UserDoesNotExist",
-                Password = "password"
-            });
+            ActionResult<LoggedInDto> response = _userController.Login(
+                new LoginDto
+                {
+                    UserName = "UserDoesNotExist",
+                    Password = "password"
+                });
 
             Assert.IsNull(response.Value);
         }
@@ -64,12 +69,12 @@ namespace WebApiBackendTests
         [Test]
         public void TestIncorrectPasswordLogin()
         {
-            UserController userController = new UserController(_serviceProvider.GetService<IOptions<AppSettings>>(), _context);
-            ActionResult<LoggedInDto> response = userController.Login(new LoginDto
-            {
-                UserName = "user",
-                Password = "IncorrectPassword"
-            });
+            ActionResult<LoggedInDto> response = _userController.Login(
+                new LoginDto
+                {
+                    UserName = "user",
+                    Password = "IncorrectPassword"
+                });
 
             Assert.IsNull(response.Value);
         }
@@ -82,39 +87,39 @@ namespace WebApiBackendTests
         [Test]
         public void TestRegistration()
         {
-            UserController initialLoginUserController = new UserController(_serviceProvider.GetService<IOptions<AppSettings>>(), _context);
-            ActionResult<LoggedInDto> initialLoginResponse = initialLoginUserController.Login(new LoginDto
-            {
-                UserName = "newUser",
-                Password = "newUserPassword"
-            });
+            ActionResult<LoggedInDto> initialLoginResponse = _userController.Login(
+                new LoginDto
+                {
+                    UserName = "newUser",
+                    Password = "newUserPassword"
+                });
 
             Assert.IsNull(initialLoginResponse.Value);
 
-            UserController registrationUserController = new UserController(_serviceProvider.GetService<IOptions<AppSettings>>(), _context);
-            ActionResult<RegisterResponseDTO> registrationResponse = registrationUserController.Register(new RegisterRequestDTO
-            {
-                UserName = "newUser",
-                FirstName = "New",
-                LastName = "User",
-                DateOfBirth = new DateTime(),
-                PhoneNumber = "123459",
-                Email = "newuser@test.co.nz",
-                MedicalInformation = "N/A",
-                BankAccount = "84903",
-                Password = "newUserPassword"
-            });
+            ActionResult<RegisterResponseDTO> registrationResponse = _userController.Register(
+                new RegisterRequestDTO
+                {
+                    UserName = "newUser",
+                    FirstName = "New",
+                    LastName = "User",
+                    DateOfBirth = new DateTime(),
+                    PhoneNumber = "123459",
+                    Email = "newuser@test.co.nz",
+                    MedicalInformation = "N/A",
+                    BankAccount = "84903",
+                    Password = "newUserPassword"
+                });
 
             Assert.IsNotNull(registrationResponse.Value);
             Assert.False(string.IsNullOrEmpty(registrationResponse.Value.UserName));
             Assert.False(string.IsNullOrEmpty(registrationResponse.Value.Token));
 
-            UserController finalLoginUserController = new UserController(_serviceProvider.GetService<IOptions<AppSettings>>(), _context);
-            ActionResult<LoggedInDto> finalLoginResponse = finalLoginUserController.Login(new LoginDto
-            {
-                UserName = "newUser",
-                Password = "newUserPassword"
-            });
+            ActionResult<LoggedInDto> finalLoginResponse = _userController.Login(
+                new LoginDto
+                {
+                    UserName = "newUser",
+                    Password = "newUserPassword"
+                });
 
             Assert.IsNotNull(finalLoginResponse.Value);
             Assert.IsFalse(string.IsNullOrEmpty(finalLoginResponse.Value.UserName));
@@ -129,37 +134,37 @@ namespace WebApiBackendTests
         [Test]
         public void TestRegistrationWithDuplicateUserName()
         {
-            UserController registrationOneUserController = new UserController(_serviceProvider.GetService<IOptions<AppSettings>>(), _context);
-            ActionResult<RegisterResponseDTO> registrationOneResponse = registrationOneUserController.Register(new RegisterRequestDTO
-            {
-                UserName = "newUser",
-                FirstName = "New",
-                LastName = "User",
-                DateOfBirth = new DateTime(),
-                PhoneNumber = "123459",
-                Email = "newuser@test.co.nz",
-                MedicalInformation = "N/A",
-                BankAccount = "84903",
-                Password = "newUserPassword"
-            });
+            ActionResult<RegisterResponseDTO> registrationOneResponse = _userController.Register(
+                new RegisterRequestDTO
+                {
+                    UserName = "newUser",
+                    FirstName = "New",
+                    LastName = "User",
+                    DateOfBirth = new DateTime(),
+                    PhoneNumber = "123459",
+                    Email = "newuser@test.co.nz",
+                    MedicalInformation = "N/A",
+                    BankAccount = "84903",
+                    Password = "newUserPassword"
+                });
 
             Assert.IsNotNull(registrationOneResponse.Value);
             Assert.False(string.IsNullOrEmpty(registrationOneResponse.Value.UserName));
             Assert.False(string.IsNullOrEmpty(registrationOneResponse.Value.Token));
 
-            UserController registrationTwoUserController =  new UserController(_serviceProvider.GetService<IOptions<AppSettings>>(), _context);
-            ActionResult<RegisterResponseDTO> registrationTwoResponse = registrationTwoUserController.Register(new RegisterRequestDTO
-            {
-                UserName = "newUser",
-                FirstName = "New",
-                LastName = "User",
-                DateOfBirth = new DateTime(),
-                PhoneNumber = "1234f59",
-                Email = "newuser2@test.co.nz",
-                MedicalInformation = "N/A",
-                BankAccount = "84903",
-                Password = "newUserPassword"
-            });
+            ActionResult<RegisterResponseDTO> registrationTwoResponse = _userController.Register(
+                new RegisterRequestDTO
+                {
+                    UserName = "newUser",
+                    FirstName = "New",
+                    LastName = "User",
+                    DateOfBirth = new DateTime(),
+                    PhoneNumber = "1234f59",
+                    Email = "newuser2@test.co.nz",
+                    MedicalInformation = "N/A",
+                    BankAccount = "84903",
+                    Password = "newUserPassword"
+                });
 
             Assert.That(registrationTwoResponse.Result, Is.InstanceOf<ConflictResult>());
         }
@@ -170,37 +175,37 @@ namespace WebApiBackendTests
         [Test]
         public void TestRegistrationWithDuplicateEmail()
         {
-            UserController registrationOneUserController =  new UserController(_serviceProvider.GetService<IOptions<AppSettings>>(), _context);
-            ActionResult<RegisterResponseDTO> registrationOneResponse = registrationOneUserController.Register(new RegisterRequestDTO
-            {
-                UserName = "newUser",
-                FirstName = "New",
-                LastName = "User",
-                DateOfBirth = new DateTime(),
-                PhoneNumber = "123459",
-                Email = "newuser@test.co.nz",
-                MedicalInformation = "N/A",
-                BankAccount = "84903",
-                Password = "newUserPassword"
-            });
+            ActionResult<RegisterResponseDTO> registrationOneResponse = _userController.Register(
+                new RegisterRequestDTO
+                {
+                    UserName = "newUser",
+                    FirstName = "New",
+                    LastName = "User",
+                    DateOfBirth = new DateTime(),
+                    PhoneNumber = "123459",
+                    Email = "newuser@test.co.nz",
+                    MedicalInformation = "N/A",
+                    BankAccount = "84903",
+                    Password = "newUserPassword"
+                });
 
             Assert.IsNotNull(registrationOneResponse.Value);
             Assert.False(string.IsNullOrEmpty(registrationOneResponse.Value.UserName));
             Assert.False(string.IsNullOrEmpty(registrationOneResponse.Value.Token));
 
-            UserController registrationTwoUserController =  new UserController(_serviceProvider.GetService<IOptions<AppSettings>>(), _context);
-            ActionResult<RegisterResponseDTO> registrationTwoResponse = registrationTwoUserController.Register(new RegisterRequestDTO
-            {
-                UserName = "newUser2",
-                FirstName = "New",
-                LastName = "User",
-                DateOfBirth = new DateTime(),
-                PhoneNumber = "1234f59",
-                Email = "newuser@test.co.nz",
-                MedicalInformation = "N/A",
-                BankAccount = "84903",
-                Password = "newUserPassword"
-            });
+            ActionResult<RegisterResponseDTO> registrationTwoResponse = _userController.Register(
+                new RegisterRequestDTO
+                {
+                    UserName = "newUser2",
+                    FirstName = "New",
+                    LastName = "User",
+                    DateOfBirth = new DateTime(),
+                    PhoneNumber = "1234f59",
+                    Email = "newuser@test.co.nz",
+                    MedicalInformation = "N/A",
+                    BankAccount = "84903",
+                    Password = "newUserPassword"
+                });
 
             Assert.That(registrationTwoResponse.Result, Is.InstanceOf<ConflictResult>());
         }
@@ -211,37 +216,37 @@ namespace WebApiBackendTests
         [Test]
         public void TestRegistrationWithDuplicatePhoneNumber()
         {
-            UserController registrationOneUserController =  new UserController(_serviceProvider.GetService<IOptions<AppSettings>>(), _context);
-            ActionResult<RegisterResponseDTO> registrationOneResponse = registrationOneUserController.Register(new RegisterRequestDTO
-            {
-                UserName = "newUser",
-                FirstName = "New",
-                LastName = "User",
-                DateOfBirth = new DateTime(),
-                PhoneNumber = "123459",
-                Email = "newuser@test.co.nz",
-                MedicalInformation = "N/A",
-                BankAccount = "84903",
-                Password = "newUserPassword"
-            });
+            ActionResult<RegisterResponseDTO> registrationOneResponse = _userController.Register(
+                new RegisterRequestDTO
+                {
+                    UserName = "newUser",
+                    FirstName = "New",
+                    LastName = "User",
+                    DateOfBirth = new DateTime(),
+                    PhoneNumber = "123459",
+                    Email = "newuser@test.co.nz",
+                    MedicalInformation = "N/A",
+                    BankAccount = "84903",
+                    Password = "newUserPassword"
+                });
 
             Assert.IsNotNull(registrationOneResponse.Value);
             Assert.False(string.IsNullOrEmpty(registrationOneResponse.Value.UserName));
             Assert.False(string.IsNullOrEmpty(registrationOneResponse.Value.Token));
 
-            UserController registrationTwoUserController =  new UserController(_serviceProvider.GetService<IOptions<AppSettings>>(), _context);
-            ActionResult<RegisterResponseDTO> registrationTwoResponse = registrationTwoUserController.Register(new RegisterRequestDTO
-            {
-                UserName = "newUser2",
-                FirstName = "New",
-                LastName = "User",
-                DateOfBirth = new DateTime(),
-                PhoneNumber = "123459",
-                Email = "newuser2@test.co.nz",
-                MedicalInformation = "N/A",
-                BankAccount = "84903",
-                Password = "newUserPassword"
-            });
+            ActionResult<RegisterResponseDTO> registrationTwoResponse = _userController.Register(
+                new RegisterRequestDTO
+                {
+                    UserName = "newUser2",
+                    FirstName = "New",
+                    LastName = "User",
+                    DateOfBirth = new DateTime(),
+                    PhoneNumber = "123459",
+                    Email = "newuser2@test.co.nz",
+                    MedicalInformation = "N/A",
+                    BankAccount = "84903",
+                    Password = "newUserPassword"
+                });
 
             Assert.That(registrationTwoResponse.Result, Is.InstanceOf<ConflictResult>());
         }
@@ -252,12 +257,12 @@ namespace WebApiBackendTests
         [Test]
         public void TestCheckWithValidUserAndEmail()
         {
-            UserController checkUserController = new UserController(_serviceProvider.GetService<IOptions<AppSettings>>(), _context);
-            ActionResult checkUserResponse = checkUserController.CheckUser(new RegisterRequestDTO
-            {
-                UserName = "user1",
-                Email = "email@test.co.nz"
-            });
+            ActionResult checkUserResponse = _userController.CheckUser(
+                new RegisterRequestDTO
+                {
+                    UserName = "user1",
+                    Email = "email@test.co.nz"
+                });
 
             Assert.That(checkUserResponse, Is.InstanceOf<OkResult>());
         }
@@ -268,26 +273,26 @@ namespace WebApiBackendTests
         [Test]
         public void TestCheckWithDuplicateUser()
         {
-            UserController registrationUserController = new UserController(_serviceProvider.GetService<IOptions<AppSettings>>(), _context);
-            ActionResult<RegisterResponseDTO> registrationResponse = registrationUserController.Register(new RegisterRequestDTO
-            {
-                UserName = "newUser",
-                FirstName = "New",
-                LastName = "User",
-                DateOfBirth = new DateTime(),
-                PhoneNumber = "123459",
-                Email = "newuser@test.co.nz",
-                MedicalInformation = "N/A",
-                BankAccount = "84903",
-                Password = "newUserPassword"
-            });
+            _ = _userController.Register(
+                new RegisterRequestDTO
+                {
+                    UserName = "newUser",
+                    FirstName = "New",
+                    LastName = "User",
+                    DateOfBirth = new DateTime(),
+                    PhoneNumber = "123459",
+                    Email = "newuser@test.co.nz",
+                    MedicalInformation = "N/A",
+                    BankAccount = "84903",
+                    Password = "newUserPassword"
+                });
 
-            UserController checkUserController = new UserController(_serviceProvider.GetService<IOptions<AppSettings>>(), _context);
-            ActionResult checkUserResponse = checkUserController.CheckUser(new RegisterRequestDTO
-            {
-                UserName = "newUser",
-                Email = "email@test.co.nz"
-            });
+            ActionResult checkUserResponse = _userController.CheckUser(
+                new RegisterRequestDTO
+                {
+                    UserName = "newUser",
+                    Email = "email@test.co.nz"
+                });
 
             Assert.That(checkUserResponse, Is.InstanceOf<BadRequestResult>());
         }
@@ -298,26 +303,26 @@ namespace WebApiBackendTests
         [Test]
         public void TestCheckWithDuplicateEmail()
         {
-            UserController registrationUserController = new UserController(_serviceProvider.GetService<IOptions<AppSettings>>(), _context);
-            ActionResult<RegisterResponseDTO> registrationResponse = registrationUserController.Register(new RegisterRequestDTO
-            {
-                UserName = "newUser",
-                FirstName = "New",
-                LastName = "User",
-                DateOfBirth = new DateTime(),
-                PhoneNumber = "123459",
-                Email = "newuser@test.co.nz",
-                MedicalInformation = "N/A",
-                BankAccount = "84903",
-                Password = "newUserPassword"
-            });
+            _ = _userController.Register(
+                new RegisterRequestDTO
+                {
+                    UserName = "newUser",
+                    FirstName = "New",
+                    LastName = "User",
+                    DateOfBirth = new DateTime(),
+                    PhoneNumber = "123459",
+                    Email = "newuser@test.co.nz",
+                    MedicalInformation = "N/A",
+                    BankAccount = "84903",
+                    Password = "newUserPassword"
+                });
 
-            UserController checkUserController = new UserController(_serviceProvider.GetService<IOptions<AppSettings>>(), _context);
-            ActionResult checkUserResponse = checkUserController.CheckUser(new RegisterRequestDTO
-            {
-                UserName = "User1",
-                Email = "newUser@test.co.nz"
-            });
+            ActionResult checkUserResponse = _userController.CheckUser(
+                new RegisterRequestDTO
+                {
+                    UserName = "User1",
+                    Email = "newUser@test.co.nz"
+                });
 
             Assert.That(checkUserResponse, Is.InstanceOf<ConflictResult>());
         }
