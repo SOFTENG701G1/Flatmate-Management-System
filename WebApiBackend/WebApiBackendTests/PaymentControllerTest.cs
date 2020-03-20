@@ -1,19 +1,14 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
-using Moq;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Security.Claims;
 using System.Security.Principal;
-using System.Text;
 using System.Threading.Tasks;
 using WebApiBackend.Controllers;
 using WebApiBackend.Dto;
 using WebApiBackend.EF;
-using WebApiBackend.Helpers;
 using WebApiBackend.Model;
 using WebApiBackendTests.Helper;
 
@@ -23,7 +18,6 @@ namespace WebApiBackendTests
     {
         private DatabaseSetUpHelper _dbSetUpHelper;
         private FlatManagementContext _context;
-
         private MapperHelper _mapperHelper;
 
         private PaymentsRepository _paymentsRepository;
@@ -77,7 +71,6 @@ namespace WebApiBackendTests
         public async Task TestCreatePaymentForFlatAsync()
         {
             // Arrange
-            var flatId = 1;
             var payment = new PaymentDTO
             {
                 Amount = 99,
@@ -150,7 +143,6 @@ namespace WebApiBackendTests
         public async Task TestGetPaymentsForFlatAsync()
         {
             // Arrange
-            var flatId = 1;
 
             // Act
             var response = await _paymentsController.GetPaymentsForFlat();
