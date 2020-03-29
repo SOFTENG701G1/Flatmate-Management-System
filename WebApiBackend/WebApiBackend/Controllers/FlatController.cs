@@ -37,17 +37,6 @@ namespace WebApiBackend.Controllers
             _context = context;
         }
 
-        [Authorize]
-        [HttpGet("display")]
-        public ActionResult<List<DisplayMemberDTO>> GetMembers()
-        {
-            var identity = (ClaimsIdentity)HttpContext.User.Identity;
-            int userID = Int16.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value);
-            var user = _context.User.Find(userID);
-            Flat flat = _context.Flat.Where(f => f.Id == user.FlatId).FirstOrDefault();
-            IQueryable members = _context.Entry(flat).Collection(f => f.Users).Query().OrderBy(u => u.FirstName);
-            return _MemberMapper.Map<List<DisplayMemberDTO>>(members);
-        }
 
         [Authorize]
         [HttpGet("AddUserToFlat/{userName}")]    
@@ -127,8 +116,7 @@ namespace WebApiBackend.Controllers
             var user = _context.User.FirstOrDefault(x => x.Id == userID);
             if (user.FlatId > 0)
             {
-                Response.StatusCode = 403;
-                return null;
+                return new ForbidResult();
             }
             var flat = new Flat
             {

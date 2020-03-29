@@ -26,7 +26,7 @@ export default class MemberTile extends React.Component {
     render() {
         var { person, isUser, show } = this.state;
         return (
-            <div>
+            <temp>
                 <div className="MemberProfile" onClick={this.showModal}>
                     <img className="userProfile" src={UserImage} />
                     <p className="name"> {person.firstName} {person.lastName} {isUser ? "(ME)" : ''}</p>
@@ -35,7 +35,7 @@ export default class MemberTile extends React.Component {
 
                 </div>
                 <UserDetails show={show} handleClose={this.hideModal} member={person} />
-            </div>
+            </temp>
                 
         );
     }
