@@ -20,6 +20,52 @@ export default class APIRequest {
         return res;
     }
 
+    // Reset password with the given E-mail and password. It is not using username because the reset link was accessed via user's E-mail
+    static async resetPassword(email, password){
+        let res = await fetch(apiBaseUrl + "api/user/resetPassword",
+        {
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            method: "POST",
+            body: JSON.stringify({username: email, password: password})
+        });
+        
+        return res;
+    }
+
+    // Validate if user is in the system and send an E-mail for resetting password
+    static async forgotPassword(userOrEmail){
+        let res = await fetch(apiBaseUrl + "api/user/forgotPassword",
+        {
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            method: "POST",
+            body: JSON.stringify({ userOrEmail: userOrEmail })
+        });
+
+        return res;
+    }
+
+    // Check if the reset token given was created less than 1 hour ago and if it's valid
+    // This needs to be executed prior to page rendering, so an async method is used
+    static checkResetToken(email, resetToken){
+        let res = fetch(apiBaseUrl + "api/user/resetTokenCheck",
+        {
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            method: "POST",
+            body: JSON.stringify({ Email: email, ResetToken: resetToken })
+        });
+
+        return res;
+    }
+
     // Gets the auth string, which can be added to header "Authorization" for requests that need auth
     static async getAuthString() {
         if (!User.getUserState()) {

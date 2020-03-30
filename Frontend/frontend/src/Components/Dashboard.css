@@ -1,0 +1,20 @@
+
+.DashboardContainer {
+    position: absolute;
+    top: 0px;
+    left: max(25%, 280px);
+    right: 30px;
+    text-align: left;
+}
+
+.DashboardContainer > div {
+    float: left;
+}
+
+.RightColumn {
+    width: 30%;
+}
+
+.LeftColumn {
+    width: 60%;
+}

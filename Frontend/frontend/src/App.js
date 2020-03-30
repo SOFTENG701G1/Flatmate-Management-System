@@ -18,6 +18,7 @@ import RequireLogin from './Components/RequireLogin';
 import APIRequest from './Util/APIRequest';
 import MembersPage from './Components/Members';
 import ForgotPassword from './Views/ForgotPassword';
+import ResetPassword from './Views/ResetPassword';
 
 export default class App extends React.Component {
   render() {
@@ -36,6 +37,8 @@ export default class App extends React.Component {
             </Route>
             <Route path="/login/forgot-password">
               <ForgotPassword/>
+            </Route>
+            <Route path="/login/reset-password" component = {ResetPassword}>
             </Route>
             <Route path="/register">
               <Register/>

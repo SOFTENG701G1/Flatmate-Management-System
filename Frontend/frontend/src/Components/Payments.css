@@ -65,7 +65,7 @@ button.NewPaymentButton {
 }
 
 table.PaymentModule {
-    margin-top: 5px;
+    margin-top: 12px;
     border-color: #1F5673;
     border-radius: 8px;
     border-style: solid;
@@ -94,6 +94,7 @@ h6.PaymentModuleData {
 td {
     border-style: none;
     min-width: 25%;
+    padding: 10px;
 }
 
 h2 h4 {

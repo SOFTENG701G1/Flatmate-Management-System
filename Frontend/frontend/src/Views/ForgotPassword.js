@@ -28,24 +28,21 @@ export default class ForgotPassword extends React.Component {
       return;
     }
 
-    // TODO: Remove this line once API requests are set up
-    this.setState({ isEmailSent: true });
-    
-    // TODO: Uncomment this once API request is complete
-    // let sendInstructionsResult = await APIRequest.sendInstructions(this.state.loginIdentifier);
+    // Call the API to send a reset password E-mail to the given account E-mail address
+    let sendInstructionsResult = await APIRequest.forgotPassword(this.state.loginIdentifier);
 
-    // if (sendInstructionsResult.ok) {
-    //   this.setState({ isEmailSent: true })
-    // } else {
-    //   switch (sendInstructionsResult.status) {
-    //     case 404:
-    //       this.setState({ error: "There is no account with that username or email."});
-    //       break;
-    //     default:
-    //       this.setState({ error: "Unknown error (check your internet)."});
-    //       break;
-    //   }
-    // }
+    if (sendInstructionsResult.ok) {
+      this.setState({ isEmailSent: true })
+    } else {
+      switch (sendInstructionsResult.status) {
+        case 404:
+          this.setState({ error: "There is no account with that username or email."});
+          break;
+        default:
+          this.setState({ error: "Unknown error (check your internet)."});
+          break;
+      }
+    }
   }
   
   bindInput (event) {

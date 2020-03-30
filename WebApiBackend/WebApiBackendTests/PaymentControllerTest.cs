@@ -1,19 +1,14 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
-using Moq;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Security.Claims;
 using System.Security.Principal;
-using System.Text;
 using System.Threading.Tasks;
 using WebApiBackend.Controllers;
 using WebApiBackend.Dto;
 using WebApiBackend.EF;
-using WebApiBackend.Helpers;
 using WebApiBackend.Model;
 using WebApiBackendTests.Helper;
 
@@ -23,8 +18,8 @@ namespace WebApiBackendTests
     {
         private DatabaseSetUpHelper _dbSetUpHelper;
         private FlatManagementContext _context;
-
         private MapperHelper _mapperHelper;
+        private HttpContextHelper _httpContextHelper;
 
         private PaymentsRepository _paymentsRepository;
         private UserPaymentsRepository _userPaymentsRepository;
@@ -38,6 +33,7 @@ namespace WebApiBackendTests
         {
             _dbSetUpHelper = new DatabaseSetUpHelper();
             _context = _dbSetUpHelper.GetContext();
+            _httpContextHelper = new HttpContextHelper();
 
             _paymentsRepository = new PaymentsRepository(_context);
             _userPaymentsRepository = new UserPaymentsRepository(_context);
@@ -46,19 +42,23 @@ namespace WebApiBackendTests
 
             _mapperHelper = new MapperHelper();
             var mapper = _mapperHelper.GetMapper();
-
-            DefaultHttpContext httpContext = new DefaultHttpContext();
-            GenericIdentity MyIdentity = new GenericIdentity("User");
-            ClaimsIdentity objClaim = new ClaimsIdentity(new List<Claim> { new Claim(ClaimTypes.NameIdentifier, "1") });
+            
+            var httpContext = _httpContextHelper.GetHttpContext();
+            var objClaim = _httpContextHelper.GetClaimsIdentity();
 
             _paymentsController = new PaymentsController(_paymentsRepository, _userPaymentsRepository, _flatRepository, _userRepository, mapper)
             {
-                ControllerContext = new ControllerContext()
+                ControllerContext = new ControllerContext
+                {
+                    HttpContext = httpContext
+                }
             };
-            _paymentsController.ControllerContext.HttpContext = httpContext;
             httpContext.User = new ClaimsPrincipal(objClaim);
         }
 
+        /// <summary>
+        /// Ensures that a user can be added to a payment
+        /// </summary>
         [Test]
         public async Task TestAddUserToExistingPaymentAsync()
         {
@@ -73,11 +73,13 @@ namespace WebApiBackendTests
             Assert.IsNotNull(response);
         }
 
+        /// <summary>
+        /// Ensures that a payment can be created for a flat
+        /// </summary>
         [Test]
         public async Task TestCreatePaymentForFlatAsync()
         {
             // Arrange
-            var flatId = 1;
             var payment = new PaymentDTO
             {
                 Amount = 99,
@@ -97,6 +99,9 @@ namespace WebApiBackendTests
             Assert.IsInstanceOf<OkObjectResult>(response);
         }
 
+        /// <summary>
+        /// Ensures that a payment for a flat can be deleted
+        /// </summary>
         [Test]
         public async Task TestDeletePaymentForFlatAsync()
         {
@@ -110,6 +115,9 @@ namespace WebApiBackendTests
             Assert.IsInstanceOf<OkObjectResult>(response);
         }
 
+        /// <summary>
+        /// Ensures that a user can be removed from a payment
+        /// </summary>
         [Test]
         public async Task TestDeleteUserFromPaymentAsync()
         {
@@ -124,6 +132,9 @@ namespace WebApiBackendTests
             Assert.IsNotNull(response);
         }
 
+        /// <summary>
+        /// Ensures that payment details can be edited
+        /// </summary>
         [Test]
         public async Task TestEditPaymentAsync()
         {
@@ -146,11 +157,13 @@ namespace WebApiBackendTests
             Assert.IsNotNull(response);
         }
 
+        /// <summary>
+        /// Checks that a flat can view all their payments
+        /// </summary>
         [Test]
         public async Task TestGetPaymentsForFlatAsync()
         {
             // Arrange
-            var flatId = 1;
 
             // Act
             var response = await _paymentsController.GetPaymentsForFlat();
@@ -159,6 +172,9 @@ namespace WebApiBackendTests
             Assert.IsInstanceOf<OkObjectResult>(response);
         }
 
+        /// <summary>
+        /// Checks that a user can view all their payments
+        /// </summary>
         [Test]
         public async Task TestGetAllPaymentsForUserAsync()
         {

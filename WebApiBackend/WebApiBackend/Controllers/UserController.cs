@@ -1,7 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.IdentityModel.Tokens.Jwt;
@@ -12,6 +10,11 @@ using WebApiBackend.Model;
 using WebApiBackend.Helpers;
 using Microsoft.Extensions.Options;
 using System.Linq;
+using System.Text.RegularExpressions;
+using System.Security.Policy;
+using System.Net.Mail;
+using System.Security.Cryptography;
+using System.Web;
 
 namespace WebApiBackend.Controllers
 {
@@ -50,8 +53,137 @@ namespace WebApiBackend.Controllers
             {
                 return new ForbidResult();
             }
-
             return new LoggedInDto(user, CreateToken(user.Id));
+        }
+
+        /// <summary>
+        /// POST Method - Confirm if the given reset password token for a user is valid.
+        /// </summary>
+        /// <param name="resetPassword">A ResetPaddwordDTO object with user E-mail and reset password token to be validated</param>
+        /// <returns>An error if the token
+        /// has expirese (lifespan over 1 hours,
+        /// does not match with the given user,
+        /// user cannot be found in the DB,
+        /// else, return ok</returns>
+        [HttpPost("resetTokenCheck")]
+        public ActionResult CheckResetToken(ResetPasswordDTO resetPassword)
+        {
+            if (!string.IsNullOrEmpty(resetPassword.Email) && !string.IsNullOrEmpty(resetPassword.ResetToken))
+            {
+                // Find if the user exists in the DB
+                var findUser = _database.User.FirstOrDefault(u => u.Email.ToLower() == resetPassword.Email.ToLower());
+                if (findUser != null)
+                {
+                    // Check if the token has been used and if it has expired and have a token assigned
+                    if (findUser.ResetToken == resetPassword.ResetToken)
+                    {
+                        if (!CheckExpired(resetPassword.ResetToken))
+                        {
+                            // Clear the reset token in DB so it can only be used once
+                            findUser.ResetToken = "";
+                            _database.SaveChanges();
+                            return new OkResult();
+                        }
+                    }
+                }
+            }
+            return new BadRequestResult();
+        }
+
+        /// <summary>
+        /// POST Method - Update the given user's password.
+        /// </summary>
+        /// <param name="login">The E-mail and the newly requested password.</param>
+        /// <returns>An error if the account/E-mail doesn't exists or
+        /// if E-mail not allowed to change password, else an ok message</returns>
+        [HttpPost("resetPassword")]
+        public ActionResult ResetPassWord(LoginDto login)
+        {
+            User user = _database.User.FirstOrDefault(u => u.Email.ToLower() == login.UserName.ToLower());
+
+            if (user == null)
+            {
+                return new NotFoundResult();
+            }
+
+            // If the account did not have a valid password change request, then reject the action.
+            if (!user.CanReset)
+            {
+                return new BadRequestResult();
+            }
+
+            PasswordHasher<User> hasher = new PasswordHasher<User>();
+            var hashedPassword = hasher.HashPassword(user, login.Password);
+            user.HashedPassword = hashedPassword;
+            user.CanReset = false;
+            _database.SaveChanges();
+            return new OkResult();
+        }
+
+        /// <summary>
+        /// POST Method - Send reset password link to user's E-mail.
+        /// </summary>
+        /// <param name="forgotPass">The username or email that is requesting for password reset.</param>
+        /// <returns>The targeted E-mail address and base 64 string token</returns>
+        [HttpPost("forgotPassword")]
+        public ActionResult<ForgotPassResponseDTO> ForgotPassword(ForgotPassRequestDTO forgotPass)
+        {
+            
+            // Checking if the non nullable fields (as per business rules) are not empty/null 
+            if (string.IsNullOrEmpty(forgotPass.userOrEmail))
+            {
+                return new NotFoundResult();
+            }
+
+            // Check if user input their username or E-mail, and convert username to equivalent E-mail if inputted
+            string email_tmp = "";
+            string user_tmp;
+            Regex regex = new Regex(@"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$");
+            Match match = regex.Match(forgotPass.userOrEmail);
+            if (match.Success){
+                email_tmp = forgotPass.userOrEmail;
+                // Check if email exists in the DB, if not then it's a bad request
+                if (_database.User.FirstOrDefault(u => u.Email.ToLower() == email_tmp.ToLower()) == null)
+                {
+                    return new NotFoundResult();
+                }
+            }
+            else
+            {
+                user_tmp = forgotPass.userOrEmail;
+                // Check if user exists in the DB, if not then it's a bad request
+                if (_database.User.FirstOrDefault(u => u.UserName.ToLower() == user_tmp.ToLower()) != null)
+                {
+                    // Get the email by querying username and set email_tmp to the response
+                    var findUser = _database.User.FirstOrDefault(u => u.UserName.ToLower() == user_tmp.ToLower());
+                    email_tmp = findUser.Email;
+                }
+                else
+                {
+                    return new NotFoundResult();
+                }
+            }
+
+            // Generate token
+            string token_tmp = GenResetToke();
+
+            // Send an E-mail to user with a reset password link
+            SendResetEmail(email_tmp, token_tmp);
+
+            // Store the token into DB and allow this user to reset password
+            var userReset = _database.User.FirstOrDefault(u => u.Email == email_tmp);
+            if (userReset != null)
+            {
+                userReset.ResetToken = token_tmp;
+                userReset.CanReset = true;
+                _database.SaveChanges();
+            }
+
+            return new ForgotPassResponseDTO
+            {
+                Email = email_tmp,
+                ResetToken = token_tmp
+            };
         }
 
         /// <summary>
@@ -108,6 +240,36 @@ namespace WebApiBackend.Controllers
             }
         }
 
+        /// <summary>
+        /// Generate a base 64 string token that's generated based on time of creation
+        /// </summary>
+        /// <returns>A base 64 string token</returns>
+        private string GenResetToke()
+        {
+            // Generate token that contains a timestamp
+            byte[] time = BitConverter.GetBytes(DateTime.UtcNow.ToBinary());
+            byte[] key = Guid.NewGuid().ToByteArray();
+            string token = Convert.ToBase64String(time.Concat(key).ToArray());
+            return token;
+        }
+
+        /// <summary>
+        /// Check if the given token has expired (lifetime over 1 hour)
+        /// </summary>
+        /// <param name="token">A base 64 string token that's generated based on time of creation</param>
+        /// <returns>A bool indicating if a toke has expired</returns>
+        private Boolean CheckExpired(string token)
+        {
+            byte[] data = Convert.FromBase64String(token);
+            DateTime when = DateTime.FromBinary(BitConverter.ToInt64(data, 0));
+            if (when < DateTime.UtcNow.AddHours(-1))
+            {
+                // Return true if token has expired
+                return true;
+            }
+            return false;
+        }
+            
         /// <summary>
         /// Creates a JWT token for users with the specified UserID
         /// </summary>
@@ -179,6 +341,8 @@ namespace WebApiBackend.Controllers
                 Email = email,
                 MedicalInformation = medicalInformation,
                 BankAccount = bankAccount,
+                ResetToken = "",
+                CanReset = false,
             };
 
             PasswordHasher<User> hasher = new PasswordHasher<User>();
@@ -190,6 +354,32 @@ namespace WebApiBackend.Controllers
             return true;
         }
 
-        
+        /// <summary>
+        /// Send an E-mail to detination with a link for user to reset password.
+        /// </summary>
+        /// <param name="destination"></param>
+        /// <param name="resetToken"></param>
+        private void SendResetEmail(string destination, string resetToken)
+        {
+            MailMessage mailMessage = new MailMessage("se701uoa2020@gmail.com", destination);
+            
+            // Further detilas could be added so the content of the E-mail is more informative
+            // Currently it's hard coding the full URL prior to the query string due to techinical difficulties
+            mailMessage.Body = "http://localhost:3000/login/reset-password?email=" + destination + "&token=" + resetToken;
+            mailMessage.Subject = "Reset your password";
+
+            // Specify the SMTP server name and post number speciic to gmail
+            SmtpClient smtpClient = new SmtpClient("smtp.gmail.com", 587);
+            smtpClient.UseDefaultCredentials = false;
+            smtpClient.Credentials = new System.Net.NetworkCredential()
+            {
+                UserName = "se701uoa2020@gmail.com",
+                Password = "flatmate2020!"
+            };
+
+            // Gmail works on SSL, so set this property needs to be true
+            smtpClient.EnableSsl = true;
+            smtpClient.Send(mailMessage);
+        }
     }
 }

@@ -32,13 +32,10 @@ namespace WebApiBackend.Controllers
             _MemberMapper = mapperConfigure.CreateMapper();
         }
 
-
         public FlatController(FlatManagementContext context)
         {
             _context = context;
         }
-
-     
 
         [Authorize]
         [HttpGet("AddUserToFlat/{userName}")]    
@@ -118,8 +115,7 @@ namespace WebApiBackend.Controllers
             var user = _context.User.FirstOrDefault(x => x.Id == userID);
             if (user.FlatId > 0)
             {
-                Response.StatusCode = 403;
-                return null;
+                return new ForbidResult();
             }
             var flat = new Flat
             {
@@ -180,8 +176,5 @@ namespace WebApiBackend.Controllers
             //return the new member list of the flat
             return new FlatDTO(flat);
         }
-
-
-
     }
 }

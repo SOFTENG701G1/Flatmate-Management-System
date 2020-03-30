@@ -1,92 +1,171 @@
-﻿using Microsoft.AspNetCore;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
+﻿using Microsoft.AspNetCore.Mvc;
 using NUnit.Framework;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using WebApiBackend;
+using System.Security.Claims;
 using WebApiBackend.Controllers;
 using WebApiBackend.Dto;
-using WebApiBackend.Helpers;
 using WebApiBackend.Model;
-using System.Security.Principal;
-using System.Security.Claims;
+using WebApiBackendTests.Helper;
 
 namespace WebApiBackendTests
 {
     class FlatTest
     {
-        ServiceDependencyResolver _serviceProvider;
+        private DatabaseSetUpHelper _dbSetUpHelper;
         private FlatManagementContext _context;
+        private HttpContextHelper _httpContextHelper;
         private FlatController _flatController;
 
         [SetUp]
         public void Setup()
         {
-            // Builds webhost and gets service providers from web host
-            var webHost = WebHost.CreateDefaultBuilder()
-                .UseStartup<Startup>()
-                .Build();
-            _serviceProvider = new ServiceDependencyResolver(webHost);
+            _dbSetUpHelper = new DatabaseSetUpHelper();
+            _context = _dbSetUpHelper.GetContext();
+            _httpContextHelper = new HttpContextHelper();
 
-            // Resets database to inital state so all tests are isolated and repeatable
-            _context = new FlatManagementContext();
-            _context.Database.EnsureDeleted();
-            _context.Database.EnsureCreated();
+            var httpContext = _httpContextHelper.GetHttpContext();
+            var objClaim = _httpContextHelper.GetClaimsIdentity();
 
-            var testDataGenerator = new DevelopmentDatabaseSetup(_context);
-            testDataGenerator.SetupDevelopmentDataSet();
+            _flatController = new FlatController(_context)
+            {
+                ControllerContext = new ControllerContext
+                {
+                    HttpContext = httpContext
+                }
+            };
 
-            _flatController = new FlatController(_context);
-
-            //Creates a new httpContext and adds a user identity to it, imitating being already logged in.
-            DefaultHttpContext httpContext = new DefaultHttpContext();
-            GenericIdentity MyIdentity = new GenericIdentity("YinWang");
-            ClaimsIdentity objClaim = new ClaimsIdentity(new List<Claim> { new Claim(ClaimTypes.NameIdentifier, "1") });
-            _flatController.ControllerContext = new ControllerContext();
-            _flatController.ControllerContext.HttpContext = httpContext;
             httpContext.User = new ClaimsPrincipal(objClaim);
-
-
         }
 
-        
-     
+        /// <summary>
+        /// Ensures that a user already in the flat can't be added again
+        /// </summary>
         [Test]
-
-        public void TestFailedAddUserToFlatUserAlreadyInFlat()
+        public void TestAddExistingUserInFlat()
         {
-            ActionResult<AddUserToFlatDto> response = _flatController.AddUserToFlat("YinWang");
+            // Arrange
+            var username = "YinWang";
+
+            // Act
+            var response = _flatController.AddUserToFlat(username);
+            
+            // Assert
             Assert.AreEqual(response.Value.ResultCode, 4);
         }
 
+        /// <summary>
+        /// Ensures that a non-existent user can't be added to a flat
+        /// </summary>
         [Test]
-      
-        public void TestFailedAddUserToFlatUserNotExist()
+        public void TestAddNonExistentUserToFlat()
         {
-            ActionResult<AddUserToFlatDto> response = _flatController.AddUserToFlat("Bazinga");
+            // Arrange
+            var username = "Bazinga";
+
+            // Act
+            var response = _flatController.AddUserToFlat(username);
+
+            // Assert
             Assert.AreEqual(response.Value.ResultCode, 2);
         }
 
 
         [Test]
-     
         public void TestFailedAddUserToFlatUserInOtherFlat()
         {
             ActionResult<AddUserToFlatDto> response = _flatController.AddUserToFlat("TestUser1");
             Assert.AreEqual(response.Value.ResultCode, 5);
         }
 
+        /// <summary>
+        /// Ensures that a user can be added to a flat
+        /// </summary>
         [Test]
-        
-        public void TestCorrectAddUserToFlat()
+        public void TestAddUserToFlat()
         {
-            ActionResult<AddUserToFlatDto> response = _flatController.AddUserToFlat("TestUser2");
+            // Arrange
+            var username = "TestUser2";
+
+            // Act
+            var response = _flatController.AddUserToFlat(username);
+
+            // Assert
             Assert.AreEqual(response.Value.ResultCode, 1);
-            Assert.AreEqual(response.Value.AddedUser.UserName, "TestUser2");
+            Assert.AreEqual(response.Value.AddedUser.UserName, username);
+        }
+
+        /// <summary>
+        /// Test that in a normal flat, all members are returned, including the person themself
+        /// </summary>
+        [Test]
+        public void GetFlatMembersFromNonEmptyFlat()
+        {
+            // Arrange
+            
+            // Act
+            var response = _flatController.GetFlatMembers();
+
+            // Assert
+            Assert.IsInstanceOf<FlatDTO>(response.Value);
+            Assert.AreEqual(response.Value.FlatMembers.Count == 4, true);
+        }
+
+        [Test]
+        public void GetFlatMembersFromSoloFlat()
+        {
+            // Arrange
+            ClaimsIdentity objClaim = new ClaimsIdentity(new List<Claim> { new Claim(ClaimTypes.NameIdentifier, "998") });
+            _flatController.HttpContext.User = new ClaimsPrincipal(objClaim);
+
+            // Act
+            var response = _flatController.GetFlatMembers();
+
+            // Assert
+            Assert.IsInstanceOf<FlatDTO>(response.Value);
+            Assert.AreEqual(response.Value.FlatMembers.Count == 1, true);
+        }
+
+        [Test]
+        public void GetFlatMembersFromPersonNotInFlat()
+        {
+            // Arrange
+            ClaimsIdentity objClaim = new ClaimsIdentity(new List<Claim> { new Claim(ClaimTypes.NameIdentifier, "999") });
+            _flatController.HttpContext.User = new ClaimsPrincipal(objClaim);
+
+            // Act
+            var response = _flatController.GetFlatMembers();
+
+            // Assert
+            Assert.IsInstanceOf<FlatDTO>(response.Value);
+            Assert.AreEqual(response.Value.FlatMembers.Count == 0, true);
+        }
+
+        [Test]
+        public void AttemptCreatingFlatWhileAlreadyInFlat()
+        {
+            // Arrange
+
+            // Act
+            var response = _flatController.createFlat();
+
+            // Assert
+            Assert.That(response.Result, Is.InstanceOf<ForbidResult>());
+        }
+
+        [Test]
+        public void TestCreatingFlatWhileNotInFlat()
+        {
+            // Arrange
+            ClaimsIdentity objClaim = new ClaimsIdentity(new List<Claim> { new Claim(ClaimTypes.NameIdentifier, "999") });
+            _flatController.HttpContext.User = new ClaimsPrincipal(objClaim);
+
+            // Act
+            var response = _flatController.createFlat();
+
+            // Assert
+            Assert.IsInstanceOf<FlatDTO>(response.Value);
+            Assert.AreEqual(response.Value.FlatMembers.Count == 1, true);
         }
 
 
