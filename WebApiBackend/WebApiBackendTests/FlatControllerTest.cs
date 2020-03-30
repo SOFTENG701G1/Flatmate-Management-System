@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using NUnit.Framework;
 using System.Collections.Generic;
+using System.Linq;
 using System.Security.Claims;
 using WebApiBackend.Controllers;
 using WebApiBackend.Dto;
@@ -167,5 +168,47 @@ namespace WebApiBackendTests
             Assert.AreEqual(response.Value.FlatMembers.Count == 1, true);
         }
 
+
+         /// <summary>
+        /// Ensure the user is excluded from the flat and return the new flat member list after removal
+        /// </summary>
+        [Test]
+        public void GetMember_Return202_WhenUserNotRemovingOneself()
+        {
+            User user = _context.User.Find(1);
+            User deleteUser = _context.User.Where(u => u.UserName == "BeboBryan").FirstOrDefault();
+            IQueryable<Flat> flat = _context.Flat.Where(f => f.Id == user.FlatId);
+            ActionResult<FlatDTO> response = _flatController.RemoveMember("BeboBryan");
+            Assert.IsFalse(flat.FirstOrDefault().Users.Contains(deleteUser));
+            Assert.That(response.Value, Is.TypeOf<FlatDTO>());
+        }
+        
+        
+        /// <summary>
+        /// Ensure a user is excluded from the flat's user list
+        /// </summary>
+        [Test]
+        public void GetMember_RirectToCreateFlatPage_WhenUserRemoveOneselfFromFlat()
+        {
+            User user = _context.User.Find(1);
+            Flat flat = _context.Flat.First(u=>u.Id==user.FlatId);
+            int flatId = flat.Id;
+            ActionResult<FlatDTO> response = _flatController.RemoveMember("YinWang");
+            Assert.IsFalse(flat.Users.Contains(user));
+
+        }
+
+
+        /// <summary>
+        /// Ensure the Flat is removed when the last user left the flat
+        /// </summary>
+        [Test]
+        public void GetMember_RirectToCreateFlatPageandRemoveFlat_WhenTheLastUserRemovedFromFlat()
+        {
+            IQueryable<Flat> flat = _context.Flat.Where(f => f.Id == _context.User.Find(1).FlatId);
+            ActionResult<FlatDTO> response = _flatController.RemoveMember("YinWang");
+            Assert.IsEmpty(flat);
+
+        }
     }
 }
