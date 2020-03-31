@@ -6,9 +6,9 @@ Good programming practices and established conventions and standards should alwa
 
 These standards, conventions, and guidelines will provide for uniformity in the development, construction and installation of reliable program.
 
-For any document changes, please submit a change request using: [Document Change](ISSUE_TEMPLATE/documentation-update.md)
+For any document changes, please submit a change request using: [Document Change](https://github.com/SOFTENG701G1/Flatmate-Management-System/issues/new?assignees=&labels=documentation&template=documentation-update.md&title=%5BDOC%5D)
 
-For any feature requests, please submit a feature request using: [Feature Request](ISSUE_TEMPLATE/feature_request.md)
+For any feature requests, please submit a feature request using: [Feature Request](https://github.com/SOFTENG701G1/Flatmate-Management-System/issues/new?assignees=&labels=feature&template=feature_request.md&title=%5BFEATURE%5D)
 
 ## Pull requests
 
@@ -30,7 +30,8 @@ Fixing a bug? Make sure you added a test reproducing the issue.
 
 ### Make sure tests pass
 
-All our projects' unit tests can be run by typing `yarn test` at the root of the project. You may need to install dependencies like `mocha`, `chai`, or `sinon`.
+Front-end tests can be ran with `npm test` (there are none currently).
+Back-end tests can be ran in Visual Studio (or your preferred IDE).
 
 ### Keep your commit history short and clean
 
@@ -112,16 +113,16 @@ Guidelines for bug reports:
 2. **Check if the issue has been fixed** &mdash; try to reproduce it using the
    latest `master` or development branch in the repository.
 
-3. **Create bug report** &mdash; Please fill out [Bug Report Template](ISSUE_TEMPLATE/bug_report.md).
+3. **Create bug report** &mdash; Please fill out [Bug Report Template](https://github.com/SOFTENG701G1/Flatmate-Management-System/issues/new?assignees=&labels=bug&template=bug_report.md&title=%5BBUG%5D).
 
 <a name="guidelines"></a>
 ## Coding Guidelines 
 
 Depending on if you're working on the frontend or backend, please see below for language specific coding guidelines. 
 
-- [React JS Coding Conventions](reactjs-guidelines.md)
+- [React JS Coding Conventions](docs/reactjs-guidelines.md)
 
-- [C# Coding Conventions](C#-guidelines.md)
+- [C# Coding Conventions](docs/C#-guidelines.md)
  
 <a name="notes"></a>
 ## Additional Note 

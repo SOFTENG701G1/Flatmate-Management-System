@@ -1,6 +1,5 @@
 ## Pull Request Information
-**Relates to Github Issue:** #
-<!-- Insert issue number (required) -->
+Closes # <!-- Insert issue number (required) -->
 
 **What is the PR Type:** 
 <!-- 
@@ -22,18 +21,14 @@ Include screenshots if necessary
 
 ## Checklist
 <!-- Please check all items which apply from the following (Change "[ ]" to "[x]") -->
-- [ ] Pull request has suitable title, adequately described and associated with a github issue
-- [ ] Branch name follows correct convention (e.g. feature/[id]-some-feature)
+- [ ] Pull request has suitable title and labels, adequately described and associated with a github issue
+- [ ] Branch name follows correct convention (e.g. feature/#[id]-some-feature)
 - [ ] Branch builds and executes with no errors
 - [ ] Test cases has been generated for the feature and test cases pass
 - [ ] Updated relevant wiki/documentation
 
 ## Additional Information
 <!-- Please provide any additional information that may be necessary -->
-
-## Final Reminders
-Please remember to squash the commits
-
 
 
 <!-- Adapted from Uno Platform -->
