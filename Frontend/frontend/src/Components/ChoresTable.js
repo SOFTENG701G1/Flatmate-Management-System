@@ -9,9 +9,6 @@ import Paper from '@material-ui/core/Paper';
 import './chores.css';
 
 class ChoresTable extends React.Component {
-    constructor(props) {
-        super(props);      
-    }
 
     render() {
         

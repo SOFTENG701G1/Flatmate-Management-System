@@ -1,7 +1,6 @@
 import User from "./User";
 
 const apiBaseUrl = process.env.REACT_APP_BACKEND_API
-
 /**
  * This class provides helper functions for API requests, and provides auth for those requests.
  */

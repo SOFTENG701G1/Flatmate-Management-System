@@ -9,9 +9,6 @@ import "./NewPayment.css";
 */
 
 export default class NewPayment extends Component {
-    constructor(props) {
-        super(props);
-    }
 
     render() {
         const {show, onClose} = this.props

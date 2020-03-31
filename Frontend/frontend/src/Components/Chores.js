@@ -64,21 +64,18 @@ export default class Chores extends Component {
                     </TabPanel>
                     <TabPanel>
                         <ChoresTable assignee="Yin" chores={this.state.chores.filter(chore => {
-                            if ('Yin' == chore.assignee ) {
-                                return chore;
-                            }})}/>
+                            return 'Yin' === chore.assignee && chore;
+                        })}/>
                     </TabPanel>
                     <TabPanel>
                         <ChoresTable assignee="Teresa" chores={this.state.chores.filter(chore => {
-                            if ('Teresa' == chore.assignee ) {
-                                return chore;
-                            }})}/>
+                            return 'Teresa' === chore.assignee && chore;
+                        })}/>
                     </TabPanel>
                     <TabPanel>
                         <ChoresTable assignee="Bryan" chores={this.state.chores.filter(chore => {
-                            if ('Bryan' == chore.assignee ) {
-                                return chore;
-                            }})}/>
+                            return 'Bryan' === chore.assignee && chore;
+                        })}/>
                     </TabPanel>
                 </Tabs>
                 <div style={{"margin":"30px"}}>
