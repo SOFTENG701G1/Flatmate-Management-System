@@ -156,7 +156,7 @@ export default class APIRequest {
         return res;
     }
 
-    //Retrieves the list of flat memebrs in the current users flat
+    //Retrieves the list of flat members in the current users flat
     static async getFlatMembers(){
         let authString = await APIRequest.getAuthString();
         let res = await fetch(apiBaseUrl + "api/flat/getmembers",
