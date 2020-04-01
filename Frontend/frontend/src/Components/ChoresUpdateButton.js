@@ -60,7 +60,7 @@ function ChoresUpdateButton(props){
             fullWidth
           />
           {/** Allows members to be assigned to chores, can pass in members using props and set it as default value
-           * The passed in memeber should be an array of objects in format: { value: (username all lower case), label: (username)}
+           * The passed in member should be an array of objects in format: { value: (username all lower case), label: (username)}
            * e.g. { value: 'yin', label: 'Yin' }
            * To do: Improve how members are passed in
            */}
