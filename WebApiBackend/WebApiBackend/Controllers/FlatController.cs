@@ -5,6 +5,7 @@ using System.Security.Claims;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using WebApiBackend.Dto;
 using WebApiBackend.Model;
 
@@ -31,22 +32,9 @@ namespace WebApiBackend.Controllers
             _MemberMapper = mapperConfigure.CreateMapper();
         }
 
-
         public FlatController(FlatManagementContext context)
         {
             _context = context;
-        }
-
-        [Authorize]
-        [HttpGet("display")]
-        public ActionResult<List<DisplayMemberDTO>> GetMembers()
-        {
-            var identity = (ClaimsIdentity)HttpContext.User.Identity;
-            int userID = Int16.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value);
-            var user = _context.User.Find(userID);
-            Flat flat = _context.Flat.Where(f => f.Id == user.FlatId).FirstOrDefault();
-            IQueryable members = _context.Entry(flat).Collection(f => f.Users).Query().OrderBy(u => u.FirstName);
-            return _MemberMapper.Map<List<DisplayMemberDTO>>(members);
         }
 
         [Authorize]
@@ -127,8 +115,7 @@ namespace WebApiBackend.Controllers
             var user = _context.User.FirstOrDefault(x => x.Id == userID);
             if (user.FlatId > 0)
             {
-                Response.StatusCode = 403;
-                return null;
+                return new ForbidResult();
             }
             var flat = new Flat
             {
@@ -142,6 +129,51 @@ namespace WebApiBackend.Controllers
             _context.Add(flat);
             _context.SaveChanges();
             Response.StatusCode = 201;
+            return new FlatDTO(flat);
+        }
+
+        /// <summary>
+        /// Delete Method -Remove a member out of a flat
+        /// </summary>
+        /// <param name="deleteUserName">The username of a member being removed from the flat</param>
+        /// <response code="202">The user have successfully remove her/himself from the flat, and be redirected to create flat page</response>
+        /// <returns>The response body is the flat members </returns>
+
+        [Authorize]
+        [HttpDelete("{deleteUserName}")]
+        public ActionResult<FlatDTO> RemoveMember(string deleteUserName)
+        {
+            ClaimsIdentity identity = (ClaimsIdentity)HttpContext.User.Identity;
+            int userId = Int32.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value);
+           
+            User user = _context.User.Find(userId);
+            User deleteUser = _context.User.FirstOrDefault(u => u.UserName == deleteUserName);
+            Flat flat = _context.Flat.Include(f => f.Users).FirstOrDefault(f => f.Id == user.FlatId);
+
+           
+            if (deleteUser == null || !flat.Users.Contains(deleteUser))
+            {
+
+                return NotFound("OOPS, user not in the flat.");
+            }
+
+            flat.Users.Remove(deleteUser);
+            _context.SaveChanges();
+     
+            //code 202 retrun when the user is removing her/himself out from the flat
+            if (deleteUser.Id == userId)
+            {
+                //flat will be remove from system once empty 
+                if (flat.Users.Count == 0)
+                {
+                    _context.Flat.Remove(flat);
+                    _context.SaveChanges();
+                    
+                }
+                Response.StatusCode = 202;
+                return null;
+            }
+            //return the new member list of the flat
             return new FlatDTO(flat);
         }
     }

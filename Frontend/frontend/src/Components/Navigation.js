@@ -1,10 +1,8 @@
 import React from 'react';
-import ReactDOM from "react-dom";
-import { Link, Redirect } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 import './Navigation.css';
 import User from '../Util/User';
-import UserDetails from './UserDetails'
 
 export default class Navigation extends React.Component {
 
@@ -22,22 +20,22 @@ export default class Navigation extends React.Component {
           </div>
           </li>
           <li className="menu__list-item">
-            <Link to="/app/"><a className="menu__link" href="#">Home</a></Link>
+            <Link to="/app/"><a className="menu__link" href="/app/">Home</a></Link>
           </li>
           <li className="menu__list-item">
-            <Link to="/app/dashboard"><a className="menu__link" href="#">Dashboard</a></Link>
+            <Link to="/app/dashboard"><a className="menu__link" href="/app/dashboard">Dashboard</a></Link>
           </li>
           <li className="menu__list-item">
-            <Link to="/app/chores"><a className="menu__link" href="#">Chores</a></Link>
+            <Link to="/app/chores"><a className="menu__link" href="/app/chores">Chores</a></Link>
           </li>
           <li className="menu__list-item">
-            <Link to="/app/payments"><a className="menu__link" href="#">Payments</a></Link>
+            <Link to="/app/payments"><a className="menu__link" href="/app/payments">Payments</a></Link>
           </li>
           <li className="menu__list-item">
-            <Link to="/app/members"><a className="menu__link" href="#">Members</a></Link>
+            <Link to="/app/members"><a className="menu__link" href="/app/members">Members</a></Link>
           </li>
           <li className="menu__list-item menu__logout">
-            <Link to="/logout/"><a className="menu__link" href="#">Logout</a></Link>
+            <Link to="/logout/"><a className="menu__link" href="/logout">Logout</a></Link>
           </li>
         </ul>
       </div>

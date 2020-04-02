@@ -1,7 +1,6 @@
 import User from "./User";
 
 const apiBaseUrl = process.env.REACT_APP_BACKEND_API
-
 /**
  * This class provides helper functions for API requests, and provides auth for those requests.
  */
@@ -157,7 +156,7 @@ export default class APIRequest {
         return res;
     }
 
-    //Retrieves the list of flat memebrs in the current users flat
+    //Retrieves the list of flat members in the current users flat
     static async getFlatMembers(){
         let authString = await APIRequest.getAuthString();
         let res = await fetch(apiBaseUrl + "api/flat/getmembers",
