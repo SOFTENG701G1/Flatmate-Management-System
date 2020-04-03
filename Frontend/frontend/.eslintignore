@@ -1,0 +1,8 @@
+# https://eslint.org/docs/2.13.1/user-guide/configuring for configuring ignore file
+# /node_modules/ should be ignored by default, but currently does not.
+# A bug caused by having typescript files and dependecies within node modules
+# https://github.com/facebook/create-react-app/issues/8386
+
+/node_modules/
+
+package-lock.json
