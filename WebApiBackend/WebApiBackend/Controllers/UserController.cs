@@ -13,6 +13,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Security.Policy;
 using System.Net.Mail;
+using Microsoft.AspNetCore.Authorization;
 using System.Security.Cryptography;
 using System.Web;
 
@@ -380,6 +381,25 @@ namespace WebApiBackend.Controllers
             // Gmail works on SSL, so set this property needs to be true
             smtpClient.EnableSsl = true;
             smtpClient.Send(mailMessage);
+        }
+
+        /// <summary>
+        /// GET Method - Get the id of the current user
+        /// </summary>
+        /// <response code="200">Found user's id</response>
+        /// <response code="401">Not an authorised user</response>
+        /// <returns>Retrieves the id of the current user</returns>
+        [HttpGet("getUserID")]
+        [Authorize]
+        public ActionResult<int> GetUserID()
+        {
+            var identity = HttpContext.User.Identity as ClaimsIdentity;
+            int userID = Int16.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value);
+            if (userID != 0)
+            {
+                return userID;
+            }
+            return null;
         }
     }
 }
