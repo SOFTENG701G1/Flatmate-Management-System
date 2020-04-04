@@ -386,7 +386,7 @@ namespace WebApiBackend.Controllers
         /// <summary>
         /// GET Method - Get the id of the current user
         /// </summary>
-        /// <response code="200">Found user's id</response>
+        /// <response code="200">Success</response>
         /// <response code="401">Not an authorised user</response>
         /// <returns>Retrieves the id of the current user</returns>
         [HttpGet("getUserID")]
