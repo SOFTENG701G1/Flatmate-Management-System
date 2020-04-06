@@ -13,6 +13,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Security.Policy;
 using System.Net.Mail;
+using Microsoft.AspNetCore.Authorization;
 using System.Security.Cryptography;
 using System.Web;
 
@@ -26,7 +27,7 @@ namespace WebApiBackend.Controllers
         private readonly AppSettings _appSettings;
         private readonly FlatManagementContext _database;
 
-        public UserController( IOptions<AppSettings> appSettings, FlatManagementContext context)
+        public UserController(IOptions<AppSettings> appSettings, FlatManagementContext context)
         {
             _appSettings = appSettings.Value;
             _database = context;
@@ -128,7 +129,7 @@ namespace WebApiBackend.Controllers
         [HttpPost("forgotPassword")]
         public ActionResult<ForgotPassResponseDTO> ForgotPassword(ForgotPassRequestDTO forgotPass)
         {
-            
+
             // Checking if the non nullable fields (as per business rules) are not empty/null 
             if (string.IsNullOrEmpty(forgotPass.userOrEmail))
             {
@@ -140,7 +141,8 @@ namespace WebApiBackend.Controllers
             string user_tmp;
             Regex regex = new Regex(@"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$");
             Match match = regex.Match(forgotPass.userOrEmail);
-            if (match.Success){
+            if (match.Success)
+            {
                 email_tmp = forgotPass.userOrEmail;
                 // Check if email exists in the DB, if not then it's a bad request
                 if (_database.User.FirstOrDefault(u => u.Email.ToLower() == email_tmp.ToLower()) == null)
@@ -218,14 +220,14 @@ namespace WebApiBackend.Controllers
         public ActionResult<RegisterResponseDTO> Register(RegisterRequestDTO registerRequest)
         {
             // Checking if the non nullable fields (as per business rules) are not empty/null 
-            if (string.IsNullOrEmpty(registerRequest.UserName) || string.IsNullOrEmpty(registerRequest.Email) || 
+            if (string.IsNullOrEmpty(registerRequest.UserName) || string.IsNullOrEmpty(registerRequest.Email) ||
                 string.IsNullOrEmpty(registerRequest.PhoneNumber) || string.IsNullOrEmpty(registerRequest.Password))
             {
                 return new BadRequestResult();
             }
 
             User user;
-            if (TryCreateUser(registerRequest.UserName, registerRequest.FirstName, registerRequest.LastName, registerRequest.DateOfBirth, registerRequest.PhoneNumber, 
+            if (TryCreateUser(registerRequest.UserName, registerRequest.FirstName, registerRequest.LastName, registerRequest.DateOfBirth, registerRequest.PhoneNumber,
                 registerRequest.Email, registerRequest.MedicalInformation, registerRequest.BankAccount, registerRequest.Password, out user))
             {
                 return new RegisterResponseDTO
@@ -269,7 +271,7 @@ namespace WebApiBackend.Controllers
             }
             return false;
         }
-            
+
         /// <summary>
         /// Creates a JWT token for users with the specified UserID
         /// </summary>
@@ -308,7 +310,7 @@ namespace WebApiBackend.Controllers
         /// <param name="password"></param>
         /// <param name="user">A user object - populated if the creation was successful</param>
         /// <returns>A bool indicating if a user was created</returns>
-        private bool TryCreateUser(string userName, string firstName, string lastName, DateTime dateOfBirth, string phoneNumber, 
+        private bool TryCreateUser(string userName, string firstName, string lastName, DateTime dateOfBirth, string phoneNumber,
             string email, string medicalInformation, string bankAccount, string password, out User user)
         {
             user = null;
@@ -316,7 +318,7 @@ namespace WebApiBackend.Controllers
             // Returns false if username is not unique (must be unique as per entity schema). Does not create user.
             if (_database.User.FirstOrDefault(u => u.UserName.ToLower() == userName.ToLower()) != null)
             {
-                return false; 
+                return false;
             }
 
             // Returns false if email is not unique (must be unique as per entity schema). Does not create user.
@@ -362,7 +364,7 @@ namespace WebApiBackend.Controllers
         private void SendResetEmail(string destination, string resetToken)
         {
             MailMessage mailMessage = new MailMessage("se701uoa2020@gmail.com", destination);
-            
+
             // Further detilas could be added so the content of the E-mail is more informative
             // Currently it's hard coding the full URL prior to the query string due to techinical difficulties
             mailMessage.Body = "http://localhost:3000/login/reset-password?email=" + destination + "&token=" + resetToken;
@@ -380,6 +382,31 @@ namespace WebApiBackend.Controllers
             // Gmail works on SSL, so set this property needs to be true
             smtpClient.EnableSsl = true;
             smtpClient.Send(mailMessage);
+        }
+
+        /// <summary>
+        /// GET Method - Get the id of the current user
+        /// </summary>
+        /// <response code="200">Success</response>
+        /// <response code="401">Not an authorised user</response>
+        /// <returns>Retrieves the id of the current user</returns>
+        [HttpGet("getUserID")]
+        [Authorize]
+        public ActionResult<int> GetUserID()
+        {
+            try
+            {
+                var identity = HttpContext.User.Identity as ClaimsIdentity;
+                int userID = Int16.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value);
+                if (userID != 0)
+                {
+                    return userID;
+                }
+                return null;
+            } catch
+            {
+                return new UnauthorizedResult();
+            }
         }
     }
 }

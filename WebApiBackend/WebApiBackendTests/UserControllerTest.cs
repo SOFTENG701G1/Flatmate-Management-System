@@ -2,6 +2,8 @@
 using Microsoft.Extensions.Options;
 using NUnit.Framework;
 using System;
+using System.Collections.Generic;
+using System.Security.Claims;
 using WebApiBackend.Controllers;
 using WebApiBackend.Dto;
 using WebApiBackend.Helpers;
@@ -15,6 +17,7 @@ namespace WebApiBackendTests
         private DatabaseSetUpHelper _dbSetUpHelper;
         private ServiceDependencyResolver _serviceProvider;
         private FlatManagementContext _context;
+        private HttpContextHelper _httpContextHelper;
 
         private UserController _userController;
 
@@ -25,7 +28,19 @@ namespace WebApiBackendTests
             _serviceProvider = _dbSetUpHelper.GetServiceDependencyResolver();
             _context = _dbSetUpHelper.GetContext();
 
-            _userController = new UserController(_serviceProvider.GetService<IOptions<AppSettings>>(), _context);
+            _httpContextHelper = new HttpContextHelper();
+            var httpContext = _httpContextHelper.GetHttpContext();
+            var objClaim = _httpContextHelper.GetClaimsIdentity();
+
+            _userController = new UserController(_serviceProvider.GetService<IOptions<AppSettings>>(), _context)
+            {
+                ControllerContext = new ControllerContext
+                {
+                    HttpContext = httpContext
+                }
+            };
+            httpContext.User = new ClaimsPrincipal(objClaim);
+
         }
 
         /// <summary>
@@ -379,6 +394,21 @@ namespace WebApiBackendTests
 
             // Assert
             Assert.That(checkUserResponse, Is.InstanceOf<ConflictResult>());
+        }
+
+        /// <summary>
+        /// Checks that UserController correctly retrives user's id
+        /// </summary>
+        [Test]
+        public void TestCheckUserID()
+        {
+            // Arrange
+            ClaimsIdentity objClaim = new ClaimsIdentity(new List<Claim> { new Claim(ClaimTypes.NameIdentifier, "3") });
+            _userController.HttpContext.User = new ClaimsPrincipal(objClaim);
+
+            // The ID of the currently authorised user can be found and modified in Helper/HttpConextHelper
+            var response = _userController.GetUserID().Value;
+            Assert.AreEqual(3, response);
         }
     }
 }
