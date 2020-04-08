@@ -31,5 +31,10 @@ namespace WebApiBackend.Model
         /// List of Payments associated with a flat
         /// </summary>
         public ICollection<Payment> Payments { get; set; }
+
+        /// <summary>
+        /// List of Chores associated with a flat
+        /// </summary>
+        public ICollection<Chores> Chores { get; set; }
     }
 }

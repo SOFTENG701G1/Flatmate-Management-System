@@ -14,6 +14,7 @@ namespace WebApiBackend.Helpers
         UserPayment _userPaymentYin1, _userPaymentYin2, _userPaymentBryan1,
             _userPaymentBryan2, _userPaymentTeresa1, _userPaymentTeresa2;
         Schedule _schedule1;
+        Chores _chore1, _chore2;
         Flat _flat1;
         Flat _flat2;
 
@@ -194,13 +195,36 @@ namespace WebApiBackend.Helpers
                 EndDate = new DateTime(2020, 05, 01)
             };
 
+            _chore1 = new Chores
+            {
+                Id = 1,
+                Title = "dishes",
+                Description = "do the dishes",
+                AssignedUser = _yin,
+                DueDate = new DateTime(2020, 04, 04),
+                Completed = false,
+                Recurring = true,
+            };
+
+            _chore2 = new Chores
+            {
+                Id = 2,
+                Title = "rubbish",
+                Description = "take out the rubbish",
+                AssignedUser = _bryan,
+                DueDate = new DateTime(2020, 05, 05),
+                Completed = false,
+                Recurring = true,
+            };
+
             _flat1 = new Flat
             {
                 Id = 1,
                 Address = "50 Symonds Street",
                 Users = new List<User> { _yin, _teresa, _bryan, _clay },
                 Schedules = new List<Schedule> { _schedule1 },
-                Payments = new List<Payment> { _payment1, _payment2 }
+                Payments = new List<Payment> { _payment1, _payment2 },
+                Chores = new List<Chores> { _chore1, _chore2}
             };
 
             _flat2 = new Flat
@@ -237,6 +261,8 @@ namespace WebApiBackend.Helpers
             _database.Add(_userPaymentYin1);
             _database.Add(_userPaymentYin2);
             _database.Add(_schedule1);
+            _database.Add(_chore1);
+            _database.Add(_chore2);
             _database.Add(_flat1);
             _database.Add(_flat2);
             _database.Add(_test1);
