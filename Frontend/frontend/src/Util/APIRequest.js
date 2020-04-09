@@ -199,7 +199,7 @@ export default class APIRequest {
                     'Authorization': authString
                 },
                 method: "POST",
-                //body: JSON.stringify({ address: address })
+                
             });
 
 
