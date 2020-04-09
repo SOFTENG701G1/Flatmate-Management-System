@@ -400,15 +400,35 @@ namespace WebApiBackendTests
         /// Checks that UserController correctly retrives user's id
         /// </summary>
         [Test]
-        public void TestCheckUserID()
+        public void TestCheckCurrentUserID()
         {
             // Arrange
             ClaimsIdentity objClaim = new ClaimsIdentity(new List<Claim> { new Claim(ClaimTypes.NameIdentifier, "3") });
             _userController.HttpContext.User = new ClaimsPrincipal(objClaim);
 
             // The ID of the currently authorised user can be found and modified in Helper/HttpConextHelper
-            var response = _userController.GetUserID().Value;
+            var response = _userController.GetCurrentUserID().Value;
             Assert.AreEqual(3, response);
+        }
+
+        /// <summary>
+        /// Checks that UserController correctly retrives user's id
+        /// </summary>
+        [Test]
+        public void TestGetUsersIdsByUsernames()
+        {
+            UserIdDTO userIds = new UserIdDTO();
+            userIds.UserID = new Dictionary<string, string>();
+            userIds.UserID.Add("TestUser1", "0");
+            userIds.UserID.Add("TestUser2", "0");
+            userIds.UserID.Add("Non-existing user", "0");
+
+            // The ID of the currently authorised user can be found and modified in Helper/HttpConextHelper
+            userIds = _userController.GetUsersIdsByUsernames(userIds);
+            Assert.AreEqual("998", userIds.UserID["TestUser1"]);
+            Assert.AreEqual("999", userIds.UserID["TestUser2"]);
+            Assert.AreEqual("0", userIds.UserID["Non-existing user"]);
+
         }
     }
 }
