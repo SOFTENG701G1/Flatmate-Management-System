@@ -100,7 +100,9 @@ namespace WebApiBackend.Controllers
         /// does not match with the given user,
         /// user cannot be found in the DB,
         /// else, return ok</returns>
+        /// 
         [HttpPost("editUserInfo")]
+        [Authorize]
         public ActionResult EditUserInfo(EditUserDTO info)
         {
             ClaimsIdentity identity = HttpContext.User.Identity as ClaimsIdentity;
