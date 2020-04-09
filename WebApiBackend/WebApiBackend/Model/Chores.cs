@@ -8,9 +8,10 @@ namespace WebApiBackend.Model
     {
         public int Id { get; set; }
         public string Title { get; set; }
-        public ICollection<User> Users { get; set; }
         public string Description { get; set; }
+        public User AssignedUser { get; set; }
         public DateTime DueDate { get; set; }
-        public bool Recurring { get; set; }
+        public bool Completed { get; set; }
+        public bool Recurring{ get; set; }
     }
 }

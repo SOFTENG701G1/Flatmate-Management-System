@@ -18,6 +18,7 @@ namespace WebApiBackend.Dto
 
         public UserDTO(Model.User user)
         {
+            Id = user.Id;
             UserName = user.UserName;
             FirstName = user.FirstName;
             LastName = user.LastName;

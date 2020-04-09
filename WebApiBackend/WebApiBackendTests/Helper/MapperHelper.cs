@@ -17,6 +17,8 @@ namespace WebApiBackendTests.Helper
             {
                 cfg.CreateMap<PaymentDTO, Payment>();
                 cfg.CreateMap<Payment, PaymentDTO>();
+                cfg.CreateMap<ChoresDTO, Chores>();
+                cfg.CreateMap<Chores, ChoresDTO>();
             });
 
             _mapper = config.CreateMapper();
