@@ -16,6 +16,7 @@ using System.Net.Mail;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Cryptography;
 using System.Web;
+using System.Collections.Generic;
 
 namespace WebApiBackend.Controllers
 {
@@ -390,9 +391,9 @@ namespace WebApiBackend.Controllers
         /// <response code="200">Success</response>
         /// <response code="401">Not an authorised user</response>
         /// <returns>Retrieves the id of the current user</returns>
-        [HttpGet("getUserID")]
+        [HttpGet("getCurrentUserID")]
         [Authorize]
-        public ActionResult<int> GetUserID()
+        public ActionResult<int> GetCurrentUserID()
         {
             try
             {
@@ -408,5 +409,65 @@ namespace WebApiBackend.Controllers
                 return new UnauthorizedResult();
             }
         }
+
+        /// <summary>
+        /// GET Method - Maps usernames to their ids
+        /// </summary>
+        /// <param name="userIds">A UserIdDTO object with username and a default id (must be 0)</param>
+        /// <returns>If a username is found, the id gets updated, otherwise it is assigned a "0" value. Returns a key/value pair of usernames and their ids </returns>
+        [HttpPost("getUsersIds")]
+        public UserIdDTO GetUsersIdsByUsernames(UserIdDTO userIds)
+        {
+
+            // Search for nicknames in the database, assign the found id to as a value to the dictionary
+            UserIdDTO usernameIds = userIds;
+            usernameIds.UserID = userIds.UserID;
+            foreach(String entry in userIds.UserID.Keys.ToList())
+            {
+                if (_database.User.FirstOrDefault(u => u.UserName.ToLower() == entry.ToLower()) != null)
+                {
+                    string userId = _database.User.FirstOrDefault(u => u.UserName.ToLower().Equals(entry.ToLower())).Id.ToString();
+                    usernameIds.UserID[entry] = userId;
+                } else
+                {
+                    usernameIds.UserID[entry] = "0";
+                }
+            }
+            return usernameIds;
+        }
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
