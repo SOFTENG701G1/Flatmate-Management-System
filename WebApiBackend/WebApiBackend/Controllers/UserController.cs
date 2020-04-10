@@ -91,6 +91,23 @@ namespace WebApiBackend.Controllers
             }
             return new BadRequestResult();
         }
+        [HttpPost("getUserInfo")]
+        [Authorize]
+        public ActionResult<UserInfoDTO> GetUserInfo()
+        {
+            ClaimsIdentity identity = HttpContext.User.Identity as ClaimsIdentity;
+
+            int userID = Int16.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value);
+            var user = _database.User.FirstOrDefault(x => x.Id == userID);
+            if(user == null)
+            {
+                return new BadRequestResult();
+            }
+
+            return new UserInfoDTO(user);
+        }
+
+
         /// <summary>
         /// POST Method - Edits user info
         /// </summary>
@@ -404,14 +421,14 @@ namespace WebApiBackend.Controllers
             {
                 return false;
             }
-            // Returns false if email is not unique (must be unique as per entity schema). Does not create user.
-            if (_database.User.FirstOrDefault(u => u.Email.ToLower() == email.ToLower()) != null)
+            // Returns false if email is in use by other user
+            if (_database.User.FirstOrDefault(u => u.Email.ToLower() == email.ToLower()) != null && (email != user.Email))
             {
                 return false;
             }
 
-            // Returns false if phone number is not unique (must be unique as per entity schema). Does not create user.
-            if (_database.User.FirstOrDefault(u => u.PhoneNumber.ToLower() == phoneNumber.ToLower()) != null)
+            // Returns false if phone number is in use by other user
+            if (_database.User.FirstOrDefault(u => u.PhoneNumber.ToLower() == phoneNumber.ToLower()) != null && (email != user.Email))
             {
                 return false;
             }
