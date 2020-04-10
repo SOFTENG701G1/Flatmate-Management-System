@@ -439,7 +439,7 @@ namespace WebApiBackendTests
             //Arrange
             ClaimsIdentity objClaim = new ClaimsIdentity(new List<Claim> { new Claim(ClaimTypes.NameIdentifier, "3") });
             _userController.HttpContext.User = new ClaimsPrincipal(objClaim);
-            UserInfoDTO userInfo;
+            
 
             //Act
             var response = _userController.GetUserInfo();
