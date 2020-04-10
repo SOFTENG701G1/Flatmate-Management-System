@@ -17,7 +17,7 @@ namespace WebApiBackend.Model
 
         public DbSet<UserPayment> UserPayments { get; set; }
 
-        public DbSet<Chores> Chores { get; set; }
+        public DbSet<Chore> Chore { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder options)
             => options.UseSqlite("Data Source=testdb.db");

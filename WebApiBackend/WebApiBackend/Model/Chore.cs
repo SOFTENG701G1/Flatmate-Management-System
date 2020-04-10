@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace WebApiBackend.Model
 {
-    public class Chores : IEntity
+    public class Chore : IEntity
     {
         [Key]
         public int Id { get; set; }

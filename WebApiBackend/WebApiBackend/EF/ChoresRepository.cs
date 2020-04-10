@@ -2,7 +2,7 @@
 
 namespace WebApiBackend.EF
 {
-    public class ChoresRepository : EfRepository<Chores, FlatManagementContext>
+    public class ChoresRepository : EfRepository<Chore, FlatManagementContext>
     {
         public ChoresRepository(FlatManagementContext context) : base(context)
         {

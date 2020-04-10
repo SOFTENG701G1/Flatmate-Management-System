@@ -29,7 +29,7 @@ namespace WebApiBackendTests
                 LastName = "Smith",
             };
             //example chore
-            Chores myChore = new Chores
+            Chore myChore = new Chore
             {
                 Id = 1,
                 Title = "dishes",
@@ -41,7 +41,7 @@ namespace WebApiBackendTests
             };
 
             //Object->DTO Test
-            ChoresDTO myDTO = new ChoresDTO(myChore);
+            ChoreDTO myDTO = new ChoreDTO(myChore);
             Assert.AreEqual(myDTO.Id, myChore.Id);
             Assert.AreEqual(myDTO.Title, myChore.Title);
             Assert.AreEqual(myDTO.Description, myChore.Description);
@@ -53,7 +53,7 @@ namespace WebApiBackendTests
             var mapper = _mapperHelper.GetMapper();
 
             //DTO->Object Test
-            Chores backToChore = mapper.Map<ChoresDTO, Chores>(myDTO);
+            Chore backToChore = mapper.Map<ChoreDTO, Chore>(myDTO);
             //in the controller, you would write here "User user = await _userRepository.Get(userId);"
             //but since we don't have that here, we'll assume it we have the user object
             backToChore.AssignedUser = testUser;

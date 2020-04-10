@@ -35,6 +35,6 @@ namespace WebApiBackend.Model
         /// <summary>
         /// List of Chores associated with a flat
         /// </summary>
-        public ICollection<Chores> Chores { get; set; }
+        public ICollection<Chore> Chores { get; set; }
     }
 }

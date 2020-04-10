@@ -4,7 +4,7 @@ using WebApiBackend.Model;
 
 namespace WebApiBackend.Dto
 {
-    public class ChoresDTO : IEntity
+    public class ChoreDTO : IEntity
     {
         public int Id { get; set; }
         public string Title { get; set; }
@@ -14,7 +14,7 @@ namespace WebApiBackend.Dto
         public bool Completed { get; set; }
         public bool Recurring { get; set; }
 
-        public ChoresDTO(Model.Chores chore)
+        public ChoreDTO(Model.Chore chore)
         {
             Id = chore.Id;
             Title = chore.Title;

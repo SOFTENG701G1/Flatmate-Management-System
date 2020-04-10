@@ -14,7 +14,7 @@ namespace WebApiBackend.Helpers
         UserPayment _userPaymentYin1, _userPaymentYin2, _userPaymentBryan1,
             _userPaymentBryan2, _userPaymentTeresa1, _userPaymentTeresa2;
         Schedule _schedule1;
-        Chores _chore1, _chore2;
+        Chore _chore1, _chore2;
         Flat _flat1;
         Flat _flat2;
 
@@ -195,7 +195,7 @@ namespace WebApiBackend.Helpers
                 EndDate = new DateTime(2020, 05, 01)
             };
 
-            _chore1 = new Chores
+            _chore1 = new Chore
             {
                 Id = 1,
                 Title = "dishes",
@@ -206,7 +206,7 @@ namespace WebApiBackend.Helpers
                 Recurring = true,
             };
 
-            _chore2 = new Chores
+            _chore2 = new Chore
             {
                 Id = 2,
                 Title = "rubbish",
@@ -224,7 +224,7 @@ namespace WebApiBackend.Helpers
                 Users = new List<User> { _yin, _teresa, _bryan, _clay },
                 Schedules = new List<Schedule> { _schedule1 },
                 Payments = new List<Payment> { _payment1, _payment2 },
-                Chores = new List<Chores> { _chore1, _chore2}
+                Chores = new List<Chore> { _chore1, _chore2}
             };
 
             _flat2 = new Flat
