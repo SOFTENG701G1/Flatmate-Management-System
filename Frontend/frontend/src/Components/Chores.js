@@ -9,6 +9,7 @@ import {
   TableBody,
 } from "@material-ui/core";
 import moment from "moment";
+import ChoresDialog from "./ChoresDialog";
 
 export default class Chores extends Component {
   constructor(props) {
@@ -164,6 +165,7 @@ export default class Chores extends Component {
             </TableBody>
           </Table>
         </TableContainer>
+        <ChoresDialog></ChoresDialog>
       </div>
     );
   }
