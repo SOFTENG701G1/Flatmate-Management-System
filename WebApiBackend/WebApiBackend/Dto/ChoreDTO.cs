@@ -14,6 +14,8 @@ namespace WebApiBackend.Dto
         public bool Completed { get; set; }
         public bool Recurring { get; set; }
 
+        public ChoreDTO() {}
+
         public ChoreDTO(Model.Chore chore)
         {
             Id = chore.Id;
