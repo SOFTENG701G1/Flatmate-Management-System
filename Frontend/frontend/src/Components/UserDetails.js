@@ -4,6 +4,7 @@ import cross from '../images/cross.png';
 import edit from '../images/edit.png';
 import cancel from '../images/delete.png';
 import profile from '../images/user-profile.png';
+import Utils from '../Util/Utils'
 
 export default class Members extends React.Component {
     render(){
@@ -17,7 +18,7 @@ export default class Members extends React.Component {
                 <p className="InfoHeading">Username</p>
                 <p className="UserInformation">{this.props.member.userName}</p>
                 <p className="InfoHeading">Date of Birth</p>
-                <p className="UserInformation">{this.props.member.dateOfBirth}</p>
+                <p className="UserInformation">{Utils.dateFormatter(this.props.member.dateOfBirth)}</p>
                 <p className="InfoHeading">Phone</p>
                 <p className="UserInformation">{this.props.member.phoneNumber}</p>
                 <p className="InfoHeading">Email</p>
