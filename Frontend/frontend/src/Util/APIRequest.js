@@ -121,7 +121,27 @@ export default class APIRequest {
         return res;
     }
 
-    static async obtainUserPayments() {
+    static async createNewPayment(amount, startDate, paidTo, endDate, account,
+        frequency, contributorsPending, contributorsPaid, description, listOfIds) {
+        let authString = await APIRequest.getAuthString();
+        let res = await fetch(apiBaseUrl + "api/Payments/Flat",
+        {
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization':  authString,
+                'userIds': listOfIds
+            },
+            method: "POST",
+            body: JSON.stringify({ amount: amount, startDate: startDate, paidTo: paidTo,
+                                    endDate: endDate, account: account, frequency: frequency,
+                                    contributorsPending: contributorsPending, contributorsPaid: contributorsPaid, description: description})
+        });
+        console.log(res);
+        return res;
+    }
+
+    static async obtainUserPayments(){
         let authString = await APIRequest.getAuthString();
         let res = await fetch(apiBaseUrl + "api/Payments/User", {
             headers: {
