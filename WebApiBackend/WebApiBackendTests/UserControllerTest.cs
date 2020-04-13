@@ -430,5 +430,65 @@ namespace WebApiBackendTests
             Assert.AreEqual("0", userIds.UserID["Non-existing user"]);
 
         }
+        /// <summary>
+        /// Checks that UserController returns the correct user information
+        /// </summary>
+        [Test]
+        public void TestGetUserInfo()
+        {
+            //Arrange
+            ClaimsIdentity objClaim = new ClaimsIdentity(new List<Claim> { new Claim(ClaimTypes.NameIdentifier, "3") });
+            _userController.HttpContext.User = new ClaimsPrincipal(objClaim);
+            
+
+            //Act
+            var response = _userController.GetUserInfo();
+
+            //Assert
+            Assert.IsInstanceOf<UserInfoDTO>(response.Value);
+            Assert.That(response.Value.Id == 3);
+            Assert.That(response.Value.UserName == "BeboBryan");
+            Assert.That(response.Value.FirstName == "Bryan");
+            Assert.That(response.Value.LastName == "Ang");
+            Assert.That(response.Value.DateOfBirth == new DateTime(1984, 02, 09));
+            Assert.That(response.Value.PhoneNumber == "02243926392");
+            Assert.That(response.Value.Email == "BryanAng@Gmail.com");
+            Assert.That(response.Value.MedicalInformation == "N/A");
+            Assert.That(response.Value.BankAccount == "98-7654-3211234-210");
+        }
+
+        [Test]
+        /// <summary>
+        /// Checks that EditUSer info seuccesfully edits a users info
+        /// </summary>
+        public void TestEditUserInfo()
+        {
+            //Arrange
+            ClaimsIdentity objClaim = new ClaimsIdentity(new List<Claim> { new Claim(ClaimTypes.NameIdentifier, "3") });
+            _userController.HttpContext.User = new ClaimsPrincipal(objClaim);
+            EditUserDTO editUser = new EditUserDTO();
+            editUser.FirstName = "Bryan_Test";
+            editUser.LastName = "Ang_Test";
+            editUser.DateOfBirth = new DateTime(1984, 02, 09);
+            editUser.PhoneNumber = "5555555555";
+            editUser.Email = "edittest@edittest.com";
+            editUser.MedicalInformation = "editing test";
+            editUser.BankAccount = "111-1111-1111111";
+
+            //Act
+            _ = _userController.EditUserInfo(editUser);
+            var response = _userController.GetUserInfo();
+            UserInfoDTO editedUser = response.Value;
+
+            //Assert
+            Assert.That(editedUser.FirstName == editUser.FirstName);
+            Assert.That(editedUser.LastName == editUser.LastName);
+            Assert.That(editedUser.DateOfBirth == editUser.DateOfBirth);
+            Assert.That(editedUser.PhoneNumber == editUser.PhoneNumber);
+            Assert.That(editedUser.Email == editUser.Email);
+            Assert.That(editedUser.MedicalInformation == editUser.MedicalInformation);
+            Assert.That(editedUser.BankAccount == editUser.BankAccount);
+        }
+
     }
 }

@@ -91,7 +91,52 @@ namespace WebApiBackend.Controllers
             }
             return new BadRequestResult();
         }
+        [HttpPost("getUserInfo")]
+        [Authorize]
+        public ActionResult<UserInfoDTO> GetUserInfo()
+        {
+            ClaimsIdentity identity = HttpContext.User.Identity as ClaimsIdentity;
 
+            int userID = Int16.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value);
+            var user = _database.User.FirstOrDefault(x => x.Id == userID);
+            if(user == null)
+            {
+                return new BadRequestResult();
+            }
+
+            return new UserInfoDTO(user);
+        }
+
+
+        /// <summary>
+        /// POST Method - Edits user info
+        /// </summary>
+        /// <param name="info">An EditUserDTO object with user details to be updated</param>
+        /// <returns>An error if the token
+        /// has expired (lifespan over 1 hours,
+        /// does not match with the given user,
+        /// user cannot be found in the DB,
+        /// else, return ok</returns>
+        /// 
+        [HttpPost("editUserInfo")]
+        [Authorize]
+        public ActionResult EditUserInfo(EditUserDTO info)
+        {
+            ClaimsIdentity identity = HttpContext.User.Identity as ClaimsIdentity;
+
+            int userID = Int16.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value);
+
+            if (TryEditUser(userID, info.FirstName, info.LastName, info.DateOfBirth, info.PhoneNumber, info.Email, info.MedicalInformation, info.BankAccount))
+            {
+                return new OkResult();
+            }
+            else
+            {
+                return new BadRequestResult();
+            }
+
+
+        }
         /// <summary>
         /// POST Method - Update the given user's password.
         /// </summary>
@@ -356,7 +401,49 @@ namespace WebApiBackend.Controllers
 
             return true;
         }
+        /// <summary>
+        /// Tries to edit a users information
+        /// </summary>
+        /// <param name="userID"></param>
+        /// <param name="firstName"></param>
+        /// <param name="lastName"></param>
+        /// <param name="dateOfBirth"></param>
+        /// <param name="phoneNumber"></param>
+        /// <param name="email"></param>
+        /// <param name="medicalInformation"></param>
+        /// <param name="bankAccount"></param>
+        /// <returns>A bool indicating if a user info was edited</returns>
+        private bool TryEditUser(int userID, string firstName, string lastName, DateTime dateOfBirth, string phoneNumber, string email, string medicalInformation, string bankAccount)
+        {
+            var user = _database.User.FirstOrDefault(x => x.Id == userID);
 
+            if (user == null)
+            {
+                return false;
+            }
+            // Returns false if email is in use by other user
+            if (_database.User.FirstOrDefault(u => u.Email.ToLower() == email.ToLower()) != null && (email != user.Email))
+            {
+                return false;
+            }
+
+            // Returns false if phone number is in use by other user
+            if (_database.User.FirstOrDefault(u => u.PhoneNumber.ToLower() == phoneNumber.ToLower()) != null && (email != user.Email))
+            {
+                return false;
+            }
+
+            user.FirstName = firstName;
+            user.LastName = lastName;
+            user.DateOfBirth = dateOfBirth;
+            user.PhoneNumber = phoneNumber;
+            user.Email = email;
+            user.MedicalInformation = medicalInformation;
+            user.BankAccount = bankAccount;
+            _database.SaveChanges();
+            return true;
+
+        }
         /// <summary>
         /// Send an E-mail to detination with a link for user to reset password.
         /// </summary>
