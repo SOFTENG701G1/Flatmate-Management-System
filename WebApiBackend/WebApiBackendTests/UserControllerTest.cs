@@ -2,6 +2,8 @@
 using Microsoft.Extensions.Options;
 using NUnit.Framework;
 using System;
+using System.Collections.Generic;
+using System.Security.Claims;
 using WebApiBackend.Controllers;
 using WebApiBackend.Dto;
 using WebApiBackend.Helpers;
@@ -15,6 +17,7 @@ namespace WebApiBackendTests
         private DatabaseSetUpHelper _dbSetUpHelper;
         private ServiceDependencyResolver _serviceProvider;
         private FlatManagementContext _context;
+        private HttpContextHelper _httpContextHelper;
 
         private UserController _userController;
 
@@ -25,7 +28,19 @@ namespace WebApiBackendTests
             _serviceProvider = _dbSetUpHelper.GetServiceDependencyResolver();
             _context = _dbSetUpHelper.GetContext();
 
-            _userController = new UserController(_serviceProvider.GetService<IOptions<AppSettings>>(), _context);
+            _httpContextHelper = new HttpContextHelper();
+            var httpContext = _httpContextHelper.GetHttpContext();
+            var objClaim = _httpContextHelper.GetClaimsIdentity();
+
+            _userController = new UserController(_serviceProvider.GetService<IOptions<AppSettings>>(), _context)
+            {
+                ControllerContext = new ControllerContext
+                {
+                    HttpContext = httpContext
+                }
+            };
+            httpContext.User = new ClaimsPrincipal(objClaim);
+
         }
 
         /// <summary>
@@ -380,5 +395,100 @@ namespace WebApiBackendTests
             // Assert
             Assert.That(checkUserResponse, Is.InstanceOf<ConflictResult>());
         }
+
+        /// <summary>
+        /// Checks that UserController correctly retrives user's id
+        /// </summary>
+        [Test]
+        public void TestCheckCurrentUserID()
+        {
+            // Arrange
+            ClaimsIdentity objClaim = new ClaimsIdentity(new List<Claim> { new Claim(ClaimTypes.NameIdentifier, "3") });
+            _userController.HttpContext.User = new ClaimsPrincipal(objClaim);
+
+            // The ID of the currently authorised user can be found and modified in Helper/HttpConextHelper
+            var response = _userController.GetCurrentUserID().Value;
+            Assert.AreEqual(3, response);
+        }
+
+        /// <summary>
+        /// Checks that UserController correctly retrives user's id
+        /// </summary>
+        [Test]
+        public void TestGetUsersIdsByUsernames()
+        {
+            UserIdDTO userIds = new UserIdDTO();
+            userIds.UserID = new Dictionary<string, string>();
+            userIds.UserID.Add("TestUser1", "0");
+            userIds.UserID.Add("TestUser2", "0");
+            userIds.UserID.Add("Non-existing user", "0");
+
+            // The ID of the currently authorised user can be found and modified in Helper/HttpConextHelper
+            userIds = _userController.GetUsersIdsByUsernames(userIds);
+            Assert.AreEqual("998", userIds.UserID["TestUser1"]);
+            Assert.AreEqual("999", userIds.UserID["TestUser2"]);
+            Assert.AreEqual("0", userIds.UserID["Non-existing user"]);
+
+        }
+        /// <summary>
+        /// Checks that UserController returns the correct user information
+        /// </summary>
+        [Test]
+        public void TestGetUserInfo()
+        {
+            //Arrange
+            ClaimsIdentity objClaim = new ClaimsIdentity(new List<Claim> { new Claim(ClaimTypes.NameIdentifier, "3") });
+            _userController.HttpContext.User = new ClaimsPrincipal(objClaim);
+            
+
+            //Act
+            var response = _userController.GetUserInfo();
+
+            //Assert
+            Assert.IsInstanceOf<UserInfoDTO>(response.Value);
+            Assert.That(response.Value.Id == 3);
+            Assert.That(response.Value.UserName == "BeboBryan");
+            Assert.That(response.Value.FirstName == "Bryan");
+            Assert.That(response.Value.LastName == "Ang");
+            Assert.That(response.Value.DateOfBirth == new DateTime(1984, 02, 09));
+            Assert.That(response.Value.PhoneNumber == "02243926392");
+            Assert.That(response.Value.Email == "BryanAng@Gmail.com");
+            Assert.That(response.Value.MedicalInformation == "N/A");
+            Assert.That(response.Value.BankAccount == "98-7654-3211234-210");
+        }
+
+        [Test]
+        /// <summary>
+        /// Checks that EditUSer info seuccesfully edits a users info
+        /// </summary>
+        public void TestEditUserInfo()
+        {
+            //Arrange
+            ClaimsIdentity objClaim = new ClaimsIdentity(new List<Claim> { new Claim(ClaimTypes.NameIdentifier, "3") });
+            _userController.HttpContext.User = new ClaimsPrincipal(objClaim);
+            EditUserDTO editUser = new EditUserDTO();
+            editUser.FirstName = "Bryan_Test";
+            editUser.LastName = "Ang_Test";
+            editUser.DateOfBirth = new DateTime(1984, 02, 09);
+            editUser.PhoneNumber = "5555555555";
+            editUser.Email = "edittest@edittest.com";
+            editUser.MedicalInformation = "editing test";
+            editUser.BankAccount = "111-1111-1111111";
+
+            //Act
+            _ = _userController.EditUserInfo(editUser);
+            var response = _userController.GetUserInfo();
+            UserInfoDTO editedUser = response.Value;
+
+            //Assert
+            Assert.That(editedUser.FirstName == editUser.FirstName);
+            Assert.That(editedUser.LastName == editUser.LastName);
+            Assert.That(editedUser.DateOfBirth == editUser.DateOfBirth);
+            Assert.That(editedUser.PhoneNumber == editUser.PhoneNumber);
+            Assert.That(editedUser.Email == editUser.Email);
+            Assert.That(editedUser.MedicalInformation == editUser.MedicalInformation);
+            Assert.That(editedUser.BankAccount == editUser.BankAccount);
+        }
+
     }
 }

@@ -3,7 +3,7 @@ using WebApiBackend.Interfaces;
 
 namespace WebApiBackend.Dto
 {
-    public class UserDTO : IEntity
+    public class UserInfoDTO : IEntity
     {
         public int Id { get; set; }
         public string UserName { get; set; }
@@ -14,9 +14,8 @@ namespace WebApiBackend.Dto
         public string Email { get; set; }
         public string MedicalInformation { get; set; }
         public string BankAccount { get; set; }
-        public string HashedPassword { get; set; }
 
-        public UserDTO(Model.User user)
+        public UserInfoDTO(Model.User user)
         {
             Id = user.Id;
             UserName = user.UserName;
@@ -29,7 +28,7 @@ namespace WebApiBackend.Dto
             BankAccount = user.BankAccount;
         }
 
-        public UserDTO()
+        public UserInfoDTO()
         {
 
         }
