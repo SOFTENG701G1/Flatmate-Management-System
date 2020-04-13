@@ -103,7 +103,7 @@ class ChoresDialog extends Component {
                     {this.props.members.flatMembers &&
                       this.props.members.flatMembers.map((member) => {
                         return (
-                          <MenuItem value={member.firstName}>
+                          <MenuItem value={member.id}>
                             {member.firstName}
                           </MenuItem>
                         );

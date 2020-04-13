@@ -16,14 +16,14 @@ import ChoresDialog from "./ChoresDialog";
 export default class Chores extends Component {
   constructor(props) {
     super(props);
-
+    // Temp values for testing without access to API
     this.state = {
       chores: [
         {
           chore_id: 0,
           title: "Dishes",
           description: "do the dishes and put them away",
-          assignee: 0,
+          assignee: 3,
           due_date: "2020-03-16T04:25:50.783Z",
           completed: 1,
           recurring: 0,
@@ -32,7 +32,7 @@ export default class Chores extends Component {
           chore_id: 1,
           title: "Washing",
           description: "do the washing and put them away",
-          assignee: 23,
+          assignee: 1,
           due_date: "2020-03-18T03:25:50.783Z",
           completed: 0,
           recurring: 0,
@@ -41,7 +41,7 @@ export default class Chores extends Component {
           chore_id: 2,
           title: "Cleaning",
           description: "do the cleaning and put them away",
-          assignee: 24,
+          assignee: 2,
           due_date: "2020-03-20T03:25:50.783Z",
           completed: 0,
           recurring: 0,
@@ -70,6 +70,9 @@ export default class Chores extends Component {
         if (member) {
           chore.name = member.firstName;
         }
+      });
+      this.setState({
+        chores,
       });
     });
   }
@@ -180,7 +183,7 @@ export default class Chores extends Component {
                           {cell.id === 0 ? chore.title : ""}
                           {moment(chore.due_date).format("dddd") ===
                           this.columns[cell.id].label
-                            ? chore.assignee
+                            ? chore.name
                             : ""}
                         </TableCell>
                       );
