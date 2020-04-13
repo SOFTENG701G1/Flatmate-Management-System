@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import "../App.css";
+import APIRequest from "../Util/APIRequest";
+
 import {
   TableContainer,
   TableHead,
@@ -21,7 +23,7 @@ export default class Chores extends Component {
           chore_id: 0,
           title: "Dishes",
           description: "do the dishes and put them away",
-          assignee: 22,
+          assignee: 0,
           due_date: "2020-03-16T04:25:50.783Z",
           completed: 1,
           recurring: 0,
@@ -45,7 +47,31 @@ export default class Chores extends Component {
           recurring: 0,
         },
       ],
+      members: {},
     };
+  }
+
+  async getAllMembers() {
+    const memberResult = await APIRequest.getFlatMembers();
+    const json = await memberResult.json();
+    this.setState({
+      isLoaded: true,
+      members: json,
+    });
+  }
+
+  componentDidMount() {
+    this.getAllMembers().then(() => {
+      const { chores, members } = this.state;
+      chores.map((chore) => {
+        let member = members.flatMembers.find(
+          (member) => member.id === chore.assignee
+        );
+        if (member) {
+          chore.name = member.firstName;
+        }
+      });
+    });
   }
 
   columns = [
@@ -111,7 +137,7 @@ export default class Chores extends Component {
   ];
 
   render() {
-    const { chores } = this.state;
+    const { chores, members } = this.state;
     return (
       <div>
         <p>New Chores</p>
@@ -165,7 +191,7 @@ export default class Chores extends Component {
             </TableBody>
           </Table>
         </TableContainer>
-        <ChoresDialog></ChoresDialog>
+        <ChoresDialog members={members}></ChoresDialog>
       </div>
     );
   }

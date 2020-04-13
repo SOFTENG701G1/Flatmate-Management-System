@@ -10,8 +10,13 @@ import {
   Button,
   Checkbox,
   FormControlLabel,
+  MenuItem,
+  FormControl,
+  InputLabel,
+  Select,
 } from "@material-ui/core";
 import AddIcon from "@material-ui/icons/Add";
+import "./chores.css";
 
 class ChoresDialog extends Component {
   constructor(props) {
@@ -72,46 +77,60 @@ class ChoresDialog extends Component {
           <DialogTitle id="form-dialog-title">New Chore</DialogTitle>
           <DialogContent>
             <DialogContentText>Add a new chore</DialogContentText>
-            <form onSubmit={() => this.handleSubmit()}>
-              <TextField
-                autoFocus
-                margin="dense"
-                id="name"
-                label="Title"
-                name="title"
-                fullWidth
-                onChange={(event) => this.handleChange(event)}
-              />
-              <TextField
-                label="Description"
-                name="description"
-                onChange={(event) => this.handleChange(event)}
-              ></TextField>
-              <TextField
-                label="Assignee"
-                name="assignee"
-                onChange={(event) => this.handleChange(event)}
-              ></TextField>
-              <TextField
-                id="datetime-local"
-                label="Next appointment"
-                type="datetime-local"
-                name="due_date"
-                defaultValue="2017-05-24T10:30"
-                InputLabelProps={{
-                  shrink: true,
-                }}
-                onChange={(event) => this.handleChange(event)}
-              />
-              <FormControlLabel
-                control={<Checkbox color="primary" />}
-                value={this.checked}
-                label="Recurring"
-                labelPlacement="start"
-                name="recurring"
-                onChange={(event) => this.handleChange(event)}
-              />
-            </form>
+            <div className="choresDialog">
+              <form onSubmit={() => this.handleSubmit()}>
+                <TextField
+                  autoFocus
+                  margin="dense"
+                  id="name"
+                  label="Title"
+                  name="title"
+                  fullWidth
+                  onChange={(event) => this.handleChange(event)}
+                />
+                <TextField
+                  label="Description"
+                  name="description"
+                  onChange={(event) => this.handleChange(event)}
+                ></TextField>
+                <FormControl>
+                  <InputLabel>Assignee</InputLabel>
+                  <Select
+                    label="Assignee"
+                    name="assignee"
+                    onChange={(event) => this.handleChange(event)}
+                  >
+                    {this.props.members.flatMembers &&
+                      this.props.members.flatMembers.map((member) => {
+                        return (
+                          <MenuItem value={member.firstName}>
+                            {member.firstName}
+                          </MenuItem>
+                        );
+                      })}
+                  </Select>
+                </FormControl>
+                <TextField
+                  id="datetime-local"
+                  label="Due Date"
+                  type="datetime-local"
+                  name="due_date"
+                  defaultValue="2017-05-24T10:30:00Z"
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  onChange={(event) => this.handleChange(event)}
+                />
+                <FormControlLabel
+                  control={<Checkbox color="primary" />}
+                  value={this.checked}
+                  label="Recurring"
+                  labelPlacement="start"
+                  name="recurring"
+                  onChange={(event) => this.handleChange(event)}
+                />
+              </form>
+            </div>
           </DialogContent>
           <DialogActions>
             <Button onClick={() => this.handleClickClose()} color="primary">
