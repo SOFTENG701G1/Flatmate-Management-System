@@ -32,9 +32,10 @@ namespace WebApiBackend.Controllers
 
         /// <summary>
         /// POST Method - Creates a new chore for the flat
+        /// </summary>
         /// <param name="choreDTO">The payment you want to be created</param>
         /// <response code="200">Payment created</response>
-        /// /// <response code="400">Asignee does not exist</response>
+        /// <response code="400">Asignee does not exist</response>
         /// <response code="401">Not an authorised user</response>
         /// <returns> The created payment is returned </returns>        
         [HttpPost("Flat")]
