@@ -33,7 +33,7 @@ namespace WebApiBackend.Controllers
         /// <summary>
         /// POST Method - Creates a new chore for the flat
         /// </summary>
-        /// <param name="choreDTO">The payment you want to be created</param>
+        /// <param name="choreDTO">The chore you want to be created</param>
         /// <response code="200">Payment created</response>
         /// <response code="400">Asignee does not exist</response>
         /// <response code="401">Not an authorised user</response>
@@ -64,6 +64,36 @@ namespace WebApiBackend.Controllers
             await _flatRepository.Update(flat);
 
             return Ok();
+        }
+
+
+        /// <summary>
+        /// GET Method - Gets all chores for a flat
+        /// </summary>
+        /// <response code="200">Chores for flat returned</response>
+        /// <response code="400">Flat does not exist for signed in user</response>
+        /// <response code="401">Not an authorised user</response>
+        /// <returns> The created payment is returned </returns>        
+        [HttpGet("Flat")]
+        public async Task<IActionResult> GetAllChoresForFlat()
+        {
+            // Get flat ID from the user creds
+            ClaimsIdentity identity = HttpContext.User.Identity as ClaimsIdentity;
+
+            int userID = Int16.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value);
+            var usr = await _userRepository.Get(userID);
+            int? flatId = usr.FlatId;
+
+            if (flatId == null)
+            {
+                return BadRequest();
+            }
+
+            List<Chore> chores = await GetAllChoresFromFlatId(flatId);
+
+            List<ChoreDTO> dtos =  _mapper.Map<List<Chore>, List<ChoreDTO>>(chores);
+            Console.WriteLine(dtos);
+            return Ok(dtos);
         }
 
         /// <summary>
