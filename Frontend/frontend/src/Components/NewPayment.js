@@ -36,10 +36,12 @@ export default class NewPayment extends Component {
           //this.setState({ error: "Amount, Start date, Paid to, End date, Account, Frequency, Contributors pending, Contributors paid and description is required."});
           //return;
         //}
-        let listOfIds = [1];
+        this.contributorsPending = {"TestUser1" : "0"};
+        let listOfIds = await APIRequest.getUserIdsByUsername(this.contributorsPending);
+        var userID = listOfIds.TestUser1;
         let paymentResult = await APIRequest.createNewPayment(this.state.amount, this.state.startDate, this.state.paidTo,
           this.state.endDate, this.state.account, this.state.frequency, this.state.contributorsPending,
-          this.state.contributorsPaid, this.state.description, listOfIds);
+          this.state.contributorsPaid, this.state.description, userID);
           console.log("testing 2");
         if (paymentResult.ok) {
           this.forceUpdate(); // Triggers re-render, which will activate redirect now user is setup
