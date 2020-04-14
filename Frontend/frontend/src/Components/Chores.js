@@ -139,6 +139,10 @@ export default class Chores extends Component {
     },
   ];
 
+  createChore(chore) {
+    APIRequest.createChore(chore).then((result) => console.log(result));
+  }
+
   render() {
     const { chores, members } = this.state;
     return (
@@ -194,7 +198,10 @@ export default class Chores extends Component {
             </TableBody>
           </Table>
         </TableContainer>
-        <ChoresDialog members={members}></ChoresDialog>
+        <ChoresDialog
+          members={members}
+          createChore={this.createChore}
+        ></ChoresDialog>
       </div>
     );
   }
