@@ -17,6 +17,8 @@ namespace WebApiBackend.Model
 
         public DbSet<UserPayment> UserPayments { get; set; }
 
+        public DbSet<Chore> Chore { get; set; }
+
         protected override void OnConfiguring(DbContextOptionsBuilder options)
             => options.UseSqlite("Data Source=testdb.db");
 
@@ -85,10 +87,11 @@ namespace WebApiBackend.Model
                 e.HasMany(e => e.Users)
                 .WithOne(u => u.Flat)
                 .OnDelete(DeleteBehavior.SetNull);
+
+                e.HasMany(e => e.Chores)
+                .WithOne()
+                .OnDelete(DeleteBehavior.SetNull);
             });
-
-
-
-            }
+        }
     }
 }
