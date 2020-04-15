@@ -62,7 +62,7 @@ export default class App extends React.Component {
                   <MembersPage/>
                 </Route>
                 <Route path="/app/">
-                  <Home/>
+                  <Dashboard/>
                 </Route>
               </Switch>
             </Route>
@@ -73,8 +73,4 @@ export default class App extends React.Component {
   }
 }
 
-/* Router is linked to functions for the time being */
-function Home() {
-  return <div class='section-header'>Flat Management System</div>;
-}
 
