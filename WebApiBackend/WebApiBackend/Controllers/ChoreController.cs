@@ -37,7 +37,7 @@ namespace WebApiBackend.Controllers
         /// <response code="200">Payment created</response>
         /// <response code="400">Asignee does not exist</response>
         /// <response code="401">Not an authorised user</response>
-        /// <returns> The created payment is returned </returns>        
+        /// <returns> The created chore is returned </returns>        
         [HttpPost("Flat")]
         public async Task<IActionResult> CreateChoreForFlat([FromBody] ChoreDTO choreDTO)
         {
@@ -73,7 +73,7 @@ namespace WebApiBackend.Controllers
         /// <response code="200">Chores for flat returned</response>
         /// <response code="400">Flat does not exist for signed in user</response>
         /// <response code="401">Not an authorised user</response>
-        /// <returns> The created payment is returned </returns>        
+        /// <returns> The chores for a flat are returned </returns>        
         [HttpGet("Flat")]
         public async Task<IActionResult> GetAllChoresForFlat()
         {
@@ -91,8 +91,13 @@ namespace WebApiBackend.Controllers
 
             List<Chore> chores = await GetAllChoresFromFlatId(flatId);
 
-            List<ChoreDTO> dtos =  _mapper.Map<List<Chore>, List<ChoreDTO>>(chores);
-            Console.WriteLine(dtos);
+            List<ChoreDTO> dtos = new List<ChoreDTO>();
+
+            foreach (Chore c in chores)
+            {
+                dtos.Add(new ChoreDTO(c));
+            }
+
             return Ok(dtos);
         }
 
