@@ -236,4 +236,17 @@ export default class APIRequest {
     });
     return res;
   }
+
+  static async getChoresForFlat() {
+    let authString = await APIRequest.getAuthString();
+    let res = await fetch(apiBaseUrl + "api/chore/Flat", {
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: authString,
+      },
+      method: "GET",
+    });
+    return res;
+  }
 }
