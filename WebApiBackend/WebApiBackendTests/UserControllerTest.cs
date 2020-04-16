@@ -424,7 +424,7 @@ namespace WebApiBackendTests
             userIds.UserID.Add("Non-existing user", "0");
 
             // The ID of the currently authorised user can be found and modified in Helper/HttpConextHelper
-            userIds = _userController.GetUsersIdsByUsernames(userIds);
+            userIds = _userController.GetUsersIdsByUsernames(userIds).Result;
             Assert.AreEqual("998", userIds.UserID["TestUser1"]);
             Assert.AreEqual("999", userIds.UserID["TestUser2"]);
             Assert.AreEqual("0", userIds.UserID["Non-existing user"]);
