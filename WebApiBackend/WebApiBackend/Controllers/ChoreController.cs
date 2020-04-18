@@ -102,6 +102,39 @@ namespace WebApiBackend.Controllers
         }
 
         /// <summary>
+        /// DELETE Method - Deletes a chore based on its ID
+        /// </summary>
+        /// <response code="200">Chore has been deleted</response>
+        /// <response code="400">Chore does not exist for signed-in user</response>
+        /// <response code="401">Not an authorised user</response>
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteChore([FromRoute] int choreID)
+        {
+            ClaimsIdentity identity = HttpContext.User.Identity as ClaimsIdentity;
+
+            int userID = Int16.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value);
+            var usr = await _userRepository.Get(userID);
+            int? flatId = usr.FlatId;
+
+            var chore = await _choresRepository.Get(choreID);
+
+            if (flatId == null || chore == null)
+            {
+                return BadRequest();
+            }
+
+            // Ensure the chore belongs to the same flat as the user
+            List<Chore> chores = await GetAllChoresFromFlatId(flatId);
+            if (!chores.Contains(chore))
+            {
+                return BadRequest();
+            }
+
+            await _choresRepository.Delete(choreID);
+            return Ok();
+        }
+
+        /// <summary>
         /// Helper method to get all chores for a specific flat
         /// </summary>
         /// <param name="flatId"></param>
