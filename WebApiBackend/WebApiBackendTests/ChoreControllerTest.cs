@@ -104,5 +104,41 @@ namespace WebApiBackendTests
             // Assert
             Assert.IsInstanceOf<OkObjectResult>(response);
         }
+
+        /// <summary>
+        /// Ensures that a chore can be deleted by the correct user
+        /// </summary>
+        [Test]
+        public async Task TestDeleteChoreCorrectUserAsync()
+        {
+            // Arrange
+            var chore = new Chore
+            {
+                Title = "dishes",
+                Description = "do the dishes",
+                AssignedUser = await _userRepository.Get(1),    // Chore has to be assigned to a real user
+                DueDate = new DateTime(2020, 04, 04),
+                Completed = false,
+                Recurring = true,
+            };
+
+            Chore result = await _choresRepository.Add(chore);
+            int id = result.Id;
+
+            // We need to ensure that the chore is added to the flat belonging to the active user
+            // (The active user and flat has been initialised by WebApiBackendTests.Helper.DatabaseSetUpHelper
+            //    using WebApiBackend.Helpers.DevelopmentDatabaseSetup)
+            ClaimsIdentity identity = _httpContextHelper.GetClaimsIdentity();
+            int userId = Int16.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value);
+            User activeUser = await _userRepository.Get(userId);
+            activeUser.Flat.Chores.Add(result);
+
+            // Act
+            var response = await _choreController.DeleteChore(id);
+
+            // Assert
+            Assert.IsInstanceOf<OkResult>(response);
+            Assert.Null(await _choresRepository.Get(id));
+        }
     }
 }
