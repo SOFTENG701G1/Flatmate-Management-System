@@ -10,10 +10,7 @@ export default class MembersPage extends Component {
 
     }
 
-    async addMember(){
-      let memberResult = await APIRequest.addMember(this.state.userName);
-      return memberResult.json();
-    };
+
 
     change = e => {
         // this.props.onChange({ [e.target.name]: e.target.value });
@@ -34,7 +31,10 @@ export default class MembersPage extends Component {
           });
       };
 
-
+    async addMember(){
+      let memberResult = await APIRequest.addMember(this.state.userName);
+      return memberResult.json();
+    };
     
     addUser(e){
         e.preventDefault();
