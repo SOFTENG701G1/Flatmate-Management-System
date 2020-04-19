@@ -10,6 +10,7 @@ import {
   TableCell,
   TableBody,
 } from "@material-ui/core";
+import DeleteIcon from "@material-ui/icons/Delete";
 import moment from "moment";
 import ChoresDialog from "./ChoresDialog";
 
@@ -32,6 +33,15 @@ export default class Chores extends Component {
   async getAllChores() {
     const choreResult = await APIRequest.getChoresForFlat();
     return choreResult.json();
+  }
+
+  async deleteChore(id) {
+    const deleteResult = await APIRequest.deleteChore(id);
+    console.log(deleteResult.json());
+    this.getAllChores().then((chores) => {
+      const { members } = this.state;
+      this.mapNamesToChores(chores, members);
+    });
   }
 
   componentDidMount() {
@@ -147,6 +157,7 @@ export default class Chores extends Component {
                     </TableCell>
                   );
                 })}
+                <TableCell />
               </TableRow>
             </TableHead>
             <TableBody>
@@ -177,6 +188,12 @@ export default class Chores extends Component {
                         </TableCell>
                       );
                     })}
+                    <TableCell
+                      onClick={() => this.deleteChore(chore.id)}
+                      style={{ backgroundColor: "white" }}
+                    >
+                      <DeleteIcon></DeleteIcon>
+                    </TableCell>
                   </TableRow>
                 );
               })}

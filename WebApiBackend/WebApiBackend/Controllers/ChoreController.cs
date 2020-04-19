@@ -107,7 +107,7 @@ namespace WebApiBackend.Controllers
         /// <response code="200">Chore has been deleted</response>
         /// <response code="400">Chore does not exist for signed-in user</response>
         /// <response code="401">Not an authorised user</response>
-        [HttpDelete("{id}")]
+        [HttpDelete("{choreID}")]
         public async Task<IActionResult> DeleteChore([FromRoute] int choreID)
         {
             ClaimsIdentity identity = HttpContext.User.Identity as ClaimsIdentity;
