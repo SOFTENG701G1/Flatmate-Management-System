@@ -60,6 +60,7 @@ export default class Chores extends Component {
       if (member) {
         chore.name = member.firstName;
       }
+      return chore;
     });
     this.setState({
       members: members,
