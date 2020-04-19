@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import APIRequest from "../Util/APIRequest";
 export default class MembersPage extends Component {
     constructor(props){
         super(props)
@@ -9,44 +10,31 @@ export default class MembersPage extends Component {
 
     }
 
+    async addMember(){
+      let memberResult = await APIRequest.addMember(this.state.userName);
+      return memberResult.json();
+    };
+
     change = e => {
         // this.props.onChange({ [e.target.name]: e.target.value });
         this.setState({
           [e.target.name]: e.target.value
         });
-        console.log(e.target.value)
-      };
-    
-      validate = () => {
-        let isError = false;
-        const errors = {
-          userNameError: "",
-        };
-    
-        if (this.state.userName !== "test") {
-          isError = true;
-          errors.userNameError = "Username does not match to the system";
-        }
-        
-        this.setState({
-          ...this.state,
-          ...errors
-        });
-        return isError;
+      
       };
     
       onSubmit = e => {
         e.preventDefault();
-        const err = this.validate();
-        if (!err) {
           //this.props.onSubmit(this.state);
           // clear form
+          this.addMember();
           this.setState({
             userName: "",
-            userNameError: "",
+            userNameError: ""
           });
-        }
       };
+
+
     
     addUser(e){
         e.preventDefault();
