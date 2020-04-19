@@ -18,6 +18,7 @@ import RequireLogin from './Components/RequireLogin';
 import MembersPage from './Components/Members';
 import ForgotPassword from './Views/ForgotPassword';
 import ResetPassword from './Views/ResetPassword';
+import ProfilePage from './Components/UserProfile'; 
 
 export default class App extends React.Component {
   render() {
@@ -49,6 +50,9 @@ export default class App extends React.Component {
               <RequireLogin/>
               <Navigation/>
               <Switch>
+                <Route path="/app/profile">
+                  <ProfilePage />
+                </Route>
                 <Route path="/app/dashboard">
                   <Dashboard />
                 </Route>
