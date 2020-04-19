@@ -1,87 +1,208 @@
-    import React, {Component} from 'react';
-import '../App.css';
-import Container from 'react-bootstrap/Container';
-import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
-import ChoresUpdateButton from './ChoresUpdateButton';
-import './chores.css';
-import ChoresTable from './ChoresTable';
+import React, { Component } from "react";
+import "../App.css";
+import APIRequest from "../Util/APIRequest";
 
-let title = "All" /* Placeholder tab names/content until we can retrieve from backend and chores table implemented */
-/**
- * This class creates the chores components which shows the user all of their chores and 
- * all of the other people's chores on their flat.
- * They can also add or modiy chores and set chores to done
- */
+import {
+  TableContainer,
+  TableHead,
+  Table,
+  TableRow,
+  TableCell,
+  TableBody,
+} from "@material-ui/core";
+import moment from "moment";
+import ChoresDialog from "./ChoresDialog";
+
 export default class Chores extends Component {
+  constructor(props) {
+    super(props);
+    // Temp values for testing without access to API
+    this.state = {
+      chores: [
+        {
+          chore_id: 0,
+          title: "Dishes",
+          description: "do the dishes and put them away",
+          assignee: 3,
+          due_date: "2020-03-16T04:25:50.783Z",
+          completed: 1,
+          recurring: 0,
+        },
+        {
+          chore_id: 1,
+          title: "Washing",
+          description: "do the washing and put them away",
+          assignee: 1,
+          due_date: "2020-03-18T03:25:50.783Z",
+          completed: 0,
+          recurring: 0,
+        },
+        {
+          chore_id: 2,
+          title: "Cleaning",
+          description: "do the cleaning and put them away",
+          assignee: 2,
+          due_date: "2020-03-20T03:25:50.783Z",
+          completed: 0,
+          recurring: 0,
+        },
+      ],
+      members: {},
+    };
+  }
 
-    constructor(props) {
-        super(props)
-        this.state = {
-            chores: [
-                {
-                    chore: "Do dishes",
-                    assignee: "Yin",
-                    completeBy: "17th March",
-                    completed: false
-                },
-                {
-                    chore: "Vacuum",
-                    assignee: "Yin",
-                    completeBy: "18th March",
-                    completed: false
-                },
-                {
-                    chore: "Tidy lounge",
-                    assignee: "Teresa",
-                    completeBy: "19th March",
-                    completed: true
-                },
-                {
-                    chore: "Do the washing",
-                    assignee: "Bryan",
-                    completeBy: "19th March",
-                    completed: true
-                },
-            ]
+  async getAllMembers() {
+    const memberResult = await APIRequest.getFlatMembers();
+    const json = await memberResult.json();
+    this.setState({
+      isLoaded: true,
+      members: json,
+    });
+  }
+
+  componentDidMount() {
+    this.getAllMembers().then(() => {
+      const { chores, members } = this.state;
+      chores.map((chore) => {
+        let member = members.flatMembers.find(
+          (member) => member.id === chore.assignee
+        );
+        if (member) {
+          chore.name = member.firstName;
         }
-    }
+      });
+      this.setState({
+        chores,
+      });
+    });
+  }
 
-    render () {
-        return (
-            <Container >
-                <div class='section-header' style={{"width":"45%", "marginBottom": "50px"}}>Flat Chores</div>
+  columns = [
+    {
+      id: 0,
+      label: "",
+    },
+    {
+      id: 1,
+      label: "Monday",
+    },
+    {
+      id: 2,
+      label: "Tuesday",
+    },
+    {
+      id: 3,
+      label: "Wednesday",
+    },
+    {
+      id: 4,
+      label: "Thursday",
+    },
+    {
+      id: 5,
+      label: "Friday",
+    },
+    {
+      id: 6,
+      label: "Saturday",
+    },
+    {
+      id: 7,
+      label: "Sunday",
+    },
+  ];
 
-                <Tabs>
-                    <TabList>
-                        <Tab>{title}</Tab>    
-                        <Tab>Yin</Tab>
-                        <Tab>Teresa</Tab>
-                        <Tab>Bryan</Tab>
-                    </TabList>
-                    
-                    <TabPanel> 
-                        <ChoresTable assignee="All" chores={this.state.chores}/>
-                    </TabPanel>
-                    <TabPanel>
-                        <ChoresTable assignee="Yin" chores={this.state.chores.filter(chore => {
-                            return 'Yin' === chore.assignee && chore;
-                        })}/>
-                    </TabPanel>
-                    <TabPanel>
-                        <ChoresTable assignee="Teresa" chores={this.state.chores.filter(chore => {
-                            return 'Teresa' === chore.assignee && chore;
-                        })}/>
-                    </TabPanel>
-                    <TabPanel>
-                        <ChoresTable assignee="Bryan" chores={this.state.chores.filter(chore => {
-                            return 'Bryan' === chore.assignee && chore;
-                        })}/>
-                    </TabPanel>
-                </Tabs>
-                <div style={{"margin":"30px"}}>
-                    <ChoresUpdateButton></ChoresUpdateButton>
-                </div>
-            </Container>
-            );
-    }
+  blankRow = [
+    {
+      id: 0,
+    },
+    {
+      id: 1,
+    },
+    {
+      id: 2,
+    },
+    {
+      id: 3,
+    },
+    {
+      id: 4,
+    },
+    {
+      id: 5,
+    },
+    {
+      id: 6,
+    },
+    {
+      id: 7,
+    },
+  ];
+
+  createChore(chore) {
+    APIRequest.createChore(chore).then((result) => console.log(result));
+  }
+
+  render() {
+    const { chores, members } = this.state;
+    return (
+      <div>
+        <p>New Chores</p>
+        <TableContainer>
+          <Table stickyHeader>
+            <TableHead>
+              <TableRow>
+                {this.columns.map((column) => {
+                  return (
+                    <TableCell
+                      key={column.id}
+                      style={({ textcolor: "white" }, { minWidth: 106 })}
+                    >
+                      {column.label}
+                    </TableCell>
+                  );
+                })}
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {chores.map((chore) => {
+                return (
+                  <TableRow>
+                    {this.blankRow.map((cell) => {
+                      return (
+                        <TableCell
+                          style={
+                            ({ color: "white" },
+                            {
+                              backgroundColor:
+                                moment(chore.due_date).format("dddd") ===
+                                this.columns[cell.id].label
+                                  ? chore.completed
+                                    ? "green"
+                                    : "red"
+                                  : "white",
+                            })
+                          }
+                        >
+                          {cell.id === 0 ? chore.title : ""}
+                          {moment(chore.due_date).format("dddd") ===
+                          this.columns[cell.id].label
+                            ? chore.name
+                            : ""}
+                        </TableCell>
+                      );
+                    })}
+                  </TableRow>
+                );
+              })}
+            </TableBody>
+          </Table>
+        </TableContainer>
+        <ChoresDialog
+          members={members}
+          createChore={this.createChore}
+        ></ChoresDialog>
+      </div>
+    );
+  }
 }
