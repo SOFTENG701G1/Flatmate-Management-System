@@ -97,25 +97,5 @@ namespace WebApiBackend.Controllers
 
             return CreatedAtAction("Get", new { id = entityDTO.Id }, entityDTO);
         }
-
-        /// <summary>
-        /// FOR DEV TESTING
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        // DELETE: api/[controller]/5
-        [HttpDelete("{id}")]
-        public async Task<ActionResult<TEntityDTO>> Delete(int id)
-        {
-            var entity = await _repository.Delete(id);
-            if (entity == null)
-            {
-                return NotFound();
-            }
-            TEntityDTO entityDTO = _mapper.Map<TEntity, TEntityDTO>(entity);
-
-
-            return entityDTO;
-        }
     }
 }
