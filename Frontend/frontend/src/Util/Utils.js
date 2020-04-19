@@ -1,8 +1,6 @@
 export default class Utils {
-    
-    static dateFormatter(date){
-        var date = new Date(date);
-        return date.getDay() + "/" + date.getMonth() + "/" + date.getFullYear();
-    }
-
+  static dateFormatter(dateToFormat) {
+    const date = new Date(dateToFormat);
+    return `${date.getDay()}/${date.getMonth()}/${date.getFullYear()}`;
+  }
 }
