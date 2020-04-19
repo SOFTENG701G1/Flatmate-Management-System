@@ -30,7 +30,7 @@ class ChoresDialog extends Component {
         assignee: "",
         due_date: "",
         recurring: false,
-        completed: 0,
+        completed: false,
       },
     };
   }
@@ -63,6 +63,7 @@ class ChoresDialog extends Component {
   handleSubmit() {
     // do somehign
     console.log(this.state.chore);
+    this.props.createChore(this.state.chore);
     this.handleClickClose();
   }
 
