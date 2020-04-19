@@ -17,6 +17,7 @@ using Microsoft.AspNetCore.Authorization;
 using System.Security.Cryptography;
 using System.Web;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace WebApiBackend.Controllers
 {
@@ -503,7 +504,7 @@ namespace WebApiBackend.Controllers
         /// <param name="userIds">A UserIdDTO object with username and a default id (must be 0)</param>
         /// <returns>If a username is found, the id gets updated, otherwise it is assigned a "0" value. Returns a key/value pair of usernames and their ids </returns>
         [HttpPost("getUsersIds")]
-        public UserIdDTO GetUsersIdsByUsernames(UserIdDTO userIds)
+        public async Task<UserIdDTO> GetUsersIdsByUsernames(UserIdDTO userIds)
         {
 
             // Search for nicknames in the database, assign the found id to as a value to the dictionary
