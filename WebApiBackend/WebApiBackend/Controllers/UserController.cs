@@ -13,8 +13,10 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Security.Policy;
 using System.Net.Mail;
+using Microsoft.AspNetCore.Authorization;
 using System.Security.Cryptography;
 using System.Web;
+using System.Collections.Generic;
 
 namespace WebApiBackend.Controllers
 {
@@ -26,7 +28,7 @@ namespace WebApiBackend.Controllers
         private readonly AppSettings _appSettings;
         private readonly FlatManagementContext _database;
 
-        public UserController( IOptions<AppSettings> appSettings, FlatManagementContext context)
+        public UserController(IOptions<AppSettings> appSettings, FlatManagementContext context)
         {
             _appSettings = appSettings.Value;
             _database = context;
@@ -89,7 +91,52 @@ namespace WebApiBackend.Controllers
             }
             return new BadRequestResult();
         }
+        [HttpPost("getUserInfo")]
+        [Authorize]
+        public ActionResult<UserInfoDTO> GetUserInfo()
+        {
+            ClaimsIdentity identity = HttpContext.User.Identity as ClaimsIdentity;
 
+            int userID = Int16.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value);
+            var user = _database.User.FirstOrDefault(x => x.Id == userID);
+            if(user == null)
+            {
+                return new BadRequestResult();
+            }
+
+            return new UserInfoDTO(user);
+        }
+
+
+        /// <summary>
+        /// POST Method - Edits user info
+        /// </summary>
+        /// <param name="info">An EditUserDTO object with user details to be updated</param>
+        /// <returns>An error if the token
+        /// has expired (lifespan over 1 hours,
+        /// does not match with the given user,
+        /// user cannot be found in the DB,
+        /// else, return ok</returns>
+        /// 
+        [HttpPost("editUserInfo")]
+        [Authorize]
+        public ActionResult EditUserInfo(EditUserDTO info)
+        {
+            ClaimsIdentity identity = HttpContext.User.Identity as ClaimsIdentity;
+
+            int userID = Int16.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value);
+
+            if (TryEditUser(userID, info.FirstName, info.LastName, info.DateOfBirth, info.PhoneNumber, info.Email, info.MedicalInformation, info.BankAccount))
+            {
+                return new OkResult();
+            }
+            else
+            {
+                return new BadRequestResult();
+            }
+
+
+        }
         /// <summary>
         /// POST Method - Update the given user's password.
         /// </summary>
@@ -128,7 +175,7 @@ namespace WebApiBackend.Controllers
         [HttpPost("forgotPassword")]
         public ActionResult<ForgotPassResponseDTO> ForgotPassword(ForgotPassRequestDTO forgotPass)
         {
-            
+
             // Checking if the non nullable fields (as per business rules) are not empty/null 
             if (string.IsNullOrEmpty(forgotPass.userOrEmail))
             {
@@ -140,7 +187,8 @@ namespace WebApiBackend.Controllers
             string user_tmp;
             Regex regex = new Regex(@"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$");
             Match match = regex.Match(forgotPass.userOrEmail);
-            if (match.Success){
+            if (match.Success)
+            {
                 email_tmp = forgotPass.userOrEmail;
                 // Check if email exists in the DB, if not then it's a bad request
                 if (_database.User.FirstOrDefault(u => u.Email.ToLower() == email_tmp.ToLower()) == null)
@@ -218,14 +266,14 @@ namespace WebApiBackend.Controllers
         public ActionResult<RegisterResponseDTO> Register(RegisterRequestDTO registerRequest)
         {
             // Checking if the non nullable fields (as per business rules) are not empty/null 
-            if (string.IsNullOrEmpty(registerRequest.UserName) || string.IsNullOrEmpty(registerRequest.Email) || 
+            if (string.IsNullOrEmpty(registerRequest.UserName) || string.IsNullOrEmpty(registerRequest.Email) ||
                 string.IsNullOrEmpty(registerRequest.PhoneNumber) || string.IsNullOrEmpty(registerRequest.Password))
             {
                 return new BadRequestResult();
             }
 
             User user;
-            if (TryCreateUser(registerRequest.UserName, registerRequest.FirstName, registerRequest.LastName, registerRequest.DateOfBirth, registerRequest.PhoneNumber, 
+            if (TryCreateUser(registerRequest.UserName, registerRequest.FirstName, registerRequest.LastName, registerRequest.DateOfBirth, registerRequest.PhoneNumber,
                 registerRequest.Email, registerRequest.MedicalInformation, registerRequest.BankAccount, registerRequest.Password, out user))
             {
                 return new RegisterResponseDTO
@@ -269,7 +317,7 @@ namespace WebApiBackend.Controllers
             }
             return false;
         }
-            
+
         /// <summary>
         /// Creates a JWT token for users with the specified UserID
         /// </summary>
@@ -308,7 +356,7 @@ namespace WebApiBackend.Controllers
         /// <param name="password"></param>
         /// <param name="user">A user object - populated if the creation was successful</param>
         /// <returns>A bool indicating if a user was created</returns>
-        private bool TryCreateUser(string userName, string firstName, string lastName, DateTime dateOfBirth, string phoneNumber, 
+        private bool TryCreateUser(string userName, string firstName, string lastName, DateTime dateOfBirth, string phoneNumber,
             string email, string medicalInformation, string bankAccount, string password, out User user)
         {
             user = null;
@@ -316,7 +364,7 @@ namespace WebApiBackend.Controllers
             // Returns false if username is not unique (must be unique as per entity schema). Does not create user.
             if (_database.User.FirstOrDefault(u => u.UserName.ToLower() == userName.ToLower()) != null)
             {
-                return false; 
+                return false;
             }
 
             // Returns false if email is not unique (must be unique as per entity schema). Does not create user.
@@ -353,7 +401,49 @@ namespace WebApiBackend.Controllers
 
             return true;
         }
+        /// <summary>
+        /// Tries to edit a users information
+        /// </summary>
+        /// <param name="userID"></param>
+        /// <param name="firstName"></param>
+        /// <param name="lastName"></param>
+        /// <param name="dateOfBirth"></param>
+        /// <param name="phoneNumber"></param>
+        /// <param name="email"></param>
+        /// <param name="medicalInformation"></param>
+        /// <param name="bankAccount"></param>
+        /// <returns>A bool indicating if a user info was edited</returns>
+        private bool TryEditUser(int userID, string firstName, string lastName, DateTime dateOfBirth, string phoneNumber, string email, string medicalInformation, string bankAccount)
+        {
+            var user = _database.User.FirstOrDefault(x => x.Id == userID);
 
+            if (user == null)
+            {
+                return false;
+            }
+            // Returns false if email is in use by other user
+            if (_database.User.FirstOrDefault(u => u.Email.ToLower() == email.ToLower()) != null && (email != user.Email))
+            {
+                return false;
+            }
+
+            // Returns false if phone number is in use by other user
+            if (_database.User.FirstOrDefault(u => u.PhoneNumber.ToLower() == phoneNumber.ToLower()) != null && (email != user.Email))
+            {
+                return false;
+            }
+
+            user.FirstName = firstName;
+            user.LastName = lastName;
+            user.DateOfBirth = dateOfBirth;
+            user.PhoneNumber = phoneNumber;
+            user.Email = email;
+            user.MedicalInformation = medicalInformation;
+            user.BankAccount = bankAccount;
+            _database.SaveChanges();
+            return true;
+
+        }
         /// <summary>
         /// Send an E-mail to detination with a link for user to reset password.
         /// </summary>
@@ -362,7 +452,7 @@ namespace WebApiBackend.Controllers
         private void SendResetEmail(string destination, string resetToken)
         {
             MailMessage mailMessage = new MailMessage("se701uoa2020@gmail.com", destination);
-            
+
             // Further detilas could be added so the content of the E-mail is more informative
             // Currently it's hard coding the full URL prior to the query string due to techinical difficulties
             mailMessage.Body = "http://localhost:3000/login/reset-password?email=" + destination + "&token=" + resetToken;
@@ -381,5 +471,90 @@ namespace WebApiBackend.Controllers
             smtpClient.EnableSsl = true;
             smtpClient.Send(mailMessage);
         }
+
+        /// <summary>
+        /// GET Method - Get the id of the current user
+        /// </summary>
+        /// <response code="200">Success</response>
+        /// <response code="401">Not an authorised user</response>
+        /// <returns>Retrieves the id of the current user</returns>
+        [HttpGet("getCurrentUserID")]
+        [Authorize]
+        public ActionResult<int> GetCurrentUserID()
+        {
+            try
+            {
+                var identity = HttpContext.User.Identity as ClaimsIdentity;
+                int userID = Int16.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value);
+                if (userID != 0)
+                {
+                    return userID;
+                }
+                return null;
+            } catch
+            {
+                return new UnauthorizedResult();
+            }
+        }
+
+        /// <summary>
+        /// GET Method - Maps usernames to their ids
+        /// </summary>
+        /// <param name="userIds">A UserIdDTO object with username and a default id (must be 0)</param>
+        /// <returns>If a username is found, the id gets updated, otherwise it is assigned a "0" value. Returns a key/value pair of usernames and their ids </returns>
+        [HttpPost("getUsersIds")]
+        public UserIdDTO GetUsersIdsByUsernames(UserIdDTO userIds)
+        {
+
+            // Search for nicknames in the database, assign the found id to as a value to the dictionary
+            UserIdDTO usernameIds = userIds;
+            usernameIds.UserID = userIds.UserID;
+            foreach(String entry in userIds.UserID.Keys.ToList())
+            {
+                if (_database.User.FirstOrDefault(u => u.UserName.ToLower() == entry.ToLower()) != null)
+                {
+                    string userId = _database.User.FirstOrDefault(u => u.UserName.ToLower().Equals(entry.ToLower())).Id.ToString();
+                    usernameIds.UserID[entry] = userId;
+                } else
+                {
+                    usernameIds.UserID[entry] = "0";
+                }
+            }
+            return usernameIds;
+        }
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

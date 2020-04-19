@@ -68,6 +68,7 @@ namespace WebApiBackend
             services.AddScoped<UserPaymentsRepository>();
             services.AddScoped<UserRepository>();
             services.AddScoped<FlatRepository>();
+            services.AddScoped<ChoresRepository>();
             services.AddAutoMapper(typeof(Startup));
 
             //swagger
