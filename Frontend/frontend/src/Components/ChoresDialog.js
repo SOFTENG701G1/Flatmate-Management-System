@@ -28,7 +28,7 @@ class ChoresDialog extends Component {
         title: "",
         description: "",
         assignee: "",
-        due_date: "",
+        dueDate: "",
         recurring: false,
         completed: false,
       },
@@ -114,8 +114,8 @@ class ChoresDialog extends Component {
                 <TextField
                   id="datetime-local"
                   label="Due Date"
-                  type="datetime-local"
-                  name="due_date"
+                  type="date"
+                  name="dueDate"
                   defaultValue="2017-05-24T10:30:00Z"
                   InputLabelProps={{
                     shrink: true,
