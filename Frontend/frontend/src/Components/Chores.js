@@ -18,62 +18,42 @@ export default class Chores extends Component {
     super(props);
     // Temp values for testing without access to API
     this.state = {
-      chores: [
-        {
-          chore_id: 0,
-          title: "Dishes",
-          description: "do the dishes and put them away",
-          assignee: 3,
-          due_date: "2020-03-16T04:25:50.783Z",
-          completed: 1,
-          recurring: 0,
-        },
-        {
-          chore_id: 1,
-          title: "Washing",
-          description: "do the washing and put them away",
-          assignee: 1,
-          due_date: "2020-03-18T03:25:50.783Z",
-          completed: 0,
-          recurring: 0,
-        },
-        {
-          chore_id: 2,
-          title: "Cleaning",
-          description: "do the cleaning and put them away",
-          assignee: 2,
-          due_date: "2020-03-20T03:25:50.783Z",
-          completed: 0,
-          recurring: 0,
-        },
-      ],
+      chores: [],
       members: {},
     };
+    this.createChore = this.createChore.bind(this);
   }
 
   async getAllMembers() {
     const memberResult = await APIRequest.getFlatMembers();
-    const json = await memberResult.json();
-    this.setState({
-      isLoaded: true,
-      members: json,
-    });
+    return memberResult.json();
+  }
+
+  async getAllChores() {
+    const choreResult = await APIRequest.getChoresForFlat();
+    return choreResult.json();
   }
 
   componentDidMount() {
-    this.getAllMembers().then(() => {
-      const { chores, members } = this.state;
-      chores.map((chore) => {
-        let member = members.flatMembers.find(
-          (member) => member.id === chore.assignee
-        );
-        if (member) {
-          chore.name = member.firstName;
-        }
+    this.getAllChores().then((chores) => {
+      this.getAllMembers().then((members) => {
+        this.mapNamesToChores(chores, members);
       });
-      this.setState({
-        chores,
-      });
+    });
+  }
+
+  mapNamesToChores(chores, members) {
+    chores.map((chore) => {
+      let member = members.flatMembers.find(
+        (member) => member.id === chore.assignee
+      );
+      if (member) {
+        chore.name = member.firstName;
+      }
+    });
+    this.setState({
+      members: members,
+      chores: chores,
     });
   }
 
@@ -140,7 +120,12 @@ export default class Chores extends Component {
   ];
 
   createChore(chore) {
-    APIRequest.createChore(chore).then((result) => console.log(result));
+    APIRequest.createChore(chore).then((result) => {
+      this.getAllChores().then((chores) => {
+        const { members } = this.state;
+        this.mapNamesToChores(chores, members);
+      });
+    });
   }
 
   render() {
@@ -175,7 +160,7 @@ export default class Chores extends Component {
                             ({ color: "white" },
                             {
                               backgroundColor:
-                                moment(chore.due_date).format("dddd") ===
+                                moment(chore.dueDate).format("dddd") ===
                                 this.columns[cell.id].label
                                   ? chore.completed
                                     ? "green"
@@ -185,7 +170,7 @@ export default class Chores extends Component {
                           }
                         >
                           {cell.id === 0 ? chore.title : ""}
-                          {moment(chore.due_date).format("dddd") ===
+                          {moment(chore.dueDate).format("dddd") ===
                           this.columns[cell.id].label
                             ? chore.name
                             : ""}
