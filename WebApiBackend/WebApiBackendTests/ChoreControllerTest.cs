@@ -140,5 +140,39 @@ namespace WebApiBackendTests
             Assert.IsInstanceOf<OkResult>(response);
             Assert.Null(await _choresRepository.Get(id));
         }
+
+        /// <summary>
+        /// Ensures that chores can be retrieved for a flat
+        /// </summary>
+        [Test]
+        public async Task TestMarkChoreAsCompletedAsync()
+        {
+            var chore = new Chore
+            {
+                Title = "dishes",
+                Description = "do the dishes",
+                AssignedUser = new User(),
+                DueDate = new DateTime(2020, 04, 04),
+                Completed = false,
+                Recurring = true,
+            };
+
+
+            await _choresRepository.Add(chore);
+
+            Chore r_chore = await _choresRepository.Get(chore.Id);
+
+            // Assert
+            Assert.AreEqual(r_chore.Completed, false);
+            var response = await _choreController.MarkChoreAsCompleted(chore.Id);
+            r_chore = await _choresRepository.Get(chore.Id);
+            Assert.AreEqual(r_chore.Completed, true);
+            Assert.AreEqual(r_chore.Id, chore.Id);
+
+            response = await _choreController.MarkChoreAsCompleted(chore.Id);
+            r_chore = await _choresRepository.Get(chore.Id);
+            Assert.AreEqual(r_chore.Completed, false);
+
+        }
     }
 }
