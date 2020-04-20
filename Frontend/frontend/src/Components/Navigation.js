@@ -15,7 +15,11 @@ export default class Navigation extends React.Component {
           <div onClick={this.showModal}>
             <div className='user_profile'> </div>
             <div className='user_profile_name'>
+              <Link to="/app/profile">
+              <a className="menu__link" href="/app/profile">
               { User.getUserState() ? User.getUserState().userName : '' }
+              </a>
+              </Link>
             </div>
           </div>
           </li>
