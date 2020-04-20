@@ -45,11 +45,8 @@ export default class MemberTile extends React.Component {
 
   async deleteUser() {
     const res = await APIRequest.deleteMember(this.state.person.userName);
-    console.log(res);
     if (res.status === 200) {
       this.refreshParent();
-    } else {
-      console.log(this.state.removed);
     }
   }
 

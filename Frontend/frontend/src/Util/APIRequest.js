@@ -144,7 +144,6 @@ export default class APIRequest {
     listOfIds
   ) {
     let authString = await APIRequest.getAuthString();
-    console.log("the ids in the ap are" + listOfIds);
     let res = await fetch(apiBaseUrl + "api/Payments/Flat", {
       headers: {
         Accept: "application/json",
