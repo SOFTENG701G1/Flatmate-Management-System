@@ -170,7 +170,7 @@ namespace WebApiBackend.Controllers
                 return new BadRequestResult();
             }
 
-            Chore chore = await _choresRepository.Delete(choreId);
+            Chore chore = await _choresRepository.Get(choreId);
             //check chore exists
             if (chore == null)
             {
@@ -178,9 +178,9 @@ namespace WebApiBackend.Controllers
             }
 
             chore.Completed = true;
-            await _choresRepository.Add(chore);
+            await _choresRepository.Update(chore);
 
-            return NoContent();
+            return Ok();
         }
 
     }

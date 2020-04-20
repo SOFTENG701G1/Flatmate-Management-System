@@ -167,6 +167,7 @@ namespace WebApiBackendTests
             var response = await _choreController.MarkChoreAsCompleted(chore.Id);
             r_chore = await _choresRepository.Get(chore.Id);
             Assert.AreEqual(r_chore.Completed, true);
+            Assert.AreEqual(r_chore.Id, chore.Id);
 
         }
     }
