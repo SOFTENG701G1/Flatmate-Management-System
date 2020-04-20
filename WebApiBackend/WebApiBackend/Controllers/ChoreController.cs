@@ -177,7 +177,7 @@ namespace WebApiBackend.Controllers
                 return BadRequest();
             }
 
-            chore.Completed = true;
+            chore.Completed = !chore.Completed;
             await _choresRepository.Update(chore);
 
             return Ok();
