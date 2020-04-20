@@ -10,8 +10,7 @@ export default class MembersPage extends Component {
 
     }
 
-
-
+  
     change = e => {
         // this.props.onChange({ [e.target.name]: e.target.value });
         this.setState({
@@ -24,15 +23,14 @@ export default class MembersPage extends Component {
         e.preventDefault();
           //this.props.onSubmit(this.state);
           // clear form
-          this.addMember();
+          this.addMember().then((val) => this.userNameError = String(val.resultCode));
           this.setState({
-            userName: "",
-            userNameError: ""
+            userName: ""
           });
       };
 
     async addMember(){
-      let memberResult = await APIRequest.addMember(this.state.userName);
+      const memberResult = await APIRequest.addMember(this.state.userName);
       return memberResult.json();
     };
     
