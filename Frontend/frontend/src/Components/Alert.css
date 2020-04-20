@@ -1,0 +1,59 @@
+css .display-block {
+  display: block;
+}
+
+.display-none {
+  display: none;
+}
+
+#modal {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 20%;
+  height: auto;
+  text-align: center;
+  background-color: #0c0f13;
+  border-radius: 8px;
+  border: 2px solid #1f5673;
+  position: fixed;
+  padding-top: 15px;
+  padding-bottom: 15px;
+}
+
+#Name {
+  font-size: 20px;
+  text-align: center;
+  padding-top: 10px;
+  padding-left: 0px;
+}
+
+.UserInformation {
+  color: #eeeeee;
+  height: auto;
+  font-size: 13px;
+}
+.UserInformation2 {
+  color: #eeeeee;
+  height: auto;
+  font-size: 13px;
+  margin-top: 0px;
+  padding: 15px;
+}
+
+.userDetailsButton {
+  margin: auto;
+  text-align: center;
+  padding: 30px;
+  color: white;
+  border: none;
+  background-color: #0c0f13;
+}
+.userDetailsButton2 {
+  margin-left: 40px;
+  text-align: center;
+  padding: 30px;
+  color: rgb(247, 70, 70);
+  border: none;
+  background-color: #0c0f13;
+}
