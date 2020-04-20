@@ -8,6 +8,8 @@ namespace WebApiBackend.Dto
     {
         public int Id { get; set; }
         public int Amount { get; set; }
+        public String PaidTo { get; set; }
+        public string Account { get; set; }
         public bool Fixed { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }

@@ -26,6 +26,16 @@ namespace WebApiBackend.Model
         public int Amount { get; set; }
 
         /// <summary>
+        /// Who the payment is supposed to be paid to
+        /// </summary>
+        public String PaidTo { get; set; }
+
+        /// <summary>
+        /// Who the payment is supposed to be paid to
+        /// </summary>
+        public String Account { get; set; }
+
+        /// <summary>
         /// True if the payment is fixed, false if the payment is variable
         /// </summary>
         public bool Fixed { get; set; }
