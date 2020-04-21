@@ -13,7 +13,7 @@ export default class Alert extends React.Component {
             Remove {""}
             {this.props.member.firstName} {this.props.member.lastName}
           </p>
-          <p className="UserInformation2" id="Name">
+          <p className="UserExtraInformation" id="Name">
             from the flat?
           </p>
           <button
