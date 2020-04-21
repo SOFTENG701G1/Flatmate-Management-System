@@ -6,28 +6,6 @@ css .display-block {
   display: none;
 }
 
-#modal {
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 20%;
-  height: auto;
-  text-align: center;
-  background-color: #0c0f13;
-  border-radius: 8px;
-  border: 2px solid #1f5673;
-  position: fixed;
-  padding-top: 15px;
-  padding-bottom: 15px;
-}
-
-#Name {
-  font-size: 20px;
-  text-align: center;
-  padding-top: 10px;
-  padding-left: 0px;
-}
-
 .UserInformation {
   color: #eeeeee;
   height: auto;
@@ -41,7 +19,7 @@ css .display-block {
   padding: 15px;
 }
 
-.userDetailsButton {
+.userDetailsButtonCancel {
   margin: auto;
   text-align: center;
   padding: 30px;
@@ -49,7 +27,7 @@ css .display-block {
   border: none;
   background-color: #0c0f13;
 }
-.userDetailsButton2 {
+.userDetailsButtonDelete {
   margin-left: 40px;
   text-align: center;
   padding: 30px;

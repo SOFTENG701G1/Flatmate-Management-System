@@ -164,7 +164,6 @@ export default class APIRequest {
         description: description,
       }),
     });
-    console.log(res);
     return res;
   }
 
@@ -304,6 +303,7 @@ export default class APIRequest {
     });
     return res;
   }
+
   //Gets the account information of the current user
   static async getUserInfo() {
     let authString = await APIRequest.getAuthString();

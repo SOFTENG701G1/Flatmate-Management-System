@@ -1,7 +1,7 @@
 import React from "react";
 import UserImage from "../images/user-profile.png";
 import UserDetails from "./UserDetails";
-import Alert from "./Alert";
+import Alert from "./ConfirmRemoveMember";
 import Utils from "../Util/Utils";
 import APIRequest from "../Util/APIRequest";
 

@@ -1,5 +1,5 @@
 import React from "react";
-import "./Alert.css";
+import "./ConfirmRemoveMember.css";
 
 export default class Alert extends React.Component {
   render() {
@@ -16,11 +16,14 @@ export default class Alert extends React.Component {
           <p className="UserInformation2" id="Name">
             from the flat?
           </p>
-          <button className="userDetailsButton2" onClick={this.props.delete}>
+          <button
+            className="userDetailsButtonDelete"
+            onClick={this.props.delete}
+          >
             DELETE
           </button>
           <button
-            className="userDetailsButton"
+            className="userDetailsButtonCancel"
             onClick={this.props.handleClose}
           >
             CANCEL
