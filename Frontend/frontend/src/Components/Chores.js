@@ -43,6 +43,14 @@ export default class Chores extends Component {
     });
   }
 
+  async markAsComplete(id) {
+    const deleteResult = await APIRequest.markChoreComplete(id);
+    this.getAllChores().then((chores) => {
+      const { members } = this.state;
+      this.mapNamesToChores(chores, members);
+    });
+  }
+
   componentDidMount() {
     this.getAllChores().then((chores) => {
       this.getAllMembers().then((members) => {
@@ -178,6 +186,12 @@ export default class Chores extends Component {
                                     : "red"
                                   : "white",
                             })
+                          }
+                          onClick={
+                            moment(chore.dueDate).format("dddd") ===
+                            this.columns[cell.id].label
+                              ? () => this.markAsComplete(chore.id)
+                              : null
                           }
                         >
                           {cell.id === 0 ? chore.title : ""}
