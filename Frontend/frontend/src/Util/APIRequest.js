@@ -258,8 +258,8 @@ export default class APIRequest {
       method: "POST",
       body: JSON.stringify({ UserID: UserID }),
     }).then((data) => {
-      if (data.ok){
-       return data.json();
+      if (data.ok) {
+        return data.json();
       }
     });
     return res;
@@ -288,6 +288,19 @@ export default class APIRequest {
         Authorization: authString,
       },
       method: "GET",
+    });
+    return res;
+  }
+
+  static async deleteChore(id) {
+    let authString = await APIRequest.getAuthString();
+    let res = await fetch(apiBaseUrl + `api/Chore/${id}`, {
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: authString,
+      },
+      method: "DELETE",
     });
     return res;
   }
