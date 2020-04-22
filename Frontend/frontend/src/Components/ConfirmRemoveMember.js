@@ -17,13 +17,13 @@ export default class Alert extends React.Component {
             from the flat?
           </p>
           <button
-            className="userDetailsButtonDelete"
+            className="UserDetailsButtonDelete"
             onClick={this.props.delete}
           >
             DELETE
           </button>
           <button
-            className="userDetailsButtonCancel"
+            className="UserDetailsButtonCancel"
             onClick={this.props.handleClose}
           >
             CANCEL
