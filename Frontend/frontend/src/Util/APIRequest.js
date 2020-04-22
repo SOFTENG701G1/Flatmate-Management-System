@@ -303,8 +303,19 @@ export default class APIRequest {
     });
     return res;
   }
-
-
+  
+  static async deleteChore(id) {
+    let authString = await APIRequest.getAuthString();
+    let res = await fetch(apiBaseUrl + `api/Chore/${id}`, {
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: authString,
+      },
+      method: "DELETE",
+    });
+    return res;
+  }
   //Gets the account information of the current user
   static async getUserInfo() {
     let authString = await APIRequest.getAuthString();
@@ -350,54 +361,29 @@ export default class APIRequest {
     return res;
   }
 
-      //Gets the account information of the current user
-      static async getUserInfo() {
-        let authString = await APIRequest.getAuthString();
-        let res = await fetch(apiBaseUrl + "api/User/getUserInfo",
-            {
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json',
-                    'Authorization': authString
-                },
-                method: "POST",
-                
-            });
+  static async addMember(username) {
+    let authString = await APIRequest.getAuthString();
+    let res = await fetch(apiBaseUrl + `api/Flat/AddUsertoFlat/${username}`, {
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: authString,
+      },
+      method: "GET",
+    });
+    return res;
+  }
 
-
-        return res
-    }
-    static async editUserInfo(firstName, lastName, dateOfBirth, phoneNumber, email, medicalInfo, bankAccountNumber) {
-        let authString = await APIRequest.getAuthString();
-        let res = await fetch(apiBaseUrl + "api/User/editUserInfo",
-        {
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-                'Authorization': authString
-            },
-            method: "POST",
-            body: JSON.stringify({firstname: firstName, lastname: lastName,
-                dateofbirth: dateOfBirth, phonenumber: phoneNumber, email: email,
-                medicalinformation: medicalInfo, bankAccount: bankAccountNumber})
-            
-        });
-
-        return res;
-    }
-
-    static async addMember(username){
-      let authString = await APIRequest.getAuthString();
-      let res = await fetch(apiBaseUrl + `api/Flat/AddUsertoFlat/${username}`,
-      {
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-            Authorization: authString,
-          },
-          method: "GET",
-        });
-        return res
-      }
-
+  static async markChoreComplete(id) {
+    let authString = await APIRequest.getAuthString();
+    let res = await fetch(apiBaseUrl + `api/Chore/Chores/${id}`, {
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: authString,
+      },
+      method: "PUT",
+    });
+    return res;
+  }
 }
