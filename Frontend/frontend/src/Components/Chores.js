@@ -37,7 +37,6 @@ export default class Chores extends Component {
 
   async deleteChore(id) {
     const deleteResult = await APIRequest.deleteChore(id);
-    console.log(deleteResult.json());
     this.getAllChores().then((chores) => {
       const { members } = this.state;
       this.mapNamesToChores(chores, members);
