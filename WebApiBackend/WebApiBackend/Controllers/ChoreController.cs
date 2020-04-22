@@ -151,5 +151,37 @@ namespace WebApiBackend.Controllers
 
             return chores;
         }
+
+        /// <summary>
+        /// PUT Method - sets specific chore to completed
+        /// </summary>
+        /// <response code="200">Chore successfully marked as completed</response>
+        /// <response code="400">Bad request, chore does not exist</response>
+        /// <response code="401">Not an authorised user</response>      
+        [HttpPut("Chores/{choreId}")]
+        public async Task<IActionResult> MarkChoreAsCompleted(int choreId)
+        {
+            //check identity
+            ClaimsIdentity identity = HttpContext.User.Identity as ClaimsIdentity;
+            int userID = Int16.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value);
+            var user = await _userRepository.Get(userID);
+            if (user == null)
+            {
+                return new BadRequestResult();
+            }
+
+            Chore chore = await _choresRepository.Get(choreId);
+            //check chore exists
+            if (chore == null)
+            {
+                return BadRequest();
+            }
+
+            chore.Completed = !chore.Completed;
+            await _choresRepository.Update(chore);
+
+            return Ok();
+        }
+
     }
 }
