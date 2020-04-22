@@ -19,7 +19,7 @@ css .display-block {
   padding: 15px;
 }
 
-.userDetailsButtonCancel {
+.UserDetailsButtonCancel {
   margin: auto;
   text-align: center;
   padding: 30px;
@@ -27,7 +27,7 @@ css .display-block {
   border: none;
   background-color: #0c0f13;
 }
-.userDetailsButtonDelete {
+.UserDetailsButtonDelete {
   margin-left: 40px;
   text-align: center;
   padding: 30px;
