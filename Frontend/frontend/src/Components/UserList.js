@@ -8,20 +8,28 @@ export default class UserList extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            checkedItems: new Map(),
+            checkedItems: [],
         };
 
-        this.handleChange = this.handleChange.bind(this);
+        this.updateStateList = this.updateStateList.bind(this);
     }
 
-    handleChange(e) {
-        const item = e.target.name;
-        const isChecked = e.target.checked;
-        this.setState(prevState => ({ checkedItems: prevState.checkedItems.set(item, isChecked) }));
+    updateStateList(e, value){
+        if (e.target.checked){
+          this.setState({
+            checkedItems: this.state.checkedItems.concat([value])
+          })
+        } else {
+          this.setState({
+            checkedItems : this.state.checkedItems.filter(function(val) {return val!==value})
+          })
+       }
+      
     }
 
     render () {
         return (
+            <React.Fragment>
             <Container className="UserContainer">
                  <Row className="UserListHeader">{this.props.title}</Row>
                  <Container className="UserListContainer">
@@ -29,7 +37,7 @@ export default class UserList extends Component {
                 this.props.listItems.map(item => (
                     <Row className="UserListRow">
                   <label key={item} >
-                    <Checkbox name={item} checked={this.state.checkedItems.get(item)} onChange={this.handleChange} />
+                    <Checkbox name={item} onChange={(e)=>this.updateStateList(e,item)} />
                     {item}
                   </label>
                   </Row>
@@ -37,6 +45,7 @@ export default class UserList extends Component {
                 }
                  </Container>
             </Container>
+            </React.Fragment>
         );
     }
 }
