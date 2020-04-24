@@ -56,6 +56,20 @@ hr.LineDivider {
   width: 100%;
 }
 
+.UserListContainer.container {
+  width: 100%;
+}
+
+.UserListHeader.row {
+  font-weight: bold;
+  text-align: left;
+  padding-bottom: 8px;
+  font-size: 12px;
+}
+.UserListRow.row {
+  font-size: 12px;
+}
+
 /* Styling for coloured checkboxes */
 span.MuiCheckbox-root {
   color: #EEEEEE;
