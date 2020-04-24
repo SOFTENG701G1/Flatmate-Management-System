@@ -1,0 +1,18 @@
+.UserListContainer {
+    width: 100%;
+    max-height: 80px;
+    overflow-y: auto;
+  }
+  
+  .UserListHeader{
+    font-weight: bold;
+    text-align: left;
+    font-size: 12px;
+  }
+  .UserListRow {
+    font-size: 12px;
+  }
+  
+  .UserContainer {
+    width: 100%;
+  }
