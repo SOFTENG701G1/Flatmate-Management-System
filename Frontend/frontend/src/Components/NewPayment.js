@@ -4,6 +4,7 @@ import Modal from 'react-bootstrap/Modal';
 import Cross from '../images/cross.png';
 import "./NewPayment.css";
 import APIRequest from '../Util/APIRequest';
+import UserList from './UserList';
 
 /*
     This class renders the New Payments page.
@@ -126,18 +127,26 @@ export default class NewPayment extends Component {
                             </tr>
                             <tr>
                                 <td colSpan="3">
-                                    <form>
+                                    {/* <form>
                                         <label className="ContributorsPendingLabel"> Contributors Pending: </label>
                                         <input className="ContributorsPendingInput" type="text" contributorsPending="contributorsPending" onChange={this.bindInput} placeholder='Contributors Pending*' defaultValue={this.state.contributorsPending}/>
-                                    </form>
+                                    </form> */}
+                                    <UserList
+                                        title="Contributors Pending"
+                                        listItems={[this.props.people]}
+                                    />
                                 </td>
                             </tr>
                             <tr>
                                 <td colSpan="3">
-                                    <form>
+                                    {/* <form>
                                         <label className="ContributorsPaidLabel"> Contributors Paid: </label>
                                         <input className="ContributorsPaidInput" type="text" contributorPaids="contributorsPaid" onChange={this.bindInput} placeholder='Contributors Paid*' defaultValue={this.state.contributorsPaid}/>
-                                    </form>
+                                    </form> */}
+                                    <UserList
+                                        title="Contributors Paid"
+                                        listItems={[this.props.people]}
+                                    />
                                 </td>
                             </tr>
                             <tr>

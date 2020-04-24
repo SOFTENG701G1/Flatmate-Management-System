@@ -13,6 +13,7 @@ export default class Payments extends Component {
         super();
 
         this.state = {
+            flatMembers: [""],
             showView: false,
             show: false,
             payments: [],
@@ -35,6 +36,13 @@ export default class Payments extends Component {
             if(!data) data = [];
             this.setState({
                 payments: data
+            });
+        });
+
+        await APIRequest.obtainUserPayments().then(data => {
+            if(!data) data = [];
+            this.setState({
+                flatMembers: data
             });
         });
 
@@ -140,7 +148,7 @@ export default class Payments extends Component {
                             <span className="NewPaymentButton" onClick={this._handleOpen}>
                                 <button className="NewPaymentButton">Add new</button>
                             </span>
-                            <NewPayment onClose={this._handleClose} show={this.state.show} />
+                            <NewPayment onClose={this._handleClose} show={this.state.show} people={this.state.flatMembers} />
                         </td>
                     </tr>
                     <tr>
