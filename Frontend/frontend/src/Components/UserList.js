@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
-import '../App.css';
 import Checkbox from '@material-ui/core/Checkbox';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/row';
+import './UserList.css'
 
 export default class UserList extends Component {
     constructor(props) {
@@ -22,18 +22,20 @@ export default class UserList extends Component {
 
     render () {
         return (
-            <Container className="CheckBoxListContainer">
-                 <Row >{this.props.title}</Row>
-                {
+            <Container className="UserContainer">
+                 <Row className="UserListHeader">{this.props.title}</Row>
+                 <Container className="UserListContainer">
+                 {
                 this.props.listItems.map(item => (
-                    <Row>
-                  <label key={item}>
+                    <Row className="UserListRow">
+                  <label key={item} >
                     <Checkbox name={item} checked={this.state.checkedItems.get(item)} onChange={this.handleChange} />
                     {item}
                   </label>
                   </Row>
                 ))
-            }
+                }
+                 </Container>
             </Container>
         );
     }
