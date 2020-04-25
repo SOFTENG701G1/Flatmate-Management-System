@@ -18,13 +18,17 @@ export default class UserList extends Component {
         if (e.target.checked){
           this.setState({
             checkedItems: this.state.checkedItems.concat([value])
+          }, () => {
+              this.props.onListChange(this.state.checkedItems);
           })
         } else {
           this.setState({
             checkedItems : this.state.checkedItems.filter(function(val) {return val!==value})
+          }, () => {
+              this.props.onListChange(this.state.checkedItems);
           })
        }
-      
+
     }
 
     render () {

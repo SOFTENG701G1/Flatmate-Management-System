@@ -28,6 +28,7 @@ export default class NewPayment extends Component {
 
                 this.createNewPayment = this.createNewPayment.bind(this);
                 this.bindInput = this.bindInput.bind(this);
+                this.updateContributorsPaid = this.updateContributorsPaid.bind(this);
     }
 
     async createNewPayment (event) {
@@ -61,11 +62,26 @@ export default class NewPayment extends Component {
       }
       bindInput (event) {
         let target = event.target;
-    
+
         this.setState({
           [target.name]: target.value
         });
+
       }
+
+      updateContributorsPaid (items) {
+        this.setState({
+          contributorsPaid: items
+        });
+
+    }
+
+    updateContributorsPending (items) {
+        this.setState({
+        contributorsPending: items
+        });
+    }
+    
     render() {
         const {show, onClose} = this.props
         return (
@@ -87,13 +103,13 @@ export default class NewPayment extends Component {
                                 <td className="RowOneColOne" colSpan="2">
                                     <form>
                                         <label className="AmountLabel"> Amount: </label>
-                                        <input className="AmountInput" type="text" amount="amount" onChange={this.bindInput} placeholder='Amount*' defaultValue={this.state.amount}/>
+                                        <input className="AmountInput" type="text" name="amount" onChange={this.bindInput} placeholder='Amount*' defaultValue={this.state.amount}/>
                                     </form>
                                 </td>
                                 <td className="RowOneColTwo">
                                     <form>
                                         <label className="StartDateLabel"> Start Date: </label>
-                                        <input className="StartDateInput" type="text" startDate="startDate" onChange={this.bindInput} placeholder='Start Date*' defaultValue={this.state.startDate}/>
+                                        <input className="StartDateInput" type="text" name="startDate" onChange={this.bindInput} placeholder='Start Date*' defaultValue={this.state.startDate}/>
                                     </form>
                                 </td>
                             </tr>
@@ -101,13 +117,13 @@ export default class NewPayment extends Component {
                                 <td colSpan="2">
                                     <form>
                                         <label className="PaidToLabel"> Paid To: </label>
-                                        <input className="PaidToInput" type="text" paidTo="paidTo" onChange={this.bindInput} placeholder='Paid To*' defaultValue={this.state.paidTo}/>
+                                        <input className="PaidToInput" type="text" name="paidTo" onChange={this.bindInput} placeholder='Paid To*' defaultValue={this.state.paidTo}/>
                                     </form>
                                 </td>
                                 <td>
                                     <form>
                                         <label className="EndDateLabel"> End Date: </label>
-                                        <input className="EndDateInput" type="text" endDate="endDate" onChange={this.bindInput} placeholder='End Date*' defaultValue={this.state.endDate}/>
+                                        <input className="EndDateInput" type="text" name="endDate" onChange={this.bindInput} placeholder='End Date*' defaultValue={this.state.endDate}/>
                                     </form>
                                 </td>
                             </tr>
@@ -115,13 +131,13 @@ export default class NewPayment extends Component {
                                 <td colSpan="2">
                                     <form>
                                         <label className="AccountLabel"> Account: </label>
-                                        <input className="AccountInput" type="text" account="account" onChange={this.bindInput} placeholder='Account*' defaultValue={this.state.account}/>
+                                        <input className="AccountInput" type="text" name="account" onChange={this.bindInput} placeholder='Account*' defaultValue={this.state.account}/>
                                     </form>
                                 </td>
                                 <td>
                                     <form>
                                         <label className="FrequencyLabel"> Frequency: </label>
-                                        <input className="FrequencyInput" type="text" frequency="frequency" onChange={this.bindInput} placeholder='Frequency*' defaultValue={this.state.frequency}/>
+                                        <input className="FrequencyInput" type="text" name="frequency" onChange={this.bindInput} placeholder='Frequency*' defaultValue={this.state.frequency}/>
                                     </form>
                                 </td>
                             </tr>
@@ -134,6 +150,7 @@ export default class NewPayment extends Component {
                                     <UserList
                                         title="Contributors Pending"
                                         listItems={[this.props.people]}
+                                        onListChange={this.updateContributorsPending}
                                     />
                                 </td>
                             </tr>
@@ -146,6 +163,7 @@ export default class NewPayment extends Component {
                                     <UserList
                                         title="Contributors Paid"
                                         listItems={[this.props.people]}
+                                        onListChange={this.updateContributorsPaid}
                                     />
                                 </td>
                             </tr>
