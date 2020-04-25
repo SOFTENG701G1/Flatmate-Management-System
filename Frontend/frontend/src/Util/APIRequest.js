@@ -144,7 +144,6 @@ export default class APIRequest {
     listOfIds
   ) {
     let authString = await APIRequest.getAuthString();
-    console.log("the ids in the ap are" + listOfIds);
     let res = await fetch(apiBaseUrl + "api/Payments/Flat", {
       headers: {
         Accept: "application/json",
@@ -165,7 +164,6 @@ export default class APIRequest {
         description: description,
       }),
     });
-    console.log(res);
     return res;
   }
 
@@ -248,6 +246,20 @@ export default class APIRequest {
     return res;
   }
 
+  static async deleteMember(userName) {
+    let authString = await APIRequest.getAuthString();
+    let res = await fetch(apiBaseUrl + "api/flat/" + userName, {
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: authString,
+      },
+      method: "DELETE",
+    });
+
+    return res;
+  }
+
   // Get ids of specified users
   static async getUserIdsByUsername(UserID) {
     let res = await fetch(apiBaseUrl + "api/User/getUsersIds", {
@@ -291,7 +303,7 @@ export default class APIRequest {
     });
     return res;
   }
-
+  
   static async deleteChore(id) {
     let authString = await APIRequest.getAuthString();
     let res = await fetch(apiBaseUrl + `api/Chore/${id}`, {

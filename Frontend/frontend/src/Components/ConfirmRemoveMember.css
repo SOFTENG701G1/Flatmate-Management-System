@@ -1,0 +1,37 @@
+css .display-block {
+  display: block;
+}
+
+.display-none {
+  display: none;
+}
+
+.UserInformation {
+  color: #eeeeee;
+  height: auto;
+  font-size: 13px;
+}
+.UserExtraInformation {
+  color: #eeeeee;
+  height: auto;
+  font-size: 13px;
+  margin-top: 0px;
+  padding: 15px;
+}
+
+.UserDetailsButtonCancel {
+  margin: auto;
+  text-align: center;
+  padding: 30px;
+  color: white;
+  border: none;
+  background-color: #0c0f13;
+}
+.UserDetailsButtonDelete {
+  margin-left: 40px;
+  text-align: center;
+  padding: 30px;
+  color: rgb(247, 70, 70);
+  border: none;
+  background-color: #0c0f13;
+}

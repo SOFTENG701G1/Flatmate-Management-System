@@ -1,66 +1,67 @@
 .MembersPage {
-    position: absolute;
-    background-color: transparent;
-    border-color: aliceblue;
-    max-width: 78%;
-    min-width: 60%;
-    padding-left: 8%;
+  position: absolute;
+  background-color: transparent;
+  border-color: aliceblue;
+  max-width: 78%;
+  min-width: 60%;
+  padding-left: 8%;
 }
 
 .MembersTable {
-    position: relative;
-    table-layout: fixed;
-    width: 100%;
+  position: relative;
+  table-layout: fixed;
+  width: 100%;
+}
+
+.MemberDelete {
+  background-color: #282c34;
+  border: none;
+  position: absolute;
+  margin-left: 12%;
+  margin-top: 2%;
 }
 
 td.MembersPageTitle {
-    border-top: transparent;
-    border-left: transparent;
-    border-right: transparent;
-    border-bottom: #1F5673;
-    border-style: solid;
+  border-top: transparent;
+  border-left: transparent;
+  border-right: transparent;
+  border-bottom: #1f5673;
+  border-style: solid;
 }
 
-
-
 h2 h4 {
-    color: #EEEEEE;
+  color: #eeeeee;
 }
 
 .button {
-    background-color: #1F5673; 
-    border: none;
-    color: white;
-    padding: 15px 30px;
-    text-align: center;
-    display: inline-flex;
-    font-size: 16px;
-    border-radius: 8px;
-    position:relative;
-    left: 20px;
-    width: 10%;
+  background-color: #1f5673;
+  border: none;
+  color: white;
+  padding: 15px 30px;
+  text-align: center;
+  display: inline-flex;
+  font-size: 16px;
+  border-radius: 8px;
+  position: relative;
+  left: 20px;
+  width: 10%;
 }
 
-.Usernamebox{
-
+.Usernamebox {
   width: 80%;
   padding: 12px 20px;
   margin: 12px 0;
   box-sizing: border-box;
   align-items: left;
-
-  
 }
 
-.error{
+.error {
+  color: red;
+}
 
-    color: red;
-    
-  }
-
-.MemberProfile{
-  background-color: #282c34; 
-  border: 2px solid #1F5673;
+.MemberProfile {
+  background-color: #282c34;
+  border: 2px solid #1f5673;
   width: 250px;
   height: 250px;
   border-radius: 8px;
@@ -68,23 +69,20 @@ h2 h4 {
   display: inline-block;
   font-size: 16px;
   margin: 20px;
-  font-family: 'Roboto', sans-serif;
+  font-family: "Roboto", sans-serif;
 }
 
 .userProfile {
-    padding-top: 10%;
-    width: 40%;
-    max-height: 50%;
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center;
+  padding-top: 10%;
+  width: 40%;
+  max-height: 50%;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
 }
 
 p.info {
-    font-size: 11px;
-    text-align: center;
-    float: center;
-    
+  font-size: 11px;
+  text-align: center;
+  float: center;
 }
-
-
