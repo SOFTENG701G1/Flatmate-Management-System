@@ -18,6 +18,7 @@ import RequireLogin from './Components/RequireLogin';
 import MembersPage from './Components/Members';
 import ForgotPassword from './Views/ForgotPassword';
 import ResetPassword from './Views/ResetPassword';
+import ProfilePage from './Components/UserProfile'; 
 
 export default class App extends React.Component {
   render() {
@@ -49,6 +50,9 @@ export default class App extends React.Component {
               <RequireLogin/>
               <Navigation/>
               <Switch>
+                <Route path="/app/profile">
+                  <ProfilePage />
+                </Route>
                 <Route path="/app/dashboard">
                   <Dashboard />
                 </Route>
@@ -62,7 +66,7 @@ export default class App extends React.Component {
                   <MembersPage/>
                 </Route>
                 <Route path="/app/">
-                  <Home/>
+                  <Dashboard/>
                 </Route>
               </Switch>
             </Route>
@@ -73,8 +77,4 @@ export default class App extends React.Component {
   }
 }
 
-/* Router is linked to functions for the time being */
-function Home() {
-  return <div class='section-header'>Flat Management System</div>;
-}
 
