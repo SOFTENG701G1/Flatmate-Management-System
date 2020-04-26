@@ -39,10 +39,14 @@ export default class Payments extends Component {
             });
         });
 
-        await APIRequest.obtainUserPayments().then(data => {
+        await APIRequest.getFlatMembers().then(data => {
             if(!data) data = [];
+            const flatMembers = [];
+            for (let j = 0; j < data.length; j++) {
+                flatMembers.push(data[j]["userName"]);
+            }
             this.setState({
-                flatMembers: data
+                flatMembers: flatMembers
             });
         });
 
