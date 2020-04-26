@@ -27,10 +27,12 @@ export default class MembersPage extends Component {
           this.setState({
             userName: ""
           });
+          
       };
 
     async addMember(){
       const memberResult = await APIRequest.addMember(this.state.userName);
+      window.location.reload();
       return memberResult.json();
     };
     
