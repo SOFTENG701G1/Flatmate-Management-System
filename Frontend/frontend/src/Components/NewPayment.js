@@ -217,7 +217,7 @@ export default class NewPayment extends Component {
                 <td colSpan="3">
                   <UserList
                     title="Contributors Pending"
-                    listItems={[this.props.people]}
+                    listItems={[this.props.flatMembers]}
                     onListChange={this.updateContributorsPending}
                   />
                 </td>
@@ -226,7 +226,7 @@ export default class NewPayment extends Component {
                 <td colSpan="3">
                   <UserList
                     title="Contributors Paid"
-                    listItems={[this.props.people]}
+                    listItems={[this.props.flatMembers]}
                     onListChange={this.updateContributorsPaid}
                   />
                 </td>

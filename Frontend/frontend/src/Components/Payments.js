@@ -30,23 +30,17 @@ export default class Payments extends Component {
         };
     }
 
+    async getAllMembers() {
+        const memberResult = await APIRequest.getFlatMembers();
+        return memberResult.json();
+      }
+
     async componentDidMount() {
         // Obtain payments associated with the logged in user.
         await APIRequest.obtainUserPayments().then(data => {
             if(!data) data = [];
             this.setState({
                 payments: data
-            });
-        });
-
-        await APIRequest.getFlatMembers().then(data => {
-            if(!data) data = [];
-            const flatMembers = [];
-            for (let j = 0; j < data.length; j++) {
-                flatMembers.push(data[j]["userName"]);
-            }
-            this.setState({
-                flatMembers: flatMembers
             });
         });
 
@@ -62,6 +56,23 @@ export default class Payments extends Component {
                 this.addUserPayment(listUser);
             });
         }
+
+        this.getAllMembers().then((members) => {
+            console.log(members);
+            console.log(members.flatMembers);
+
+            const flatMembers =[];
+            let userName = '';
+            for (let i=0; i< members.flatMembers.length; i++){
+                userName = members.flatMembers[i]["userName"];
+                console.log(userName);
+                flatMembers.push(userName);
+            }
+
+            this.setState({
+                flatMembers: flatMembers
+            });
+        });
     }
 
     addUserPayment = users => {
@@ -120,6 +131,8 @@ export default class Payments extends Component {
         const variablePaymentsHtml = [];
         const payments = this.state.payments;
         const contributorsPayments = this.state.contributionPayments;
+        const members = this.state.flatMembers;
+        
         for (let i = 0; i < payments.length; i++) {
             const paymentData = payments[i];
             const contributors = contributorsPayments[i];
@@ -152,7 +165,7 @@ export default class Payments extends Component {
                             <span className="NewPaymentButton" onClick={this._handleOpen}>
                                 <button className="NewPaymentButton">Add new</button>
                             </span>
-                            <NewPayment onClose={this._handleClose} show={this.state.show} people={this.state.flatMembers} />
+                            <NewPayment onClose={this._handleClose} show={this.state.show} flatMembers={members} />
                         </td>
                     </tr>
                     <tr>
