@@ -80,6 +80,31 @@ namespace WebApiBackendTests
         }
 
         /// <summary>
+        /// Ensure that a BadRequest is returned when a request is made for
+        /// to create a chore with an asignee who doesn't exist
+        /// </summary>
+        [Test]
+        public async Task TestCreateChoreNonexistentAssignee()
+        {
+            // Arrange
+            var chore = new ChoreDTO
+            {
+                Title = "dishes",
+                Description = "do the dishes",
+                Assignee = 100,
+                DueDate = new DateTime(2020, 04, 04),
+                Completed = false,
+                Recurring = true,
+            };
+
+            // Act
+            var response = await _choreController.CreateChoreForFlat(chore);
+
+            // Assert
+            Assert.IsInstanceOf<BadRequestResult>(response);
+        }
+
+        /// <summary>
         /// Ensures that chores can be retrieved for a flat
         /// </summary>
         [Test]
