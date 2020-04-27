@@ -4,6 +4,7 @@ import Modal from "react-bootstrap/Modal";
 import Cross from "../images/cross.png";
 import "./NewPayment.css";
 import APIRequest from "../Util/APIRequest";
+import UserList from "./UserList";
 
 /*
     This class renders the New Payments page.
@@ -28,6 +29,8 @@ export default class NewPayment extends Component {
 
     this.createNewPayment = this.createNewPayment.bind(this);
     this.bindInput = this.bindInput.bind(this);
+    this.updateContributorsPaid = this.updateContributorsPaid.bind(this);
+    this.updateContributorsPending = this.updateContributorsPending.bind(this);
   }
 
   async createNewPayment(event) {
@@ -37,6 +40,7 @@ export default class NewPayment extends Component {
       YinWang: "0",
       TreesAreGreen: "0",
     };
+
     await APIRequest.getUserIdsByUsername(this.contributorsPending).then(
       (data) => {
         if (!data) {
@@ -73,6 +77,20 @@ export default class NewPayment extends Component {
           break;
       }
     }
+
+    console.log(this.state)
+  }
+
+  updateContributorsPaid(items) {
+    this.setState({
+      contributorsPaid: items,
+    });
+  }
+
+  updateContributorsPending(items) {
+    this.setState({
+      contributorsPending: items,
+    });
   }
 
   bindInput(event) {
@@ -197,38 +215,20 @@ export default class NewPayment extends Component {
               </tr>
               <tr>
                 <td colSpan="3">
-                  <form>
-                    <label className="ContributorsPendingLabel">
-                      {" "}
-                      Contributors Pending:{" "}
-                    </label>
-                    <input
-                      className="ContributorsPendingInput"
-                      type="text"
-                      contributorsPending="contributorsPending"
-                      onChange={this.bindInput}
-                      placeholder="Contributors Pending*"
-                      defaultValue={this.state.contributorsPending}
-                    />
-                  </form>
+                  <UserList
+                    title="Contributors Pending"
+                    listItems={[this.props.flatMembers]}
+                    onListChange={this.updateContributorsPending}
+                  />
                 </td>
               </tr>
               <tr>
                 <td colSpan="3">
-                  <form>
-                    <label className="ContributorsPaidLabel">
-                      {" "}
-                      Contributors Paid:{" "}
-                    </label>
-                    <input
-                      className="ContributorsPaidInput"
-                      type="text"
-                      contributorPaids="contributorsPaid"
-                      onChange={this.bindInput}
-                      placeholder="Contributors Paid*"
-                      defaultValue={this.state.contributorsPaid}
-                    />
-                  </form>
+                  <UserList
+                    title="Contributors Paid"
+                    listItems={[this.props.flatMembers]}
+                    onListChange={this.updateContributorsPaid}
+                  />
                 </td>
               </tr>
               <tr>

@@ -13,6 +13,7 @@ export default class Payments extends Component {
         super();
 
         this.state = {
+            flatMembers: [""],
             showView: false,
             show: false,
             payments: [],
@@ -28,6 +29,11 @@ export default class Payments extends Component {
             currentContributors: [""]
         };
     }
+
+    async getAllMembers() {
+        const memberResult = await APIRequest.getFlatMembers();
+        return memberResult.json();
+      }
 
     async componentDidMount() {
         // Obtain payments associated with the logged in user.
@@ -50,6 +56,23 @@ export default class Payments extends Component {
                 this.addUserPayment(listUser);
             });
         }
+
+        this.getAllMembers().then((members) => {
+            console.log(members);
+            console.log(members.flatMembers);
+
+            const flatMembers =[];
+            let userName = '';
+            for (let i=0; i< members.flatMembers.length; i++){
+                userName = members.flatMembers[i]["userName"];
+                console.log(userName);
+                flatMembers.push(userName);
+            }
+
+            this.setState({
+                flatMembers: flatMembers
+            });
+        });
     }
 
     addUserPayment = users => {
@@ -108,6 +131,8 @@ export default class Payments extends Component {
         const variablePaymentsHtml = [];
         const payments = this.state.payments;
         const contributorsPayments = this.state.contributionPayments;
+        const members = this.state.flatMembers;
+        
         for (let i = 0; i < payments.length; i++) {
             const paymentData = payments[i];
             const contributors = contributorsPayments[i];
@@ -140,7 +165,7 @@ export default class Payments extends Component {
                             <span className="NewPaymentButton" onClick={this._handleOpen}>
                                 <button className="NewPaymentButton">Add new</button>
                             </span>
-                            <NewPayment onClose={this._handleClose} show={this.state.show} />
+                            <NewPayment onClose={this._handleClose} show={this.state.show} flatMembers={members} />
                         </td>
                     </tr>
                     <tr>
