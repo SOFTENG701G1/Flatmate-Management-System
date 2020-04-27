@@ -4,10 +4,13 @@ import NewPayment from "./NewPayment";
 import ViewPayment from "./ViewPayment";
 import "./Payments.css";
 import APIRequest from "../Util/APIRequest";
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Switch from '@material-ui/core/Switch';
 
 /*
     This class renders the Payments page.
 */
+
 export default class Payments extends Component {
     constructor() {
         super();
@@ -26,6 +29,7 @@ export default class Payments extends Component {
                 endDate: "",
                 frequency: ""
             },
+            theme: "off",
             currentContributors: [""]
         };
     }
@@ -116,6 +120,15 @@ export default class Payments extends Component {
         });
     };
 
+    _handleColour = () => {
+        if(this.state.theme === "off") {
+            this.setState({theme: "on"});
+        }
+        else{
+            this.setState({theme: "off"});
+        }
+    };
+
     _handleTableClick = (payment, contributors) => {
         this.setState(
             {
@@ -156,38 +169,46 @@ export default class Payments extends Component {
 
         return (
             <div className="PaymentPage">
-                <table className="PaymentTable">
-                    <tr>
-                        <td colSpan="2" className="PaymentPageTitle">
-                            <span className="PaymentPageTitle">
-                                <h2 className="PaymentsTitle">Payments</h2>
-                            </span>
-                            <span className="NewPaymentButton" onClick={this._handleOpen}>
-                                <button className="NewPaymentButton">Add new</button>
-                            </span>
-                            <NewPayment onClose={this._handleClose} show={this.state.show} flatMembers={members} />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <h4 className="Subtitle">Fixed</h4>
-                        </td>
-                        <td>
-                            <h4 className="Subtitle">Variable</h4>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>{fixedPaymentsHtml}</td>
-                        <td>{variablePaymentsHtml}</td>
-                        <ViewPayment
-                            onCloseView={this._handleCloseView}
-                            showView={this.state.showView}
-                            onEdit={this._handleEdit}
-                            payment={this.state.currentPayment}
-                            contributors={this.state.currentContributors}
-                        />
-                    </tr>
-                </table>
+                <div className={this.state.theme}>
+                    <table className="PaymentTable">
+                        <tr>
+                            <td colSpan="2" className="PaymentPageTitle">
+                                <span className="PaymentPageTitle">
+                                    <h2 className="PaymentsTitle">Payments</h2>
+                                </span>
+                                <span className="NewPaymentButton" onClick={this._handleOpen}>
+                                    <button className="NewPaymentButton">ADD NEW</button>
+                                </span>
+                                <NewPayment onClose={this._handleClose} show={this.state.show} flatMembers={members} />
+                                <span>
+                                    <FormControlLabel
+                                    control={<Switch onChange={this._handleColour} name="checkedA" />}
+                                    label="Change Colour"
+                                />
+                                </span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <h4 className="Subtitle">Fixed</h4>
+                            </td>
+                            <td>
+                                <h4 className="Subtitle">Variable</h4>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>{fixedPaymentsHtml}</td>
+                            <td>{variablePaymentsHtml}</td>
+                            <ViewPayment
+                                onCloseView={this._handleCloseView}
+                                showView={this.state.showView}
+                                onEdit={this._handleEdit}
+                                payment={this.state.currentPayment}
+                                contributors={this.state.currentContributors}
+                            />
+                        </tr>
+                    </table>
+                </div>
             </div>
         );
     }

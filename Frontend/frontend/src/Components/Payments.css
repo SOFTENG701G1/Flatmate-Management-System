@@ -3,12 +3,20 @@
     top: 0px;
     left: 21%;
     right: 20px;
-    background-color: transparent;
+    /*background-color: #13A265; */ 
     border: 5px;
     border-color: aliceblue;
     border-radius: 10px;
     border-style: none;
     max-width: 80%;
+}
+
+.off{
+    background-color: #0C0F13;
+}
+
+.on{
+    background-color: #13A673;
 }
 
 .PaymentTable {
@@ -100,3 +108,4 @@ td {
 h2 h4 {
     color: #EEEEEE;
 }
+
