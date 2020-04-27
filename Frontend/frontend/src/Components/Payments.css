@@ -11,6 +11,14 @@
     max-width: 80%;
 }
 
+.off{
+    background-color: #0C0F13;
+}
+
+.on{
+    background-color: #13A673;
+}
+
 .PaymentTable {
     position: relative;
     table-layout: fixed;
@@ -101,10 +109,3 @@ h2 h4 {
     color: #EEEEEE;
 }
 
-.off{
-    background-color: #0C0F13;
-}
-
-.on{
-    background-color: #13A673;
-}
