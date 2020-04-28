@@ -62,14 +62,10 @@ export default class Payments extends Component {
         }
 
         this.getAllMembers().then((members) => {
-            console.log(members);
-            console.log(members.flatMembers);
-
             const flatMembers =[];
             let userName = '';
             for (let i=0; i< members.flatMembers.length; i++){
                 userName = members.flatMembers[i]["userName"];
-                console.log(userName);
                 flatMembers.push(userName);
             }
 

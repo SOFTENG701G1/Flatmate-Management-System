@@ -72,8 +72,6 @@ export default class NewPayment extends Component {
           break;
       }
     }
-
-    console.log(this.state)
   }
 
   updateContributorsPaid(items) {
