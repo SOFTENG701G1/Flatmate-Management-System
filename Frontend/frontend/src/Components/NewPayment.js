@@ -35,13 +35,8 @@ export default class NewPayment extends Component {
 
   async createNewPayment(event) {
     event.preventDefault();
-    this.contributorsPending = {
-      BeboBryan: "0",
-      YinWang: "0",
-      TreesAreGreen: "0",
-    };
 
-    await APIRequest.getUserIdsByUsername(this.contributorsPending).then(
+    await APIRequest.getUserIdsByUsername(this.state.contributorsPending).then(
       (data) => {
         if (!data) {
           console.log("No response");
@@ -217,7 +212,7 @@ export default class NewPayment extends Component {
                 <td colSpan="3">
                   <UserList
                     title="Contributors Pending"
-                    listItems={[this.props.flatMembers]}
+                    listItems={this.props.flatMembers}
                     onListChange={this.updateContributorsPending}
                   />
                 </td>
@@ -226,7 +221,7 @@ export default class NewPayment extends Component {
                 <td colSpan="3">
                   <UserList
                     title="Contributors Paid"
-                    listItems={[this.props.flatMembers]}
+                    listItems={this.props.flatMembers}
                     onListChange={this.updateContributorsPaid}
                   />
                 </td>
