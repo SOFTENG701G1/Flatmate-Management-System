@@ -94,7 +94,7 @@ namespace WebApiBackendTests
                 Recurring = true,
             };
 
-            int userId = 1; // initialised in HttpContextHelper
+            int userId = 1; // as initialised in HttpContextHelper
             List<Chore> originalChores = await _choresRepository.GetAll();
 
             // Act
@@ -154,22 +154,62 @@ namespace WebApiBackendTests
         {
             var chore = new Chore
             {
-                Title = "dishes",
-                Description = "do the dishes",
-                AssignedUser = new User(),
-                DueDate = new DateTime(2020, 04, 04),
+                Title = "lawn",
+                Description = "mow the lawn",
+                AssignedUser = await _userRepository.Get(1),
+                DueDate = new DateTime(2021, 05, 05),
                 Completed = false,
                 Recurring = true,
             };
 
+            Chore result = await _choresRepository.Add(chore);
 
-            await _choresRepository.Add(chore);
+            // We need add the chore to the flat belonging to the active user
+            int userId = 1; // as initialised in HttpContextHelper
+            User activeUser = await _userRepository.Get(userId);
+            Flat userFlat = activeUser.Flat;
+            userFlat.Chores.Add(result);
+            await _flatRepository.Update(userFlat);
 
             // Act
             var response = await _choreController.GetAllChoresForFlat();
 
             // Assert
             Assert.IsInstanceOf<OkObjectResult>(response);
+            OkObjectResult actionResult = (OkObjectResult)response;
+
+            ICollection<ChoreDTO> expectedChores = new List<ChoreDTO> {
+                new ChoreDTO 
+                {
+                    Id = 1,
+                    Title = "dishes",
+                    Description = "do the dishes",
+                    Assignee = 1,
+                    DueDate = new DateTime(2020, 04, 04),
+                    Completed = false,
+                    Recurring = true
+                }, new ChoreDTO 
+                {
+                    Id = 2,
+                    Title = "rubbish",
+                    Description = "take out the rubbish",
+                    Assignee = 3,
+                    DueDate = new DateTime(2020, 05, 05),
+                    Completed = false,
+                    Recurring = true
+                }, new ChoreDTO
+                {
+                    Id = 3,
+                    Title = "dishes",
+                    Description = "do the dishes",
+                    Assignee = 1,
+                    DueDate = new DateTime(2021, 05, 05),
+                    Completed = false,
+                    Recurring = true,
+                }
+            };
+
+            Assert.AreEqual(expectedChores, actionResult.Value);
         }
 
         /// <summary>
@@ -192,13 +232,11 @@ namespace WebApiBackendTests
             Chore result = await _choresRepository.Add(chore);
             int id = result.Id;
 
-            // We need to ensure that the chore is added to the flat belonging to the active user
-            // (The active user and flat has been initialised by WebApiBackendTests.Helper.DatabaseSetUpHelper
-            //    using WebApiBackend.Helpers.DevelopmentDatabaseSetup)
-            ClaimsIdentity identity = _httpContextHelper.GetClaimsIdentity();
-            int userId = Int16.Parse(identity.FindFirst(ClaimTypes.NameIdentifier).Value);
+            int userId = 1; // as initialised in HttpContextHelper
             User activeUser = await _userRepository.Get(userId);
-            activeUser.Flat.Chores.Add(result);
+            Flat userFlat = activeUser.Flat;
+            userFlat.Chores.Add(result);
+            await _flatRepository.Update(userFlat);
 
             // Act
             var response = await _choreController.DeleteChore(id);
@@ -241,5 +279,7 @@ namespace WebApiBackendTests
             Assert.AreEqual(r_chore.Completed, false);
 
         }
+
     }
+
 }
