@@ -6,11 +6,13 @@ using System.Collections.Generic;
 using System.Security.Claims;
 using System.Security.Principal;
 using System.Threading.Tasks;
+using System.Diagnostics;
 using WebApiBackend.Controllers;
 using WebApiBackend.Dto;
 using WebApiBackend.EF;
 using WebApiBackend.Model;
 using WebApiBackendTests.Helper;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace WebApiBackendTests
 {
@@ -56,27 +58,67 @@ namespace WebApiBackendTests
         }
 
         /// <summary>
-        /// Ensures that a payment can be created for a flat
+        /// Checks for the equality of Chores. This is here because the functionality for checking value equality
+        /// of Chores is unavailable. Because of the rules for Pull Requests, it cannot be added in the same PR as
+        /// the tests and must be added to the Chore class later, if required elsewhere.
+        /// </summary>
+        private bool ChoreEquals(Chore choreOne, Chore choreTwo)
+        {
+            return (choreOne.Id.Equals(choreTwo.Id) &&
+               choreOne.Title.Equals(choreTwo.Title) &&
+               choreOne.Description.Equals(choreTwo.Description) &&
+               choreOne.AssignedUser.Id.Equals(choreTwo.AssignedUser.Id) &&
+               choreOne.DueDate.Equals(choreTwo.DueDate) &&
+               choreOne.Completed.Equals(choreTwo.Completed) &&
+               choreOne.Recurring.Equals(choreTwo.Recurring)
+               );
+        }
+
+        /// <summary>
+        /// Ensures that a chore can be created for a flat
         /// </summary>
         [Test]
         public async Task TestCreateChoreForFlatAsync()
         {
+            Trace.Listeners.Add(new TextWriterTraceListener(Console.Out));
+            Trace.AutoFlush = true;
+            
             // Arrange
             var chore = new ChoreDTO
             {
-                Title = "dishes",
-                Description = "do the dishes",
+                Title = "lawn",
+                Description = "mow the lawn",
                 Assignee = 1,
-                DueDate = new DateTime(2020, 04, 04),
+                DueDate = new DateTime(2020, 05, 05),
                 Completed = false,
                 Recurring = true,
             };
 
+            int userId = 1; // initialised in HttpContextHelper
+            List<Chore> originalChores = await _choresRepository.GetAll();
+
             // Act
             var response = await _choreController.CreateChoreForFlat(chore);
 
-            // Assert
+            // Assert OK result and Chore has been added to repository
             Assert.IsInstanceOf<OkResult>(response);
+
+            Chore modelChore = new Chore
+            {
+                Id = 3, // this is what we expect based on DevelopmentDatabaseSetup intialisation
+                Title = "lawn",
+                Description = "mow the lawn",
+                AssignedUser = await _userRepository.Get(1),
+                DueDate = new DateTime(2020, 05, 05),
+                Completed = false,
+                Recurring = true,
+            };
+
+            // The only difference between the chore repo before and after calling the should
+            List<Chore> newChores = await _choresRepository.GetAll();
+            newChores.RemoveAll(c => originalChores.Contains(c));
+            Assert.AreEqual(1, newChores.Count);
+            Assert.True(ChoreEquals(newChores[0], modelChore));
         }
 
         /// <summary>
