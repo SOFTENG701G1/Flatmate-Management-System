@@ -1,10 +1,9 @@
 .modal-content {
-  background-color: #0C0F13;
+  background-color: #0c0f13;
   justify-content: center;
-  border: 2px solid #1F5673;
+  border: 2px solid #1f5673;
   width: 375px;
 }
-
 
 .modal-dialog {
   position: absolute;
@@ -13,22 +12,22 @@
   transform: translate(-50%, -50%);
 }
 
-.modal-footer{
+.modal-footer {
   padding-top: 20px;
   margin: 20px;
 }
 
 h1 {
-	color: #FFFFFF;
-	left: 50%;
-    margin-top: 5px;
-    margin-bottom: 20px;
-    font-size: 20px;
-    text-align: center;
+  color: #ffffff;
+  left: 50%;
+  margin-top: 5px;
+  margin-bottom: 20px;
+  font-size: 20px;
+  text-align: center;
 }
 
-.modal-body{
-  color: #656E79;
+.modal-body {
+  color: #656e79;
   margin-left: 20px;
   margin-right: 20px;
 }
@@ -47,7 +46,7 @@ span.CancelButton {
   position: absolute;
   bottom: 0px;
   left: 0px;
-  margin:15px;
+  margin: 15px;
 }
 
 button.CancelButton {
@@ -55,10 +54,10 @@ button.CancelButton {
   float: right;
   height: 30px;
   width: 100px;
-  background-color: #1E1F26;
-  color: #EEEEEE;
+  background-color: #1e1f26;
+  color: #eeeeee;
   border-style: none;
-  border-radius:5px;
+  border-radius: 5px;
 }
 
 span.SaveButton {
@@ -66,7 +65,7 @@ span.SaveButton {
   position: absolute;
   bottom: 0px;
   right: 0px;
-  margin:15px;
+  margin: 15px;
 }
 
 button.SaveButton {
@@ -74,10 +73,10 @@ button.SaveButton {
   float: right;
   height: 30px;
   width: 70px;
-  background-color: #1F5673;
-  color: #EEEEEE;
+  background-color: #1f5673;
+  color: #eeeeee;
   border-style: none;
-  border-radius:5px;
+  border-radius: 5px;
 }
 
 span.CrossButton {
@@ -85,115 +84,123 @@ span.CrossButton {
   position: absolute;
   top: 0px;
   left: 0px;
-  margin:15px;
+  margin: 15px;
   width: 10px;
 }
 
 button.CrossButton {
   position: absolute;
   float: left;
-  background-color: #0C0F13;
+  background-color: #0c0f13;
   border-style: none;
 }
 
-img.cross-image{
-  width: 10px;  
+img.cross-image {
+  width: 10px;
   height: 10px;
 }
 
-label.AmountLabel{
+label.AmountLabel {
   font-size: 12px;
 }
 
-input.AmountInput{
+input.AmountInput {
   width: 100px;
   height: 20px;
   margin-right: 300px;
   margin-bottom: 15px;
 }
 
-
-label.StartDateLabel{
+label.StartDateLabel {
   font-size: 12px;
   float: right;
 }
 
-input.StartDateInput{
+input.StartDateInput {
   float: right;
   width: 100px;
   height: 20px;
   margin-bottom: 15px;
 }
 
-label.PaidToLabel{
+label.PaidToLabel {
   font-size: 12px;
 }
 
-input.PaidToInput{
+input.PaidToInput {
   width: 150px;
   height: 20px;
   margin-right: 100px;
   margin-bottom: 15px;
 }
 
-label.EndDateLabel{
+label.EndDateLabel {
   font-size: 12px;
   float: right;
 }
 
-input.EndDateInput{
+input.EndDateInput {
   float: right;
   width: 100px;
   height: 20px;
   margin-bottom: 15px;
 }
 
-label.AccountLabel{
+label.AccountLabel {
   font-size: 12px;
 }
 
-input.AccountInput{
+input.AccountInput {
   width: 150px;
   height: 20px;
   margin-right: 100px;
   margin-bottom: 15px;
 }
 
-label.FrequencyLabel{
+label.FrequencyLabel {
   font-size: 12px;
   float: right;
 }
 
-input.FrequencyInput{
+input.FrequencyInput {
   float: right;
   width: 100px;
   height: 20px;
   margin-bottom: 15px;
 }
 
-label.ContributorsPendingLabel{
+label.ContributorsPendingLabel {
   font-size: 12px;
 }
 
-input.ContributorsPendingInput{
+input.ContributorsPendingInput {
   height: 20px;
   margin-bottom: 15px;
 }
 
-label.ContributorsPaidLabel{
+label.ContributorsPaidLabel {
   font-size: 12px;
 }
 
-input.ContributorsPaidInput{
+input.ContributorsPaidInput {
   height: 20px;
   margin-bottom: 15px;
 }
 
-label.DescriptionLabel{
+label.DescriptionLabel {
   font-size: 12px;
 }
 
-input.DescriptionInput{
+input.DescriptionInput {
   height: 20px;
   margin-bottom: 15px;
-} 
+}
+
+.date {
+  color: white !important;
+  font-size: large;
+}
+
+.frequency {
+  color: white !important;
+}
