@@ -177,6 +177,8 @@ namespace WebApiBackendTests
             // Assert
             Assert.IsInstanceOf<OkObjectResult>(response);
             OkObjectResult actionResult = (OkObjectResult)response;
+            Assert.IsInstanceOf<List<ChoreDTO>>(actionResult.Value);
+            List<ChoreDTO> actualChores = (List<ChoreDTO>)actionResult.Value;
 
             ICollection<ChoreDTO> expectedChores = new List<ChoreDTO> {
                 new ChoreDTO 
@@ -200,8 +202,8 @@ namespace WebApiBackendTests
                 }, new ChoreDTO
                 {
                     Id = 3,
-                    Title = "dishes",
-                    Description = "do the dishes",
+                    Title = "lawn",
+                    Description = "mow the lawn",
                     Assignee = 1,
                     DueDate = new DateTime(2021, 05, 05),
                     Completed = false,
@@ -209,7 +211,35 @@ namespace WebApiBackendTests
                 }
             };
 
-            Assert.AreEqual(expectedChores, actionResult.Value);
+            //Assert.AreEqual(expectedChores, actualChores);
+            Assert.AreEqual(expectedChores.Count, actualChores.Count);
+            bool allPresent = true;
+            foreach (ChoreDTO c in expectedChores)
+            {
+                bool found = false;
+                foreach (ChoreDTO cPrime in actualChores)
+                {
+                    if (c.Id.Equals(cPrime.Id) &&
+                        c.Title.Equals(cPrime.Title) &&
+                        c.Description.Equals(cPrime.Description) &&
+                        c.Assignee.Equals(cPrime.Assignee) &&
+                        c.DueDate.Equals(cPrime.DueDate) &&
+                        c.Completed.Equals(cPrime.Completed) &&
+                        c.Recurring.Equals(cPrime.Recurring))
+                    {
+                        found = true;
+                        break;
+                    }
+                }
+                if (!found)
+                {
+                    allPresent = false;
+                    break;
+                }
+            }
+
+            Assert.True(allPresent, "Not all chores in the expected results returned by GetAllChoresForFlat " +
+                "were present in the actual results");
         }
 
         /// <summary>
