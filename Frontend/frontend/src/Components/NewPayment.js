@@ -5,7 +5,13 @@ import Cross from "../images/cross.png";
 import "./NewPayment.css";
 import APIRequest from "../Util/APIRequest";
 import UserList from "./UserList";
-
+import {
+  TextField,
+  MenuItem,
+  Select,
+  InputLabel,
+  InputBase,
+} from "@material-ui/core";
 /*
     This class renders the New Payments page.
 */
@@ -47,6 +53,7 @@ export default class NewPayment extends Component {
         }
       }
     );
+
     let paymentResult = await APIRequest.createNewPayment(
       parseInt(this.state.amount),
       this.state.startDate,
@@ -73,10 +80,11 @@ export default class NewPayment extends Component {
       }
     }
 
-    console.log(this.state)
+    console.log(this.state);
   }
 
   updateContributorsPaid(items) {
+    debugger;
     this.setState({
       contributorsPaid: items,
     });
@@ -139,17 +147,22 @@ export default class NewPayment extends Component {
                   </form>
                 </td>
                 <td className="RowOneColTwo">
-                  <form>
-                    <label className="StartDateLabel"> Start Date: </label>
-                    <input
-                      className="StartDateInput"
-                      type="text"
-                      name="startDate"
-                      onChange={this.bindInput}
-                      placeholder="Start Date*"
-                      defaultValue={this.state.startDate}
-                    />
-                  </form>
+                  <TextField
+                    id="datetime-local"
+                    label="Start date"
+                    type="date"
+                    name="startDate"
+                    size="large"
+                    defaultValue="2017-05-24T10:30:00Z"
+                    InputLabelProps={{
+                      shrink: true,
+                      className: "date",
+                    }}
+                    InputProps={{
+                      className: "date",
+                    }}
+                    onChange={this.bindInput}
+                  />
                 </td>
               </tr>
               <tr className="RowTwo">
@@ -167,17 +180,22 @@ export default class NewPayment extends Component {
                   </form>
                 </td>
                 <td>
-                  <form>
-                    <label className="EndDateLabel"> End Date: </label>
-                    <input
-                      className="EndDateInput"
-                      type="text"
-                      name="endDate"
-                      onChange={this.bindInput}
-                      placeholder="End Date*"
-                      defaultValue={this.state.endDate}
-                    />
-                  </form>
+                  <TextField
+                    id="datetime-local"
+                    label="End date"
+                    type="date"
+                    name="endDate"
+                    size="large"
+                    defaultValue="2017-05-24T10:30:00Z"
+                    InputLabelProps={{
+                      shrink: true,
+                      className: "date",
+                    }}
+                    InputProps={{
+                      className: "date",
+                    }}
+                    onChange={this.bindInput}
+                  />
                 </td>
               </tr>
               <tr>
@@ -195,17 +213,19 @@ export default class NewPayment extends Component {
                   </form>
                 </td>
                 <td>
-                  <form>
-                    <label className="FrequencyLabel"> Frequency: </label>
-                    <input
-                      className="FrequencyInput"
-                      type="text"
-                      name="frequency"
-                      onChange={this.bindInput}
-                      placeholder="Frequency*"
-                      defaultValue={this.state.frequency}
-                    />
-                  </form>
+                  <InputLabel className={"frequency"}>Frequency</InputLabel>
+                  <Select
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    name="frequency"
+                    className={"frequency"}
+                    onChange={this.bindInput}
+                  >
+                    <MenuItem value={0}>OneOff</MenuItem>
+                    <MenuItem value={1}>Weekly</MenuItem>
+                    <MenuItem value={2}>Fortnightly</MenuItem>
+                    <MenuItem value={3}>Monthly</MenuItem>
+                  </Select>
                 </td>
               </tr>
               <tr>
