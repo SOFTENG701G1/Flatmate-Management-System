@@ -38,9 +38,9 @@ export default class UserList extends Component {
                  <Row className="UserListHeader">{this.props.title}</Row>
                  <Container className="UserListContainer">
                  {
-                this.props.listItems.map(item => (
+                this.props.listItems.map((item,index) => (
                     <Row className="UserListRow">
-                  <label key={item} >
+                  <label key={index} >
                     <Checkbox name={item} onChange={(e)=>this.updateStateList(e,item)} />
                     {item}
                   </label>
