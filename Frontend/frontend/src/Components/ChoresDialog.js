@@ -48,7 +48,6 @@ class ChoresDialog extends Component {
   }
 
   handleChange(event) {
-    console.log(event.target.value);
     const { chore } = this.state;
     this.setState({
       chore: {
@@ -62,7 +61,6 @@ class ChoresDialog extends Component {
 
   handleSubmit() {
     // do somehign
-    console.log(this.state.chore);
     this.props.createChore(this.state.chore);
     this.handleClickClose();
   }
