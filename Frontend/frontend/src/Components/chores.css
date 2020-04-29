@@ -84,3 +84,27 @@ form {
 form > * {
   margin: 5px !important;
 }
+
+.ChoresTable {
+  border-radius: 8px;
+  border: 2px solid #1f5673;
+}
+
+.TableCell.MuiTableCell-root {
+  color: white;
+  background-color: #1e1f26;
+  border-color: #1f5673;
+}
+
+.TableCell.MuiTableCell-root.MuiTableCell-head {
+  font-weight: 700;
+}
+
+button.MuiFab-root {
+  margin-top: 15px;
+  background-color: #31323b;
+}
+
+.Chores {
+  margin-left: 22%;
+}

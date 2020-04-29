@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import "../App.css";
 import APIRequest from "../Util/APIRequest";
+import "./chores.css";
 
 import {
   TableContainer,
@@ -149,23 +150,20 @@ export default class Chores extends Component {
   render() {
     const { chores, members } = this.state;
     return (
-      <div>
-        <p>New Chores</p>
-        <TableContainer>
+      <div className="Chores">
+        <h2>Chores</h2>
+        <TableContainer className="ChoresTable">
           <Table stickyHeader>
             <TableHead>
               <TableRow>
                 {this.columns.map((column) => {
                   return (
-                    <TableCell
-                      key={column.id}
-                      style={({ textcolor: "white" }, { minWidth: 106 })}
-                    >
+                    <TableCell className="TableCell" key={column.id}>
                       {column.label}
                     </TableCell>
                   );
                 })}
-                <TableCell />
+                <TableCell className="TableCell" />
               </TableRow>
             </TableHead>
             <TableBody>
@@ -175,8 +173,9 @@ export default class Chores extends Component {
                     {this.blankRow.map((cell) => {
                       return (
                         <TableCell
+                          className="TableCell"
                           style={
-                            ({ color: "white" },
+                            ({ minWidth: 106 },
                             {
                               backgroundColor:
                                 moment(chore.dueDate).format("dddd") ===
@@ -184,7 +183,7 @@ export default class Chores extends Component {
                                   ? chore.completed
                                     ? "green"
                                     : "red"
-                                  : "white",
+                                  : "",
                             })
                           }
                           onClick={
@@ -204,7 +203,7 @@ export default class Chores extends Component {
                     })}
                     <TableCell
                       onClick={() => this.deleteChore(chore.id)}
-                      style={{ backgroundColor: "white" }}
+                      className="TableCell"
                     >
                       <DeleteIcon></DeleteIcon>
                     </TableCell>
