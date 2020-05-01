@@ -12,7 +12,7 @@ Coding conventions serve the following purposes:
 
 ## General JS Coding Guidelines
 
-This project follows AirBnB's JavaScript Style Guide.
+This project follows AirBnB's JavaScript Style Guide. Code existing before the introduction of this style guide does not comply with the new standards, but all new code should conform to these style guidelines. Any changes made to existing code should also be refactored if possible to match the new style guidelines.
 
 ## ReactJS Coding Guidelines
 ### Basic Rules 
