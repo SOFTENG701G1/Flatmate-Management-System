@@ -1,4 +1,4 @@
-# React JS Coding Guidelines
+# JS Coding Guidelines
 
 Coding conventions serve the following purposes:  
   
@@ -8,9 +8,14 @@ Coding conventions serve the following purposes:
   
 - They facilitate copying, changing, and maintaining the code.  
 
-- They demonstrate React JS best practices. 
+- They demonstrate JS best practices. 
 
-## Basic Rules 
+## General JS Coding Guidelines
+
+This project follows AirBnB's JavaScript Style Guide. Code existing before the introduction of this style guide does not comply with the new standards, but all new code should conform to these style guidelines. Any changes made to existing code should also be refactored if possible to match the new style guidelines.
+
+## ReactJS Coding Guidelines
+### Basic Rules 
 
 - Only include one React component per file.
 
@@ -18,7 +23,7 @@ Coding conventions serve the following purposes:
 
 - Do not use `React.createElement` unless you're initializing the app from a file that is not JSX.
 
-## Naming Conventions  
+### Naming Conventions  
 
 - File- and component name need to be identical.
 
@@ -41,7 +46,7 @@ class Foo extends React.Component {}
 export default Foo;
 ```
 
-## Ordering
+### Ordering
 
 - Ordering for class extends React.Component:
 
@@ -89,7 +94,7 @@ Link.propTypes = propTypes;
 Link.defaultProps = defaultProps;
 ```
 
-## Alignment
+### Alignment
 
 - Follow these alignment styles for JSX syntax
 
@@ -116,7 +121,7 @@ Link.defaultProps = defaultProps;
 </Foo>
 ```
 
-## Quotes
+### Quotes
 
 - Always use double quotes (`"`) for JSX attributes, but single quotes for all other JS.
 
@@ -133,7 +138,7 @@ Link.defaultProps = defaultProps;
 // good
 <Foo style={{ left: '20px' }} />
 
-## Props
+### Props
 
 - Always use camelCase for prop names.
 
@@ -151,7 +156,7 @@ Link.defaultProps = defaultProps;
 />
 ```
 
-## Tags
+### Tags
 
 - Always self-close tags that have no children.
 
@@ -177,7 +182,7 @@ Link.defaultProps = defaultProps;
 />
 ```
 
-## Stateless function components
+### Stateless function components
 
 - For stateless components use the function syntax, introduced in React 0.14.
 
@@ -200,7 +205,7 @@ var Aquarium = ({species}) => (
 
 [Read More](http://facebook.github.io/react/blog/2015/09/10/react-v0.14-rc1.html#stateless-function-components)
 
-## PropTypes declarations
+### PropTypes declarations
 
 - Setting propTypes declarations is mandatory
 
@@ -221,7 +226,7 @@ static propTypes = {
 ```
 
 
-## Prefixing none React methods
+### Prefixing none React methods
 
 - Prefix all none React methods within a component with an underscore.
 
@@ -244,7 +249,7 @@ class Foo extends React.Component {
 }   
 ```
 
-## Prefixing component wide variables
+### Prefixing component wide variables
 
 - In the exception that you do not want to place a component wide variables on the state, you have to prefix it with an underscore.
 
@@ -263,7 +268,7 @@ class Foo extends React.Component {
 }   
 ```
 
-## Using handler methods
+### Using handler methods
 
 - Name methods using `'_handle' + triggering event`, e.g. `_handleClick`
 
@@ -288,7 +293,7 @@ class Foo extends React.Component {
 }
 ```
 
-## Using “container” components for loading data from Stores
+### Using “container” components for loading data from Stores
 
 ```javascript
 // CommentListContainer.js
@@ -331,7 +336,7 @@ class CommentList extends React.Component {
 
 Source: https://medium.com/@learnreact/container-components-c0e67432e005
 
-## Closing Components without children
+### Closing Components without children
 
 ```javascript
 render() {
@@ -343,7 +348,7 @@ render() {
 }
 ```
 
-## List iterations
+### List iterations
 
 - When rendering a list of components from an array, do it inline if it makes sense. If the map function is too long or complicated, consider extracting it out into its own method on the component class.
 
@@ -357,7 +362,7 @@ render() {
 }
 ```
 
-## Formatting Attributes
+### Formatting Attributes
 
 ```javascript
 <input
@@ -367,7 +372,7 @@ render() {
 />
 ```
 
-## Inline CSS styles
+### Inline CSS styles
 
 - Static properties should be set in the SCSS, dynamic ones in JS.
 
@@ -394,7 +399,7 @@ class Foo extends React.Component {
 }
 ```
 
-## Use "classnames" to set CSS classes
+### Use "classnames" to set CSS classes
 
 - Use the [classnames](https://www.npmjs.com/package/classnames) node module for setting CSS classes on an element.
 
@@ -419,7 +424,7 @@ class Foo extends React.Component {
 }
 ```
 
-## Additional Notes
+### Additional Notes
 
 - [Working with DOM listeners](http://facebook.github.io/react/tips/dom-event-listeners.html)
 
@@ -431,3 +436,4 @@ class Foo extends React.Component {
 
 - [React JS Guide](https://github.com/kriasoft/react-starter-kit/blob/master/docs/react-style-guide.md)
 - [Reacy JS Guidelines](https://github.com/pillarstudio/standards/blob/master/reactjs-guidelines.md)
+- [AirBnB JavaScript Style Guidelines](https://github.com/airbnb/javascript/blob/master/README.md)
