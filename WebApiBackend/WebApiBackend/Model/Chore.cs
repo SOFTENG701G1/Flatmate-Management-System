@@ -14,6 +14,30 @@ namespace WebApiBackend.Model
         public User AssignedUser { get; set; }
         public DateTime DueDate { get; set; }
         public bool Completed { get; set; }
-        public bool Recurring{ get; set; }
+        public bool Recurring { get; set; }
+
+        public override bool Equals(Object obj)
+        {
+            if ((obj == null) || !this.GetType().Equals(obj.GetType()))
+            {
+                return false;
+            }
+            else
+            {
+                Chore otherChore = (Chore)obj;
+                return this.Id.Equals(otherChore.Id) &&
+                   this.Title.Equals(otherChore.Title) &&
+                   this.Description.Equals(otherChore.Description) &&
+                   this.AssignedUser.Id.Equals(otherChore.AssignedUser.Id) &&
+                   this.DueDate.Equals(otherChore.DueDate) &&
+                   this.Completed.Equals(otherChore.Completed) &&
+                   this.Recurring.Equals(otherChore.Recurring);
+            }
+        }
+
+        public override int GetHashCode()
+        {
+            return Id;
+        }
     }
 }
